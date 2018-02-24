@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SSD, NexT,DiskSim,FlashSim" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="SSD学习的一些笔记">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zhou的个人博客">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="SSD学习的一些笔记">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zhou的个人博客">
+<meta name="twitter:description" content="SSD学习的一些笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/"/>
+
+
+
+
+
+  <title>Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry，Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/21/DFTL源码阅读1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/21/DFTL源码阅读1/" itemprop="url">DFTL源码阅读1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-21T19:17:54+08:00">
+                2018-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/21/DFTL源码阅读1/" class="leancloud_visitors" data-flag-title="DFTL源码阅读1">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="DFTL源码阅读笔记-1"><a href="#DFTL源码阅读笔记-1" class="headerlink" title="DFTL源码阅读笔记(1)"></a>DFTL源码阅读笔记(1)</h1><h2 id="DFTL算法举例理解"><a href="#DFTL算法举例理解" class="headerlink" title="DFTL算法举例理解"></a>DFTL算法举例理解</h2><p>在理解代码前，首先理解下面关于DFTL的一个例子的示意图十分必要：<br><img src="/2018/02/21/DFTL源码阅读1/DFTL原理示意图.png" title="DFTL原理示意图"></p>
+<p>首先理解CMT和GTD，在DFTL中，经常访问的LPN-PPN这个映射关系是缓存到RAM/DRAM中的，全部的映射关系是存放在flash内部的一小块区域（这里图示为翻译块区域），其中LPN-PPN这个简单的映射关系一般是4byte，而一个数据页大概是2048byte大小。也就是一个数据页（翻译页）可以存放大概512的映射关系。但是要知道这些翻译页在flash的位置，则需要GTD来管理对应的MVPN–&gt;MPPN的关系。<br>那现在需要捋下DLPN，DPPN，MVPN，MPPN的关系了</p>
+<ol>
+<li>DLPN：也是我们理解的host发送请求的逻辑页地址</li>
+<li>DPPN：对应的DLPN在flash中存放的物理页地址</li>
+<li>MVPN：虚拟页的编号（地址）–这个编号和DLPN存在固定的关系，DLPN/512(如果页的大小是2K）得到的商，就是该DLPN所属的MVPN</li>
+<li>MPPN:就是实际存放映射表的物理页地址。需要注意的是，只要该翻译页512项的中的一项关系发生改变，就要异地更新到其他空闲页位置上。</li>
+</ol>
+<p>举个例子吧，1G的flash(全部都是数据区域，不考虑翻译区域），按照4个扇区一页（2K），大概有524288个数据页，即存在524288个映射关系，一个2k的数据页大概可以存放512个映射关系，那么就需要1024个翻译页，也就是MVPN的编号从0-1023结束(GTD需要加载的项)，如果按块包含64个页的话，就需要16个底层的块作为翻译块。</p>
+<p>在就上图DFTL的请求处理机制进行理解，当DLPN=1280到来的时候，此时的CMT的列表项是满的，根据一定规则（DFTL采用的是S-LRU的原则），选择剔除的对象。这里选中DLPN=1–&gt;DPPN=260的映射项作为剔除对象，剔除的时候需要检测该映射关系是否和flash中存的翻译页中的映射关系是否同步（一般不同步），不同步则异地更新，同时更新需要注意更新对应的GTD的关系。</p>
+<p>根据DLPN=1,查找对应的MVPN=(int）DLPN/512=0,也就是MVPN=0,根据GTD的映射表，找到对应的MPPN=21,此时访问读取MPPN=21中的数据，异地更新对应的数据到MPPN=23上，同时更新对应GTD中的翻译页的映射关系MVPN=0—&gt;MPPN=23。将DLPN的映射关系加载到CMT中，也需要找到对应的MVPN=DLPN/512=2,根据GTD查找MVPN=2对应的翻译页物理地址是MPPN=15，在这个翻译页中找到对应的映射关系DLPN=1280—&gt;DPPN=660，加载这个映射项到CMT中，同时根据这个映射关系，可以访问DPPN=660数据，如果数据发生了更新，则修改CMT中DLPN—&gt;DPPN的映射关系。</p>
+<h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><p>在介绍初始化函数之前，有必要先知道dftl.c/.h中涉及的自定义结构体opagemap和mapdir：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct opm_entry &#123;</span><br><span class="line">  _u32 free  : 1;</span><br><span class="line">  _u32 ppn   : 31;</span><br><span class="line">  int  cache_status;</span><br><span class="line">  int  cache_age;</span><br><span class="line">  int  map_status;</span><br><span class="line">  int  map_age;</span><br><span class="line">  int  update;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct opm_entry *opagemap;</span><br><span class="line"></span><br><span class="line">struct omap_dir&#123;</span><br><span class="line">  unsigned int ppn;</span><br><span class="line">&#125;;</span><br><span class="line">struct omap_dir *mapdir;</span><br></pre></td></tr></table></figure></p>
+<p>opagemap 是opm_entry的结构体指针，opagemap[X].ppn就完成了DLPN–&gt;DPPN的一组映射关系，X表示DLPN，ppn就是我们理解的DPPN<br>而omap_dir实际就是一个int类型的数组，mapdir[X].ppn也完成了MVPN（X）—&gt; MPPN（ppn）的一组映射关系<br>先从初始化函数入手：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">函数输入的blk_num表示数据块的个数，extra_num表示空闲块的个数</span><br><span class="line">int opm_init(blk_t blk_num, blk_t extra_num)</span><br><span class="line">&#123;</span><br><span class="line">  int i;</span><br><span class="line">  int mapdir_num;//mapdir_num表示的是GTD中的映射个数</span><br><span class="line"></span><br><span class="line">  opagemap_num = blk_num * PAGE_NUM_PER_BLK;//opagemap_num表示全部的映射关系:DLPN---&gt;DPPN</span><br><span class="line"></span><br><span class="line">  //create primary mapping table</span><br><span class="line">  opagemap = (struct opm_entry *) malloc(sizeof (struct opm_entry) * opagemap_num);</span><br><span class="line"></span><br><span class="line">  mapdir = (struct omap_dir *)malloc(sizeof(struct omap_dir) * opagemap_num / MAP_ENTRIES_PER_PAGE); </span><br><span class="line"></span><br><span class="line">  if ((opagemap == NULL) || (mapdir == NULL)) &#123;</span><br><span class="line">    return -1;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> //mapdir_num表示的是GTD中MVPN--&gt;MPPN的映射项个数</span><br><span class="line">  mapdir_num = (opagemap_num / MAP_ENTRIES_PER_PAGE);</span><br><span class="line"></span><br><span class="line">//也可能出现映射关系项不能被512整除的情况，额外多分配一个翻译页</span><br><span class="line">  if((opagemap_num % MAP_ENTRIES_PER_PAGE) != 0)&#123;</span><br><span class="line">    printf(&quot;opagemap_num % MAP_ENTRIES_PER_PAGE is not zero\n&quot;); </span><br><span class="line">    mapdir_num++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  memset(opagemap, 0xFF, sizeof (struct opm_entry) * opagemap_num);</span><br><span class="line">  memset(mapdir,  0xFF, sizeof (struct omap_dir) * mapdir_num);</span><br><span class="line"></span><br><span class="line">  //youkim: 1st map table </span><br><span class="line">  TOTAL_MAP_ENTRIES = opagemap_num;</span><br><span class="line"></span><br><span class="line">  for(i = 0; i&lt;TOTAL_MAP_ENTRIES; i++)&#123;</span><br><span class="line">    opagemap[i].cache_status = 0;</span><br><span class="line">    opagemap[i].cache_age = 0;</span><br><span class="line">    opagemap[i].map_status = 0;</span><br><span class="line">    opagemap[i].map_age = 0;</span><br><span class="line">    opagemap[i].update = 0;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  extra_blk_num = extra_num;</span><br><span class="line">//因为更新的时候，分为数据项更新和翻译地址更新，所以需要在存在两个当前空闲的块位置，一个为即将更新的数据准备，一个为地址更新准备</span><br><span class="line">//free_page_no[0]表示当前可写入的映射页的空闲物理地址，free_page_no[1]存放的是当前可以写入的数据页的空闲物理地址页。</span><br><span class="line">//free_blk_no[0]存的是当前可写入映射项的物理块地址，free_page_no[1]存放的是当前可以写入的数据页的物理块地址</span><br><span class="line">  free_blk_no[0] = nand_get_free_blk(0);</span><br><span class="line">  free_page_no[0] = 0;</span><br><span class="line">  free_blk_no[1] = nand_get_free_blk(0);</span><br><span class="line">  free_page_no[1] = 0;</span><br><span class="line"></span><br><span class="line">  //initialize variables</span><br><span class="line">  MAP_REAL_NUM_ENTRIES = 0;</span><br><span class="line">  MAP_GHOST_NUM_ENTRIES = 0;</span><br><span class="line">  CACHE_NUM_ENTRIES = 0;</span><br><span class="line">  SYNC_NUM = 0;</span><br><span class="line"></span><br><span class="line">  cache_hit = 0;</span><br><span class="line">  flash_hit = 0;</span><br><span class="line">  disk_hit = 0;</span><br><span class="line">  evict = 0;</span><br><span class="line">  read_cache_hit = 0;</span><br><span class="line">  write_cache_hit = 0;</span><br><span class="line">  write_count =0;</span><br><span class="line">  read_count = 0;</span><br><span class="line">  save_count = 0;</span><br><span class="line"></span><br><span class="line">//更新全局的GTD的初始化，调用了opm_write最后一个参数是2表示更新的是翻译页操作</span><br><span class="line">  //update 2nd mapping table</span><br><span class="line">  for(i = 0; i&lt;mapdir_num; i++)&#123;</span><br><span class="line">    ASSERT(MAP_ENTRIES_PER_PAGE == 512);</span><br><span class="line">    opm_write(i*SECT_NUM_PER_PAGE, SECT_NUM_PER_PAGE, 2);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /*</span><br><span class="line">  for(i = mapdir_num; i&lt;(opagemap_num - mapdir_num - (extra_num * PAGE_NUM_PER_BLK)); i++)&#123;</span><br><span class="line">    opm_write(i*SECT_NUM_PER_PAGE, SECT_NUM_PER_PAGE, 1);</span><br><span class="line">  &#125;</span><br><span class="line">  */</span><br><span class="line"></span><br><span class="line">  // update dm_table</span><br><span class="line">  /*</span><br><span class="line">  int j;</span><br><span class="line">  for(i = mapdir_num; i&lt;(opagemap_num - mapdir_num - (extra_num * PAGE_NUM_PER_BLK)); i++)&#123;</span><br><span class="line">      for(j=0; j &lt; SECT_NUM_PER_PAGE;j++)</span><br><span class="line">        dm_table[ (i*SECT_NUM_PER_PAGE) + j] = DEV_FLASH;</span><br><span class="line">  &#125;</span><br><span class="line">  */</span><br><span class="line">  </span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里还是没有搞懂，opagemap_num表示的是所有的块（翻译块+数据块）的个数还是单纯的数据快的个数（下面的代码理解可以确定是所有块个数），查看调用的opm_write函数<br>输入参数lsn表示请求的扇区号，size请求大小（以扇区为单位），mapdir_flag=2表示操作的是翻译页，mapdir_flag=1操作的是数据页<br>因为底层的nand一个物理扇区存的数据其实就是实际对应的lsn，所以会有在函数中定义lsns数组，将lsns设置好的数据按一个页的扇区大小回写到底层的nand。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">size_t opm_write(sect_t lsn, sect_t size, int mapdir_flag)  </span><br><span class="line">&#123;</span><br><span class="line">  int i;</span><br><span class="line">  int lpn = lsn/SECT_NUM_PER_PAGE; // logical page number</span><br><span class="line">  int size_page = size/SECT_NUM_PER_PAGE; // size in page </span><br><span class="line">  int ppn;</span><br><span class="line">  int small;</span><br><span class="line">  //small这个标识符就是根据输入参数的mapdir-flag设置的，0:表示操作映射项：1:表示操作数据项，这里是为了结合上面的中free_page_no做指定下标的，free_page_no[0]表示当前可写入的映射页的空闲物理地址，free_page_no[1]存放的是当前可以写入的数据页的空闲物理地址页。</span><br><span class="line"></span><br><span class="line">  sect_t lsns[SECT_NUM_PER_PAGE];</span><br><span class="line">  int sect_num = SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">  sect_t s_lsn;	// starting logical sector number</span><br><span class="line">  sect_t s_psn; // starting physical sector number </span><br><span class="line">  sect_t s_psn1;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  ASSERT(lpn &lt; opagemap_num);</span><br><span class="line">  ASSERT(lpn + size_page &lt;= opagemap_num);</span><br><span class="line"></span><br><span class="line">  s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  if(mapdir_flag == 2) //map page</span><br><span class="line">    small = 0;</span><br><span class="line">  else if ( mapdir_flag == 1) //data page</span><br><span class="line">    small = 1;</span><br><span class="line">  else&#123;</span><br><span class="line">    printf(&quot;something corrupted&quot;);</span><br><span class="line">    exit(0);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">//free_page_no[small]实际存放的是扇区号，如果当前的扇区地址超出了一个块包含的扇区数，则表示该物理块耗尽，</span><br><span class="line">//那么也可以理解其实这个扇区号是相对于这个块的偏移量</span><br><span class="line">  if (free_page_no[small] &gt;= SECT_NUM_PER_BLK) </span><br><span class="line">  &#123;</span><br><span class="line">	//如果找不到对应的空块则启用相应的垃圾回收，可以看到其中的free_blk_no[0/1]存的是物理块地址</span><br><span class="line">    if ((free_blk_no[small] = nand_get_free_blk(0)) == -1) </span><br><span class="line">    &#123;</span><br><span class="line">      int j = 0;</span><br><span class="line"></span><br><span class="line">      while (free_blk_num &lt; 3 )&#123;</span><br><span class="line">        j += opm_gc_run(small, mapdir_flag);</span><br><span class="line">      &#125;</span><br><span class="line">      opm_gc_get_free_blk(small, mapdir_flag);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">      free_page_no[small] = 0;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">  //s_psn是用物理块号+块内的扇区偏移量构成的实际物理扇区地址（高8位地址是块号，后面的是块内扇区偏移量）</span><br><span class="line">  s_psn = SECTOR(free_blk_no[small], free_page_no[small]);</span><br><span class="line"></span><br><span class="line">  if(s_psn % 4 != 0)&#123;</span><br><span class="line">    printf(&quot;s_psn: %d\n&quot;, s_psn);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">//ppn是物理页地址号，其高8位也是物理块号，去掉块号后几位就是块内的页偏移量</span><br><span class="line">  ppn = s_psn / SECT_NUM_PER_PAGE;</span><br><span class="line">//依据opagemape[lpn].ppn的映射关系，找到之前的物理扇区起始地址（页地址），将其置为无效</span><br><span class="line">  if (opagemap[lpn].free == 0) &#123;</span><br><span class="line">  //free=0表示对应的地址ppn中存了数据</span><br><span class="line">    s_psn1 = opagemap[lpn].ppn * SECT_NUM_PER_PAGE;</span><br><span class="line">    //注意底层的nand的置位都是按扇区操作的</span><br><span class="line">    for(i = 0; i&lt;SECT_NUM_PER_PAGE; i++)&#123;</span><br><span class="line">      nand_invalidate(s_psn1 + i, s_lsn + i);</span><br><span class="line">    &#125; </span><br><span class="line">    nand_stat(3);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">  //没有存数据，则将其free置位，之后写入数据</span><br><span class="line">    opagemap[lpn].free = 0;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for (i = 0; i &lt; SECT_NUM_PER_PAGE; i++) </span><br><span class="line">  &#123;</span><br><span class="line">    lsns[i] = s_lsn + i;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">//从这段代码可以理解了opagemap_num表示所有的页（翻译页+数据页）</span><br><span class="line">//绑定新的ppn，如果操作的是映射项，还需要更新对应的mapdir[lpn].ppn</span><br><span class="line">  if(mapdir_flag == 2) &#123;</span><br><span class="line">    mapdir[lpn].ppn = ppn;</span><br><span class="line">    opagemap[lpn].ppn = ppn;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    opagemap[lpn].ppn = ppn;</span><br><span class="line">  &#125;</span><br><span class="line">//当前对应可以写入的空闲扇区标识向后移动</span><br><span class="line">  free_page_no[small] += SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">//之后就是依据指定的物理扇区地址和逻辑扇区地址进行写入操作</span><br><span class="line">  nand_page_write(s_psn, lsns, 0, mapdir_flag);</span><br><span class="line"></span><br><span class="line">  return sect_num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>opm_write</code>的代码逻辑可以简要概括为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">	A[请求到来]--&gt;B[辨别操作date/Map:mapdir_flag=1/2];</span><br><span class="line">	B--&gt;|data|C[small=1];</span><br><span class="line">	B--&gt;|map|D[small=0];</span><br><span class="line">	C--&gt;E[需要注意的是free_page_no-small存的都是扇区地址,free_blk_no-small存的都是当前可以写入的物理块地址];</span><br><span class="line">	D--&gt;E;</span><br><span class="line">	E--&gt;|free_page_no大于块内包含扇区数SECT_NUM_PER_BLK|F;</span><br><span class="line">	F[调用nand_get_free_blk得新的空闲物理块]</span><br><span class="line">	F--&gt;|free_blk_num小于指定的最小块数|K[调用opm_gc_run opm_gc_get_free_blk函数进行垃圾回收];</span><br><span class="line">	E--&gt;|free_page_no小于等于SECT_NUM_PER_BLK|G;</span><br><span class="line">	G[根据物理块号和块内偏移量计算得到物理页号ppn 物理扇区号s_psn];</span><br><span class="line">	K--&gt;G;</span><br><span class="line">	G--&gt;I;</span><br><span class="line">	I[opagemape-lpn.ppn映射关系的更新]</span><br><span class="line">	I--&gt;H;</span><br><span class="line">	H[如果opagemap-lpn.free不为0表示存在数据,则调用相应的nand_invalid函数将原来的数据置位无效,原物理地址来自opagemape-lpn.ppn]</span><br><span class="line">	H--&gt;h[如果mapdir_flag为2,同时更新mapdir-lpn.ppn为当前分配的ppn]</span><br><span class="line">	h--&gt;i</span><br><span class="line">	i[最后调用nand_page_write函数按照制定的s_psn,lsn,map_dir_flag进行写入操作]</span><br><span class="line">	i--&gt;e;</span><br><span class="line">	e[函数最后返回的是操作的扇区大小sect_num];</span><br></pre></td></tr></table></figure></p>
+<p>可以发现<code>opm_write()</code>函数与其他几个函数发生了调用关系：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">	A[opm_write];</span><br><span class="line">	A--&gt;B[opm_gc_run];</span><br><span class="line">	A--&gt;C[opm_gc_get_free_blk];</span><br><span class="line">	A--&gt;F[nand_get_free_blk]</span><br><span class="line">	A--&gt;D[nand_invalidate];</span><br><span class="line">	A--&gt;E[nand_page_write];</span><br></pre></td></tr></table></figure></p>
+<p>下面结合<code>nand_page_write()函数</code>查看针对map和data底层的nand是怎么处理的 ？？<br>唯一的区别只是底层的nand_blk[pbn].page_status对应的扇区1表示map，0表示data<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">第三个参数isGC表示当前的flash是否在执行垃圾回收操作</span><br><span class="line">_u8 nand_page_write(_u32 psn, _u32 *lsns, _u8 isGC, int map_flag)</span><br><span class="line">//关键的代码段针对map_flag的处理</span><br><span class="line">//唯一的区别只是底层的nand_blk[pbn].page_status对应的扇区1表示map，0表示data</span><br><span class="line">  if(map_flag == 2) &#123;</span><br><span class="line">        nand_blk[pbn].page_status[pin/SECT_NUM_PER_PAGE] = 1; // 1 for map table</span><br><span class="line">  &#125;</span><br><span class="line">  else&#123;</span><br><span class="line">    nand_blk[pbn].page_status[pin/SECT_NUM_PER_PAGE] = 0; // 0 for data </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>需要理解后面的关于<code>opm_gc_run</code>和<code>opm_gc_get_free_blk</code>函数，但是<br><code>opm_gc_run</code>选择回收的块时调用了<code>opm_gc_cost_benefit()</code>选择合适的块进行垃圾回收，因此从<code>opm_gc_cost_benefit()</code>进行着手</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">_u32 opm_gc_cost_benefit()</span><br><span class="line">&#123;</span><br><span class="line">  int max_cb = 0;</span><br><span class="line">  int blk_cb;</span><br><span class="line"></span><br><span class="line">  _u32 max_blk = -1, i;</span><br><span class="line">//避免选择的回收的块是刚刚更新完的数据块或者翻译块</span><br><span class="line">  for (i = 0; i &lt; nand_blk_num; i++) &#123;</span><br><span class="line">    if(i == free_blk_no[0] || i == free_blk_no[1])&#123;</span><br><span class="line">      continue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//通过下面这个代码逻辑可以确定，opm_gc_cost_benefit函数是选择无效页最多的块进行回收的</span><br><span class="line">    blk_cb = nand_blk[i].ipc;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    if (blk_cb &gt; max_cb) &#123;</span><br><span class="line">      max_cb = blk_cb;</span><br><span class="line">      max_blk = i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ASSERT(max_blk != -1);</span><br><span class="line">  ASSERT(nand_blk[max_blk].ipc &gt; 0);</span><br><span class="line">  return max_blk;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时还会牵扯调用函数<code>opm_gc_get_free_blk</code>函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int opm_gc_get_free_blk(int small, int mapdir_flag)</span><br><span class="line">&#123;</span><br><span class="line">  if (free_page_no[small] &gt;= SECT_NUM_PER_BLK) &#123;</span><br><span class="line"></span><br><span class="line">    free_blk_no[small] = nand_get_free_blk(1);</span><br><span class="line"></span><br><span class="line">    free_page_no[small] = 0;</span><br><span class="line"></span><br><span class="line">    return -1;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>opm_gc_get_free_blk</code>函数只是简单地判断free_page_no[small] 超出 SECT_NUM_PER_BLK，如果超出了就简单调用nand_get_free_blk(1)函数。这里又涉及到底层的nand_get_free_blk函数，在这也顺便捋清楚，过一遍选择可用块的时候都是选择被擦除次数最少的块进行利用，输入参数isGC是为了结合当前空余块数是否小于阈值，启用相应的垃圾回收（如果函数返回-1表示没有相应的空块可以利用）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">_u32 nand_get_free_blk (int isGC) </span><br><span class="line">&#123;</span><br><span class="line">  _u32 blk_no = -1, i;</span><br><span class="line">  int flag = 0,flag1=0;</span><br><span class="line">  flag = 0;</span><br><span class="line">  flag1 = 0;</span><br><span class="line"></span><br><span class="line">  MIN_ERASE = 9999999;</span><br><span class="line">  //in case that there is no avaible free block -&gt; GC should be called !</span><br><span class="line">  if ((isGC == 0) &amp;&amp; (min_fb_num &gt;= free_blk_num)) &#123;</span><br><span class="line">    //printf(&quot;min_fb_num: %d\n&quot;, min_fb_num);</span><br><span class="line">    return -1;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for(i = 0; i &lt; nand_blk_num; i++) </span><br><span class="line">  &#123;</span><br><span class="line">    if (nand_blk[i].state.free == 1) &#123;</span><br><span class="line">      flag1 = 1;</span><br><span class="line"></span><br><span class="line">      if ( nand_blk[i].state.ec &lt; MIN_ERASE ) &#123;</span><br><span class="line">            blk_no = i;</span><br><span class="line">            MIN_ERASE = nand_blk[i].state.ec;</span><br><span class="line">            flag = 1;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if(flag1 != 1)&#123;</span><br><span class="line">    printf(&quot;no free block left=%d&quot;,free_blk_num);</span><br><span class="line">    </span><br><span class="line">  ASSERT(0);</span><br><span class="line">  &#125;</span><br><span class="line">  if ( flag == 1) &#123;</span><br><span class="line">        flag = 0;</span><br><span class="line">        ASSERT(nand_blk[blk_no].fpc == SECT_NUM_PER_BLK);</span><br><span class="line">        ASSERT(nand_blk[blk_no].ipc == 0);</span><br><span class="line">        ASSERT(nand_blk[blk_no].lwn == -1);</span><br><span class="line">        nand_blk[blk_no].state.free = 0;</span><br><span class="line"></span><br><span class="line">        free_blk_idx = blk_no;</span><br><span class="line">        free_blk_num--;</span><br><span class="line"></span><br><span class="line">        return blk_no;</span><br><span class="line">  &#125;</span><br><span class="line">  else&#123;</span><br><span class="line">    printf(&quot;shouldn&apos;t reach...\n&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>opm_gc_cost_benefit()</code>在进行垃圾回收选择块时，避免选择刚刚更新的数据块和翻译块，而是选择包含无效页最多的块进行回收。<br><code>opm_gc_run</code>函数的输入参数small：0/1(Map/data），mapdir-flag:2/1(Map/data)<br>代码里面的涉及的位运算在这里进行初步讲解：<br><code>#define OFF_MASK_SECT 0x00000003</code><br><code>#define OFF_F_SECT(sect) (((sect) &amp; OFF_MASK_SECT))</code><br>利用OFF_F_SECT函数就可以得到后三位的数据（也就是0-255的值），一个块内包含的扇区数（指定物理块内的扇区偏移量）<br><code>#define PAGE_SECT_BITS  8</code><br><code>#define SECTOR(blk, page) (((blk) &lt;&lt; PAGE_SECT_BITS) | (page))</code><br>这个宏做的工作就是将物理块号和块内偏移量组合得到物理页号<br><code>#define SECT_BITS       2</code><br><code>#define BLK_PAGE_NO_SECT(sect) ((sect) &gt;&gt; SECT_BITS)</code><br>这里有必要说明一点传入参数的s_psn这些逻辑扇区地址实际上是这样一个编码（物理编号）+（块内页偏移量）+（页内偏移量）<br>相当于直接去掉编码后两位中关于扇区的编号，只存在块编号和页编号<br><code>#define OFF_MASK_SECT 0x00000003</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br></pre></td><td class="code"><pre><span class="line">int opm_gc_run(int small, int mapdir_flag)</span><br><span class="line">&#123;</span><br><span class="line">  blk_t victim_blk_no;</span><br><span class="line">  int merge_count;</span><br><span class="line">  int i,z, j,m,q, benefit = 0;</span><br><span class="line">  int k,old_flag,temp_arr[PAGE_NUM_PER_BLK],temp_arr1[PAGE_NUM_PER_BLK],map_arr[PAGE_NUM_PER_BLK]; </span><br><span class="line">  int valid_flag,pos;</span><br><span class="line"></span><br><span class="line">  _u32 copy_lsn[SECT_NUM_PER_PAGE], copy[SECT_NUM_PER_PAGE];</span><br><span class="line">  _u16 valid_sect_num,  l, s;</span><br><span class="line">//根据选择最多无效页的数据块进行回收块的选择</span><br><span class="line">  victim_blk_no = opm_gc_cost_benefit();</span><br><span class="line">  memset(copy_lsn, 0xFF, sizeof (copy_lsn));</span><br><span class="line">//free_page_no里面存的物理扇区号=物理块+块内的扇区偏移量，OFF_F_SECT是得到块内的扇区偏移量</span><br><span class="line">  s = k = OFF_F_SECT(free_page_no[small]);</span><br><span class="line"></span><br><span class="line">  if(!((s == 0) &amp;&amp; (k == 0)))&#123;</span><br><span class="line">    printf(&quot;s &amp;&amp; k should be 0\n&quot;);</span><br><span class="line">    exit(0);</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  small = -1;</span><br><span class="line">//错误检测，指定的回收块要么就是数据块，要么就是翻译块，不可能出现中间出现穿插的情况</span><br><span class="line">  for( q = 0; q &lt; PAGE_NUM_PER_BLK; q++)&#123;</span><br><span class="line">    if(nand_blk[victim_blk_no].page_status[q] == 1)&#123; //map block</span><br><span class="line">      for( q = 0; q  &lt; 64; q++) &#123;</span><br><span class="line">        if(nand_blk[victim_blk_no].page_status[q] == 0 )&#123;</span><br><span class="line">          printf(&quot;something corrupted1=%d&quot;,victim_blk_no);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      small = 0;</span><br><span class="line">      break;</span><br><span class="line">    &#125; </span><br><span class="line">    else if(nand_blk[victim_blk_no].page_status[q] == 0)&#123; //data block</span><br><span class="line">      for( q = 0; q  &lt; 64; q++) &#123;</span><br><span class="line">        if(nand_blk[victim_blk_no].page_status[q] == 1 )&#123;</span><br><span class="line">          printf(&quot;something corrupted2&quot;,victim_blk_no);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      small = 1;</span><br><span class="line">      break;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ASSERT ( small == 0 || small == 1);</span><br><span class="line">  pos = 0;</span><br><span class="line">  merge_count = 0;</span><br><span class="line">  //无论回收的是数据块还是翻译块都需要回收有效页</span><br><span class="line">  for (i = 0; i &lt; PAGE_NUM_PER_BLK; i++) </span><br><span class="line">  &#123;</span><br><span class="line">	//依次便利块中的数据页，查看数据是否有效</span><br><span class="line">    valid_flag = nand_oob_read( SECTOR(victim_blk_no, i * SECT_NUM_PER_PAGE));</span><br><span class="line"></span><br><span class="line">    if(valid_flag == 1)</span><br><span class="line">    &#123;</span><br><span class="line">        valid_sect_num = nand_page_read( SECTOR(victim_blk_no, i * SECT_NUM_PER_PAGE), copy, 1);</span><br><span class="line"></span><br><span class="line">        merge_count++;</span><br><span class="line">//copy_lsn和copy存放的都是相应的有效扇区的数据（其实就是逻辑扇区号lsn）</span><br><span class="line">        ASSERT(valid_sect_num == 4);</span><br><span class="line">        k=0;</span><br><span class="line">        for (j = 0; j &lt; valid_sect_num; j++) &#123;</span><br><span class="line">          copy_lsn[k] = copy[j];</span><br><span class="line">          k++;</span><br><span class="line">        &#125;</span><br><span class="line">//调用opm_gc_get_free_blk就是为相应的空闲新的块，来存数据(映射关系）</span><br><span class="line">          benefit += opm_gc_get_free_blk(small, mapdir_flag);</span><br><span class="line"></span><br><span class="line">          if(nand_blk[victim_blk_no].page_status[i] == 1)</span><br><span class="line">          &#123;     </span><br><span class="line">//如果回收的是翻译页，同时要更新对应的mapdir页映射（GTD）的关系MVPN----&gt;MPPN，这里的S值就是0,在上面有过判断`printf(&quot;s &amp;&amp; k should be 0\n&quot;);`</span><br><span class="line">//(copy_lsn[s]/SECT_NUM_PER_PAGE)就是有效页对应的逻辑页地址DLPN，如果是有效的翻译页就是DVPN</span><br><span class="line">            mapdir[(copy_lsn[s]/SECT_NUM_PER_PAGE)].ppn  = BLK_PAGE_NO_SECT(SECTOR(free_blk_no[small], free_page_no[small]));</span><br><span class="line">            opagemap[copy_lsn[s]/SECT_NUM_PER_PAGE].ppn = BLK_PAGE_NO_SECT(SECTOR(free_blk_no[small], free_page_no[small]));</span><br><span class="line">//nand_page_write最后一个参数是mapdir_flag,主要影响nand_blk[pbn].page_status[offset]=0/1(data/map）</span><br><span class="line">            nand_page_write(SECTOR(free_blk_no[small],free_page_no[small]) &amp; (~OFF_MASK_SECT), copy_lsn, 1, 2);</span><br><span class="line">            free_page_no[small] += SECT_NUM_PER_PAGE;</span><br><span class="line">          &#125;</span><br><span class="line">          else&#123;</span><br><span class="line"></span><br><span class="line">            opagemap[BLK_PAGE_NO_SECT(copy_lsn[s])].ppn = BLK_PAGE_NO_SECT(SECTOR(free_blk_no[small], free_page_no[small]));</span><br><span class="line">//SECTOR(free_blk_no[small],free_page_no[small]) &amp; (~OFF_MASK_SECT)的值是扇区的对应页的起始地址</span><br><span class="line">            nand_page_write(SECTOR(free_blk_no[small],free_page_no[small]) &amp; (~OFF_MASK_SECT), copy_lsn, 1, 1);</span><br><span class="line">            free_page_no[small] += SECT_NUM_PER_PAGE;</span><br><span class="line">//如果对应的数据项在gc中发生了异地更新，碰巧其映射项存在cache中（CMT中），那就需要记录不同步的个数 delay_flash_update</span><br><span class="line">            if((opagemap[BLK_PAGE_NO_SECT(copy_lsn[s])].map_status == MAP_REAL) || (opagemap[BLK_PAGE_NO_SECT(copy_lsn[s])].map_status == MAP_GHOST)) &#123;</span><br><span class="line">              delay_flash_update++;</span><br><span class="line">            &#125;    </span><br><span class="line">            else &#123;</span><br><span class="line">  //反之将写入的扇区（逻辑扇区号）存到map-arr中，s，k就是0,map_arr[pos]，copy_lsn[s]都是该页起始的扇区地址</span><br><span class="line">              map_arr[pos] = copy_lsn[s];</span><br><span class="line">              pos++;</span><br><span class="line">            &#125; </span><br><span class="line">          &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">//初始化temp_arr数组</span><br><span class="line">  for(i=0;i &lt; PAGE_NUM_PER_BLK;i++) &#123;</span><br><span class="line">      temp_arr[i]=-1;</span><br><span class="line">  &#125;</span><br><span class="line">  k=0;</span><br><span class="line">  </span><br><span class="line">//下面这段就是找到映射关系不存在CMT中的这些数据页的映射关系包含在不同的翻译页中，temp_arr[K]存的就是该翻译页对应的物理页地址，temp_arr1[k]存的是对应的数据页的逻辑扇区（页起始）</span><br><span class="line">  for(i =0 ; i &lt; pos; i++) &#123;</span><br><span class="line">      old_flag = 0;</span><br><span class="line">      for( j = 0 ; j &lt; k; j++) &#123;</span><br><span class="line">	  //其实((map_arr[i]/SECT_NUM_PER_PAGE)/MAP_ENTRIES_PER_PAGE计算得到的就是我们理解的MVPN</span><br><span class="line">           if(temp_arr[j] == mapdir[((map_arr[i]/SECT_NUM_PER_PAGE)/MAP_ENTRIES_PER_PAGE)].ppn) &#123;</span><br><span class="line">                if(temp_arr[j] == -1)&#123;</span><br><span class="line">                      printf(&quot;something wrong&quot;);</span><br><span class="line">                      ASSERT(0);</span><br><span class="line">                &#125;</span><br><span class="line">                old_flag = 1;</span><br><span class="line">                break;</span><br><span class="line">           &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      if( old_flag == 0 ) &#123;</span><br><span class="line">	  	   //temp_arr[k]表示相应的GTD中的MPPN</span><br><span class="line">           temp_arr[k] = mapdir[((map_arr[i]/SECT_NUM_PER_PAGE)/MAP_ENTRIES_PER_PAGE)].ppn;</span><br><span class="line">           temp_arr1[k] = map_arr[i];</span><br><span class="line">           k++;</span><br><span class="line">      &#125;</span><br><span class="line">      else</span><br><span class="line">        save_count++;</span><br><span class="line">  &#125;</span><br><span class="line">//数据页对应的映射关系发生了变化，相应的翻译页也需要更新，不存在CMT的翻译页需要更新---&gt;对应的GTD也需要更新</span><br><span class="line">  for ( i=0; i &lt; k; i++) &#123;</span><br><span class="line">//分配新的翻译页物理空闲地址</span><br><span class="line">            if (free_page_no[0] &gt;= SECT_NUM_PER_BLK) &#123;</span><br><span class="line">                if((free_blk_no[0] = nand_get_free_blk(1)) == -1)&#123;</span><br><span class="line">                   printf(&quot;we are in big trouble shudnt happen&quot;);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                free_page_no[0] = 0;</span><br><span class="line">            &#125;</span><br><span class="line">//读出原来的旧地址中的翻译页数据（映射项关系）</span><br><span class="line">            nand_page_read(temp_arr[i]*SECT_NUM_PER_PAGE,copy,1);</span><br><span class="line">//读出数据后，将原物理地址中的数据标记为无效</span><br><span class="line">            for(m = 0; m&lt;SECT_NUM_PER_PAGE; m++)&#123;</span><br><span class="line">               nand_invalidate(mapdir[((temp_arr1[i]/SECT_NUM_PER_PAGE)/MAP_ENTRIES_PER_PAGE)].ppn*SECT_NUM_PER_PAGE+m, copy[m]);</span><br><span class="line">              &#125; </span><br><span class="line">            nand_stat(OOB_WRITE);</span><br><span class="line"></span><br><span class="line">//更新对应的GTD    MVPN-------------&gt; MPPN</span><br><span class="line">            mapdir[((temp_arr1[i]/SECT_NUM_PER_PAGE)/MAP_ENTRIES_PER_PAGE)].ppn  = BLK_PAGE_NO_SECT(SECTOR(free_blk_no[0], free_page_no[0]));</span><br><span class="line">//同时修改对应的opagemap对应的映射关系，需要提及的一点在callFsim源码中，针对所有的请求的页地址都做了blkno += page_num_for_2nd_map_table的偏置</span><br><span class="line">            opagemap[((temp_arr1[i]/SECT_NUM_PER_PAGE)/MAP_ENTRIES_PER_PAGE)].ppn = BLK_PAGE_NO_SECT(SECTOR(free_blk_no[0], free_page_no[0]));</span><br><span class="line"></span><br><span class="line">            nand_page_write(SECTOR(free_blk_no[0],free_page_no[0]) &amp; (~OFF_MASK_SECT), copy, 1, 2);</span><br><span class="line">      </span><br><span class="line">            free_page_no[0] += SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  if(merge_count == 0 ) </span><br><span class="line">    merge_switch_num++;</span><br><span class="line">  else if(merge_count &gt; 0 &amp;&amp; merge_count &lt; PAGE_NUM_PER_BLK)</span><br><span class="line">    merge_partial_num++;</span><br><span class="line">  else if(merge_count == PAGE_NUM_PER_BLK)</span><br><span class="line">    merge_full_num++;</span><br><span class="line">  else if(merge_count &gt; PAGE_NUM_PER_BLK)&#123;</span><br><span class="line">    printf(&quot;merge_count =%d PAGE_NUM_PER_BLK=%d&quot;,merge_count,PAGE_NUM_PER_BLK);</span><br><span class="line">    ASSERT(0);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  nand_erase(victim_blk_no);</span><br><span class="line"></span><br><span class="line">  return (benefit + 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>OK理解了上面的<code>opm_gc_run</code>函数代码，做一个相关函数调用的示意图：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">	A(opm_gc_run);</span><br><span class="line">	B[opm_gc_cost_benefit];</span><br><span class="line">	C[nand_oob_read];</span><br><span class="line">	D[nand_page_read];</span><br><span class="line">	E[opm_gc_get_free_blk];</span><br><span class="line">	F[nand_get_free_blk-1];</span><br><span class="line">	I[nand_invalidate];</span><br><span class="line">	H[nand_page_write];</span><br><span class="line">	A--&gt;|选择无效页最多的块进行回收|B;</span><br><span class="line">	A--&gt;|通过OOB识别回收块中的有效数据|C;</span><br><span class="line">	A--&gt;|读取底层的块的数据|D;</span><br><span class="line">	A--&gt;|为回收的有效页找新的块进行存储|E;</span><br><span class="line">	E--&gt;|只是简单的调用,判断free_page_no-small是否越界,越界就调用|F;</span><br><span class="line">	A--&gt;|将原来的数据页或者翻译页置位无效|I;</span><br><span class="line">	A--&gt;|将新的数据,数据页或者映射关系,翻译页写入nand|H;</span><br></pre></td></tr></table></figure></p>
+<p>此外针对opm_gc_run的函数流程进行一个流程图示意总结<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">	A(opm_gc_run,输入参数small,mapdir_flag);</span><br><span class="line">	Z(程序异常退出);</span><br><span class="line">	B[调用opm_gc_cost_benefit,得到对应的victim_blk_no];</span><br><span class="line">	C&#123;victim_blk_no的page_status?&#125;;</span><br><span class="line">	D(无论回收的块是数据块还是翻译块都需要回收块中的有效页);</span><br><span class="line">	E&#123;查看page_status&#125;;</span><br><span class="line">	E2(函数最后调用nand_erase,擦除指定的回收块);</span><br><span class="line">	F[回收的是翻译页]</span><br><span class="line">	H[回收的是数据页]</span><br><span class="line">	D1[调用nand_oob_read识别扫描扇区是否存在有效数据];</span><br><span class="line">	D2[调用nand_page_read读取有效扇区的数据,其实存的就是对应的逻辑扇区号];</span><br><span class="line">	D3[调用opm_gc_get_free_blk函数为新的数据页分配新的物理扇区-页地址];</span><br><span class="line">	D4[翻译页更新,需要更新GID,这里修改的是mapdir-lpn.ppn的映射关系,同时需要注意的是也会更新opagemap-lpn.ppn的映射关系]</span><br><span class="line">	N1[需要注意的是在callFsim初始化函数中,针对请求页地址blkno都会有加上page_num_for_2nd_map_table的偏置]</span><br><span class="line">	D5[调用nand_page_write函数将翻译页更新到新的物理地址中];</span><br><span class="line">	</span><br><span class="line">	M1(数据页的回收更新,较为复杂,映射关系发生变化,相应的翻译页也需要更新,同时需要判断映射关系项是否存在CMT中,如果存在CMT,则相应的映射关系延迟更新);</span><br><span class="line">	M2[调用nand_oob_read识别扫描扇区是否存在有效数据];</span><br><span class="line">	M3[调用nand_page_read读取有效扇区的数据,其实存的就是对应的逻辑扇区号];</span><br><span class="line">	M4[调用opm_gc_get_free_blk函数为新的数据页分配新的物理扇区-页地址];</span><br><span class="line">	M5[调用nand_page_write函数将数据页更新到新的物理地址中,开始处理对应的映射关系更新];</span><br><span class="line">	M6&#123;判断该数据页映射项是否存在CMT?&#125;;</span><br><span class="line">	M7[延迟更新,delay_flash_update++];</span><br><span class="line">	M8[将这些数据页地址DLPN保存在map_arr数组中,方便后面处理];</span><br><span class="line">	M9(代码中存在处理map_arr的for循环,就是为了分别出这些不存在CMT的映射分别存在那些不同的翻译页中);</span><br><span class="line">	M10(temp_arr-K存的就是该翻译页对应的物理页地址,temp_arr1-k存的是对应的数据页的逻辑扇区-页起始,针对同一翻译页的映射关系累计项存在变量save_count);</span><br><span class="line">	M11[利用temp_arr-K中存放的物理页地址,将这些旧翻译数据页先读取后置位无效];</span><br><span class="line">	M12[更新对应的GTD,同时将修改对应的opagemap对应的映射关系写到新的分配物理地址上];</span><br><span class="line">	</span><br><span class="line">	A--&gt;|选择无效页最多的块进行回收|B;</span><br><span class="line">	B--&gt;C;</span><br><span class="line">	C--&gt;|如果存在数据页和翻译页混在同一块中|Z;</span><br><span class="line">	C--&gt;|块中的页page_status一致|D;</span><br><span class="line">	D--&gt;E;</span><br><span class="line">	E--&gt;|page_status=1|F;</span><br><span class="line">	E--&gt;|page_status=0|H;</span><br><span class="line">	F--&gt;D1;</span><br><span class="line">	D1--&gt;D2;</span><br><span class="line">	D2--&gt;D3;</span><br><span class="line">	D3--&gt;D4;</span><br><span class="line">	D4---N1;</span><br><span class="line">	D4--&gt;D5;</span><br><span class="line">	H--&gt;M1;</span><br><span class="line">	M1--&gt;M2;</span><br><span class="line">	M2--&gt;M3;</span><br><span class="line">	M3--&gt;M4;</span><br><span class="line">	M4--&gt;M5;</span><br><span class="line">	M5--&gt;M6;</span><br><span class="line">	M6--&gt;|存在CMT|M7;</span><br><span class="line">	M6--&gt;|不存在CMT|M8;</span><br><span class="line">	M8---M9;</span><br><span class="line">	M9---M10;</span><br><span class="line">	M10--&gt;M11;</span><br><span class="line">	M11--&gt;M12;</span><br><span class="line">	</span><br><span class="line">	M12--&gt;E2;</span><br><span class="line">	D5--&gt;E2;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
