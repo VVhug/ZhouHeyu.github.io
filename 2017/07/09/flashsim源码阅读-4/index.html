@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="flashsim 源码阅读," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="再次回到disksim_simulate_event()函数主体：">
+<meta name="keywords" content="flashsim 源码阅读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flashsim源码阅读-4">
+<meta property="og:url" content="http://yoursite.com/2017/07/09/flashsim源码阅读-4/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="再次回到disksim_simulate_event()函数主体：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-24T08:53:29.035Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flashsim源码阅读-4">
+<meta name="twitter:description" content="再次回到disksim_simulate_event()函数主体：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/09/flashsim源码阅读-4/"/>
+
+
+
+
+
+  <title>flashsim源码阅读-4 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry，Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/09/flashsim源码阅读-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">flashsim源码阅读-4</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T16:52:30+08:00">
+                2017-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/09/flashsim源码阅读-4/" class="leancloud_visitors" data-flag-title="flashsim源码阅读-4">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>再次回到<code>disksim_simulate_event()函数</code>主体：</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">void disksim_simulate_event (int num)</span><br><span class="line">&#123;</span><br><span class="line">  event *curr;</span><br><span class="line">  </span><br><span class="line">  if ((curr = getnextevent()) == NULL) &#123;</span><br><span class="line">    disksim_simstop ();</span><br><span class="line">  &#125; </span><br><span class="line">  else &#123;</span><br><span class="line">   </span><br><span class="line">    switch(disksim-&gt;trace_mode) &#123;</span><br><span class="line">    case DISKSIM_NONE:</span><br><span class="line">    case DISKSIM_MASTER:</span><br><span class="line">//      fprintf(outputfile, &quot;*** DEBUG TRACE\t%f\t%d\t%d\n&quot;,   </span><br><span class="line">//	      simtime, curr-&gt;type, num);   </span><br><span class="line">  //    fflush(outputfile);    </span><br><span class="line">      break;</span><br><span class="line"></span><br><span class="line">    case DISKSIM_SLAVE:</span><br><span class="line">      break;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    simtime = curr-&gt;time;</span><br><span class="line">    </span><br><span class="line">    if (curr-&gt;type == INTR_EVENT) &#123;</span><br><span class="line">      intr_acknowledge (curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= IO_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= IO_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= PF_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= PF_MAX_EVENT)) &#123;</span><br><span class="line">      pf_internal_event(curr);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (curr-&gt;type == TIMER_EXPIRED) &#123;</span><br><span class="line">      timer_event *timeout = (timer_event *) curr;</span><br><span class="line">      (*timeout-&gt;func) (timeout);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= MEMS_MIN_EVENT) </span><br><span class="line">	     &amp;&amp; (curr-&gt;type &lt;= MEMS_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == CHECKPOINT) &#123;</span><br><span class="line">      if (disksim-&gt;checkpoint_interval) &#123;</span><br><span class="line">	disksim_register_checkpoint(simtime + disksim-&gt;checkpoint_interval);</span><br><span class="line">      &#125;</span><br><span class="line">      disksim_checkpoint (disksim-&gt;checkpointfilename);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == STOP_SIM) &#123;</span><br><span class="line">      disksim_simstop ();</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == EXIT_DISKSIM) &#123;</span><br><span class="line">      exit (0);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">      fprintf(stderr, &quot;Unrecognized event in simulate: %d\n&quot;, curr-&gt;type);</span><br><span class="line">      exit(1);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>对event的type类型的宏定义在<code>disksim_global.h</code>中有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/* Event Type Ranges */</span><br><span class="line"></span><br><span class="line">#define NULL_EVENT      	0</span><br><span class="line">#define PF_MIN_EVENT    	1</span><br><span class="line">#define PF_MAX_EVENT    	97</span><br><span class="line">#define INTR_EVENT		98</span><br><span class="line">#define INTEND_EVENT		99</span><br><span class="line">#define IO_MIN_EVENT		100</span><br><span class="line">#define IO_MAX_EVENT		120</span><br><span class="line">#define TIMER_EXPIRED		121</span><br><span class="line">#define CHECKPOINT		122</span><br><span class="line">#define STOP_SIM		123</span><br><span class="line">#define EXIT_DISKSIM		124</span><br><span class="line">#define MEMS_MIN_EVENT		200</span><br><span class="line">#define MEMS_MAX_EVENT		220</span><br></pre></td></tr></table></figure>
+<p>函数<code>getnextevent()</code>在disksim.c中的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">INLINE static event * getnextevent ()</span><br><span class="line">&#123;</span><br><span class="line">   event *curr = getfromintq();</span><br><span class="line">   event *temp;</span><br><span class="line"></span><br><span class="line">   if (curr) &#123;</span><br><span class="line">      simtime = curr-&gt;time;</span><br><span class="line">		//取到的event为非空</span><br><span class="line">      if (curr-&gt;type == NULL_EVENT) &#123;</span><br><span class="line">		if ((disksim-&gt;iotrace) &amp;&amp; io_using_external_event(curr)) &#123;</span><br><span class="line">			if ((temp = io_get_next_external_event(disksim-&gt;iotracefile)) == NULL) &#123;</span><br><span class="line">				disksim-&gt;stop_sim = TRUE;</span><br><span class="line">				&#125;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">				fprintf(stderr, &quot;NULL_EVENT not linked to any external source\n&quot;);</span><br><span class="line">				exit(1);</span><br><span class="line">				&#125;</span><br><span class="line">		if (temp) &#123;</span><br><span class="line">				temp-&gt;type = NULL_EVENT;</span><br><span class="line">				addtointq(temp);</span><br><span class="line">		&#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   else &#123;</span><br><span class="line">	//取到的event为空</span><br><span class="line">      fprintf (outputfile, &quot;Returning NULL from getnextevent\n&quot;);</span><br><span class="line">      fflush (outputfile);</span><br><span class="line">   &#125;</span><br><span class="line">   return(curr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>getnextevent</code>函数最主要的是通过调用<code>getfromintq</code>从调度队列中取出一个event，取出这个event的时候当前的系统时间simtime等于这个event所指定的time。但是对于函数中当取到的event的类型为NULL_EVENT的处理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">if (curr-&gt;type == NULL_EVENT) &#123;</span><br><span class="line">		if ((disksim-&gt;iotrace) &amp;&amp; io_using_external_event(curr)) &#123;</span><br><span class="line">			if ((temp = io_get_next_external_event(disksim-&gt;iotracefile)) == NULL) &#123;</span><br><span class="line">				disksim-&gt;stop_sim = TRUE;</span><br><span class="line">				&#125;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">				fprintf(stderr, &quot;NULL_EVENT not linked to any external source\n&quot;);</span><br><span class="line">				exit(1);</span><br><span class="line">				&#125;</span><br><span class="line">		if (temp) &#123;</span><br><span class="line">				temp-&gt;type = NULL_EVENT;</span><br><span class="line">				addtointq(temp);</span><br><span class="line">		&#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>我目前猜测，当event类型为NULL_EVENT是表示当前的bus channel是空闲的，可以服务读写请求，是依据这句话猜测的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ((disksim-&gt;iotrace) &amp;&amp; io_using_external_event(curr))</span><br></pre></td></tr></table></figure>
+<p>这里又涉及了disksim结构体的一个变量<code>iotrace</code>这个变量最早出现和配置是在<code>disksim_setup_disksim()</code>函数中，关于这个函数的详细解释在明天的笔记中讲初始化的时候会研究，先看其关于<code>iotrace</code>配置的代码段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(strcmp(argv[5], &quot;0&quot;) != 0) &#123;</span><br><span class="line">  disksim-&gt;synthgen = 1;</span><br><span class="line">  disksim-&gt;iotrace = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里需要解释下关于仿真器disksim的使用在Linux终端输入的命令参数是：disksim \参数文件 \输出文件 \ trace输入格式\trace文件\synthgen(是否激活disksim内部负载生成仿真，一般为0)<br>对应在main(argv)的参数表：argv[0],…,argv[5]。<br>当<code>disksim-&gt;synthgen=1</code>表示disksim自己生成trace进行仿真，<code>disksim-&gt;iotrace</code>为非零表示使用外部trace，为0表示不用外部负载。<br>那么看下<code>io_using_external_event(event *curr)</code>函数是干什么的，该函数在disksim_iosim.c中定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int io_using_external_event (event *curr)</span><br><span class="line">&#123;</span><br><span class="line">   if (io_extq == curr) &#123;</span><br><span class="line">      curr-&gt;type = io_extq_type;</span><br><span class="line">      io_extq = NULL;</span><br><span class="line">      return(1);</span><br><span class="line">   &#125;</span><br><span class="line">   return(0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数判断输入的event 指针指向的内容和当前的io_extq指针指向的内容是否相同，相同返回1且将curr的type置为<code>io_extq_type</code>（这是一个宏），不同返回0。<br><strong><code>io_extq</code></strong>，<strong><code>io_extq_type</code></strong>都是宏，在disksim_iosim.c文件头部（删除现在不必要的显示）就声明了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/* one remapping #define for each variable in iosim_info_t */</span><br><span class="line">#define io_extq                  (disksim-&gt;iosim_info-&gt;io_extq)</span><br><span class="line">#define io_extqlen               (disksim-&gt;iosim_info-&gt;io_extqlen)</span><br><span class="line">#define io_extq_type             (disksim-&gt;iosim_info-&gt;io_extq_type)</span><br><span class="line">。。。。。。。。。。还有一些相关宏不再此展示，之后看到再研究</span><br></pre></td></tr></table></figure>
+<p>又扯到disksim结构体的定义了，<code>iosim_info</code>是disksim中对硬件相关模型的定义一种，且看节选代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/* opaque structures for different modules */</span><br><span class="line">/*不透明封装的结构体*/</span><br><span class="line">   struct iosim_info *iosim_info;</span><br><span class="line">   struct device_info *deviceinfo;</span><br><span class="line">   struct disk_info *diskinfo;</span><br><span class="line">   struct simpledisk_info *simplediskinfo;</span><br><span class="line">   struct simpleflash_info *simpleflashinfo;</span><br><span class="line">   struct mems_info *memsinfo;</span><br><span class="line">   struct iodriver_info *iodriver_info;</span><br><span class="line">   struct businfo *businfo;</span><br><span class="line">   struct ctlrinfo *ctlrinfo;</span><br><span class="line">   struct pf_info *pf_info;</span><br><span class="line">   struct synthio_info *synthio_info;</span><br><span class="line">   struct iotrace_info *iotrace_info;</span><br><span class="line">   struct rand48_info *rand48_info;</span><br></pre></td></tr></table></figure>
+<p>上述的结构体在disksim_global.h中只是声明，具体的定义都在各自的文件里面，如<code>iosim_info</code>在disksim_iosim.c中才定义:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">typedef struct iosim_info &#123;</span><br><span class="line">   event * io_extq;</span><br><span class="line">   int     io_extqlen;</span><br><span class="line">   int     io_extq_type;</span><br><span class="line">   double  ioscale;</span><br><span class="line">   double  last_request_arrive;</span><br><span class="line">   double  constintarrtime;</span><br><span class="line">   int     validatebuf[10];</span><br><span class="line">   int     tracemappings;</span><br><span class="line">   int     tracemap[TRACEMAPPINGS];</span><br><span class="line">   int     tracemap1[TRACEMAPPINGS];</span><br><span class="line">   int     tracemap2[TRACEMAPPINGS];</span><br><span class="line">   int     tracemap3[TRACEMAPPINGS];</span><br><span class="line">   int     tracemap4[TRACEMAPPINGS];</span><br><span class="line">   statgen *tracestats;</span><br><span class="line">   statgen *tracestats1;</span><br><span class="line">   statgen *tracestats2;</span><br><span class="line">   statgen *tracestats3;</span><br><span class="line">   statgen *tracestats4;</span><br><span class="line">   statgen *tracestats5;</span><br><span class="line">&#125; iosim_info_t;</span><br></pre></td></tr></table></figure>
+<p>现在可以理解<code>io_extq</code>就是一个event类型的指针，<code>io_extq_type</code>就是个int型的数和event中的type是一样的，那么<code>io_extq_type</code>有那些宏定义可以选择，我猜测和前面的event的type类型选择是一样的。把前面的if的语句展开仔细看理解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if ((disksim-&gt;iotrace) &amp;&amp; io_using_external_event(curr)) &#123;</span><br><span class="line">	if ((temp = io_get_next_external_event(disksim-&gt;iotracefile)) == NULL) &#123;</span><br><span class="line">		disksim-&gt;stop_sim = TRUE;</span><br><span class="line">		&#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">		fprintf(stderr, &quot;NULL_EVENT not linked to any external source\n&quot;);</span><br><span class="line">		exit(1);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<p>###总结<code>getnextevent()函数</code>：<br>这么理解函数，从intq队列中取出一个event，如果该event的类型为NULL_EVENT时，<code>getnextevent()</code>函数根据仿真采用负载为外部负载且调用<code>io_using_external_event()</code>判断当前的event和io_extq指向的内容是否相同，若相同则把event的类型改成当前的<code>io_extq_type</code>的类型，<code>io_get_next_external_event()</code>函数应该能判断外部的负载输入是否结束，从而将disksim-&gt;stop_sim置为TRUE，结束仿真，如果外部负载不为空，即<code>(temp = io_get_next_external_event(disksim-&gt;iotracefile)</code>返回不为空，则把该temp的类型置为NULL_EVENT，调用<code>addtointq(temp);</code>将temp加入intq队列中，这么操作有点栈的意思。先从intq取栈顶的元素event，event的类型为NULL_EVENT则一般是为使用外部负载，需要判断外部负载判断结束时间驱动，没有结束，则将新的<code>NULL_EVENT</code>的event类型（temp）压入栈(intq)。这是我目前的理解。</p>
+<p>###该函数的继续延伸阅读<br><code>getnextevent()函数</code>调用了<code>io_get_next_external_event()</code>函数，在介绍这个函数之前，先引入了解处理I/O请求的结构体ioreq_event,在<code>disksim_global.h</code>中有定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">typedef struct ioreq_ev &#123;</span><br><span class="line">   double time;</span><br><span class="line">   int    type;</span><br><span class="line">   struct ioreq_ev *next;</span><br><span class="line">   struct ioreq_ev *prev;</span><br><span class="line">   int    bcount;</span><br><span class="line">   int    blkno;</span><br><span class="line">   u_int  flags;</span><br><span class="line">   u_int  busno;</span><br><span class="line">   u_int  slotno;</span><br><span class="line">   int    devno;</span><br><span class="line">   int    opid;</span><br><span class="line">   void  *buf;</span><br><span class="line">   int    cause;</span><br><span class="line">   int    tempint1;</span><br><span class="line">   int    tempint2;</span><br><span class="line">   void  *tempptr1;</span><br><span class="line">   void  *tempptr2;</span><br><span class="line">   void  *mems_sled;	 /* mems sled associated with a particular event */</span><br><span class="line">   void  *mems_reqinfo; /* per-request info for mems subsystem */</span><br><span class="line">   double start_time;    /* temporary; used for memulator timing */</span><br><span class="line">&#125; ioreq_event;</span><br></pre></td></tr></table></figure>
+<p>其实<code>ioreq_event</code>和<code>event</code>结构体可以强制类型转化的，这个在<code>io_get_next_external_event()</code>函数里面有句话：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ioreq_event *temp;</span><br><span class="line">ASSERT(io_extq == NULL);</span><br><span class="line">temp = (ioreq_event *) getfromextraq();</span><br></pre></td></tr></table></figure>
+<p><code>getfromextrq</code>函数返回的是event结构体指针，这里突然理解了，event的结构体里面的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char space[DISKSIM_EVENT_SPACESIZE];</span><br></pre></td></tr></table></figure>
+<p>其实就是为了将这部分内存字段转化为其他类型的时候存其他数据使用的。代码读到这突然觉得需要系统的捋一边系统的初始化过程和主要的结构体变量了，思路有点乱。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/flashsim-源码阅读/" rel="tag"># flashsim 源码阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/08/flashsim源码阅读-3/" rel="next" title="flashsim源码阅读-3">
+                <i class="fa fa-chevron-left"></i> flashsim源码阅读-3
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/10/flashsim源码阅读-5/" rel="prev" title="flashsim源码阅读-5">
+                flashsim源码阅读-5 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

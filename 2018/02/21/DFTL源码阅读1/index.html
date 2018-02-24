@@ -104,8 +104,6 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
 
 
-  
-
 
   <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
 
@@ -123,7 +121,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 <meta property="og:description" content="DFTL源码阅读笔记(1)DFTL算法举例理解在理解代码前，首先理解下面关于DFTL的一个例子的示意图十分必要： 首先理解CMT和GTD，在DFTL中，经常访问的LPN-PPN这个映射关系是缓存到RAM/DRAM中的，全部的映射关系是存放在flash内部的一小块区域（这里图示为翻译块区域），其中LPN-PPN这个简单的映射关系一般是4byte，而一个数据页大概是2048byte大小。也就是一个数据">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/02/21/DFTL源码阅读1/DFTL原理示意图.png">
-<meta property="og:updated_time" content="2018-02-21T11:30:14.000Z">
+<meta property="og:updated_time" content="2018-02-24T08:43:01.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DFTL源码阅读1">
 <meta name="twitter:description" content="DFTL源码阅读笔记(1)DFTL算法举例理解在理解代码前，首先理解下面关于DFTL的一个例子的示意图十分必要： 首先理解CMT和GTD，在DFTL中，经常访问的LPN-PPN这个映射关系是缓存到RAM/DRAM中的，全部的映射关系是存放在flash内部的一小块区域（这里图示为翻译块区域），其中LPN-PPN这个简单的映射关系一般是4byte，而一个数据页大概是2048byte大小。也就是一个数据">
@@ -359,7 +357,9 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
       
         <h1 id="DFTL源码阅读笔记-1"><a href="#DFTL源码阅读笔记-1" class="headerlink" title="DFTL源码阅读笔记(1)"></a>DFTL源码阅读笔记(1)</h1><h2 id="DFTL算法举例理解"><a href="#DFTL算法举例理解" class="headerlink" title="DFTL算法举例理解"></a>DFTL算法举例理解</h2><p>在理解代码前，首先理解下面关于DFTL的一个例子的示意图十分必要：<br><img src="/2018/02/21/DFTL源码阅读1/DFTL原理示意图.png" title="DFTL原理示意图"></p>
-<p>首先理解CMT和GTD，在DFTL中，经常访问的LPN-PPN这个映射关系是缓存到RAM/DRAM中的，全部的映射关系是存放在flash内部的一小块区域（这里图示为翻译块区域），其中LPN-PPN这个简单的映射关系一般是4byte，而一个数据页大概是2048byte大小。也就是一个数据页（翻译页）可以存放大概512的映射关系。但是要知道这些翻译页在flash的位置，则需要GTD来管理对应的MVPN–&gt;MPPN的关系。<br>那现在需要捋下DLPN，DPPN，MVPN，MPPN的关系了</p>
+<p>首先理解CMT和GTD，在DFTL中，经常访问的LPN-PPN这个映射关系是缓存到RAM/DRAM中的，全部的映射关系是存放在flash内部的一小块区域（这里图示为翻译块区域），其中LPN-PPN这个简单的映射关系一般是4byte，而一个数据页大概是2048byte大小。也就是一个数据页（翻译页）可以存放大概512的映射关系。但是要知道这些翻译页在flash的位置，则需要GTD来管理对应的MVPN–&gt;MPPN的关系。</p>
+<a id="more"></a>
+<p>那现在需要捋下DLPN，DPPN，MVPN，MPPN的关系了</p>
 <ol>
 <li>DLPN：也是我们理解的host发送请求的逻辑页地址</li>
 <li>DPPN：对应的DLPN在flash中存放的物理页地址</li>
@@ -432,6 +432,26 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/10/flashsim源码阅读-5/" rel="next" title="flashsim源码阅读-5">
+                <i class="fa fa-chevron-left"></i> flashsim源码阅读-5
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/24/Flashsim中关于FAST算法实现的代码解析/" rel="prev" title="Flashsim中关于FAST算法实现的代码解析">
+                Flashsim中关于FAST算法实现的代码解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -512,7 +532,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -525,7 +545,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

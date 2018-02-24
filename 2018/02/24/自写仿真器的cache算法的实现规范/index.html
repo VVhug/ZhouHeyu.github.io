@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SSDsim 自写仿真器 cache算法," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="代码实现的规范:首先创建自己对应的PUD-LRU的C文件和头文件(clion自动提示生成),在initFlash函数段中添加自己的初始化函数,例如:">
+<meta name="keywords" content="SSDsim 自写仿真器 cache算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自写仿真器的cache算法的实现规范">
+<meta property="og:url" content="http://yoursite.com/2018/02/24/自写仿真器的cache算法的实现规范/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="代码实现的规范:首先创建自己对应的PUD-LRU的C文件和头文件(clion自动提示生成),在initFlash函数段中添加自己的初始化函数,例如:">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-24T09:28:03.963Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自写仿真器的cache算法的实现规范">
+<meta name="twitter:description" content="代码实现的规范:首先创建自己对应的PUD-LRU的C文件和头文件(clion自动提示生成),在initFlash函数段中添加自己的初始化函数,例如:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/24/自写仿真器的cache算法的实现规范/"/>
+
+
+
+
+
+  <title>自写仿真器的cache算法的实现规范 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry，Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/24/自写仿真器的cache算法的实现规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自写仿真器的cache算法的实现规范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T17:02:55+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/24/自写仿真器的cache算法的实现规范/" class="leancloud_visitors" data-flag-title="自写仿真器的cache算法的实现规范">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>代码实现的规范:<br>首先创建自己对应的PUD-LRU的C文件和头文件(clion自动提示生成),在initFlash函数段中添加自己的初始化函数,例如:<br><a id="more"></a><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//    选择相应的缓冲区算法</span></span><br><span class="line">    <span class="keyword">switch</span>(cache_type)&#123;</span><br><span class="line"><span class="comment">//        LRU</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>: cache_op=LRU_op_setup();<span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//        CFLRU</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>: cache_op=CFLRU_op_setup();<span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//        AD-LRU</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>: cache_op=ADLRU_op_setup();<span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//        CASA</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>: cache_op=CASA_op_setup();<span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//        LRU-WSR</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>: cache_op=LRUWSR_op_setup();<span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//         CCF-LRU</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:cache_op=CCFLRU_op_setup();<span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//            块级的FAB算法</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:cache_op=FAB_op_setup();<span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//            BPLRU算法</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">8</span>:cache_op=BPLRU_op_setup();<span class="keyword">break</span>;</span><br><span class="line">        </span><br><span class="line"><span class="comment">//      case 9:cache_op=PUD_op_setup(); break;</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>之后关于每个缓冲算法的接口标准;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//加入自己的cache_type类型的函数指针结构</span><br><span class="line">struct cache_operation&#123;</span><br><span class="line">    int  (*init) (int size,int blk_num);</span><br><span class="line">    int (*SearchCache)(int LPN,int operation);</span><br><span class="line">    int (*HitCache)(int LPN, int operation,int index);</span><br><span class="line">    double (*AddCacheEntry)(int LPN,int operation);</span><br><span class="line">    double (*DelCacheEntry)(int LPN,int operation);</span><br><span class="line">    void (*end) ();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>以LRU算法的实现,做代码实现的参考标准,在对应的头文件生命如下的函数:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct cache_operation * LRU_op_setup();</span><br></pre></td></tr></table></figure></p>
+<p>在对应的LRU.c文件的底部定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct cache_operation * LRU_op_setup()</span><br><span class="line">&#123;</span><br><span class="line">    return &amp;LRU_Operation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再针对这个全局变量的函数指针结构体进行赋值操作(也就是指定对应的函数)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct cache_operation LRU_Operation=&#123;</span><br><span class="line">        init:   LRU_init,</span><br><span class="line">        SearchCache:    LRU_Search,</span><br><span class="line">        HitCache:   LRU_HitCache,</span><br><span class="line">        AddCacheEntry:  LRU_AddCacheEntry,</span><br><span class="line">        DelCacheEntry:  LRU_DelCacheEntry,</span><br><span class="line">        end:    LRU_end</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>之后在这个结构体之前定义上述的几个函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">int LRU_init(int size, int DataBlk_Num);</span><br><span class="line">//释放对应的内存</span><br><span class="line">void LRU_end();</span><br><span class="line">//返回匹配的命中请求在数组中的位置</span><br><span class="line">int LRU_Search(int LPN,int operation);</span><br><span class="line">int LRU_HitCache(int LPN,int operation,int Hit_kindex);</span><br><span class="line">double LRU_AddCacheEntry(int LPN,int operation);</span><br><span class="line">//不管缓冲区是否满都调用该函数（满）</span><br><span class="line">double LRU_DelCacheEntry(int ReqLPN,int ReqOperation);</span><br></pre></td></tr></table></figure></p>
+<p>注意这些函数外部可调用的函数,自己的内部函数可在对应的文件中定义,例如LRU.c中定义了自己使用的函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//找到数组中索引对应的LPN的age最大或最小,同时添加返回数组最值的索引</span><br><span class="line">int my_find_cache_min(int *arr,int arrMaxSize,int * index);</span><br><span class="line">int my_find_cache_max(int *arr,int arrMaxSize,int *index);</span><br></pre></td></tr></table></figure></p>
+<p>关于双链表的使用实现,已经封装在List.c中,可直接调用以下函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//创建双向链表</span><br><span class="line">pNode CreateList();</span><br><span class="line">//删除整个链表，释放内存（这里有点小问题)</span><br><span class="line">void FreeList(pNode pHead);</span><br><span class="line">//判断链表是否为空</span><br><span class="line">int IsEmptyList(pNode pHead);</span><br><span class="line">//返回链表的长度</span><br><span class="line">int GetListLength(pNode pHead);</span><br><span class="line">//从链表中找到特定的LPN值，并返回节点的指针位置,如果不存在返回NULL</span><br><span class="line">pNode FindLPNinList(pNode pHead,int LPN);</span><br><span class="line">//该函数完成指定节点的指针返回,根据指定的位置返回节点的指针</span><br><span class="line">pNode FindIndexNode(pNode pHead,int index);</span><br><span class="line">//向链表中删除节点，删除位置的节点</span><br><span class="line">int DeleteEleList(pNode pHead,int pos);</span><br><span class="line">//将命中的节点移动到指定队列pHead的第一个位置（MRU）</span><br><span class="line">int MoveToMRU(pNode pHead,pNode Hit);</span><br><span class="line">//这个函数返回的是删除页的状态（是否为脏页），关于删除的页编号通过传值参数DelLPN改变</span><br><span class="line">int DeleteLRU(pNode pHead,int *DelLPN);</span><br><span class="line">//将一个全新的节点添加到队列的MRU位置</span><br><span class="line">int AddNewToMRU(pNode pHead,pNode New);</span><br><span class="line">//查看链表中的节点是否存在干净页节点,如果不存在干净页则返回NULL</span><br><span class="line">pNode IsCleanNodeInList(pNode pHead);</span><br><span class="line">//基于二次机会的冷探测机制,找到节点中isCold的节点,并返回该节点</span><br><span class="line">pNode FindColdNodeInList(pNode pHead);</span><br><span class="line">//删除链表中指定Victim的节点,函数返回的是删除节点对应的LPN号</span><br><span class="line">int DelVictimNodeInList(pNode pHead,pNode Victim);</span><br><span class="line">//无论热区还是冷区,选择剔除的时候都是优先置换干净页,之后基于二次机会遍历选择脏页</span><br><span class="line">//函数返回的是需要剔除页的节点指针</span><br><span class="line">pNode FindVictimNode_CleanFirst(pNode pHead);</span><br></pre></td></tr></table></figure></p>
+<p>上述的双链表的节点表示的是数据页(用以实现纯页级的缓冲区算法),其节点的定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//定义节点,双链表需要复用的节点定义</span><br><span class="line">typedef struct Node</span><br><span class="line">&#123;</span><br><span class="line">    int LPN;</span><br><span class="line">    struct Node *Pre;</span><br><span class="line">    struct Node *Next;</span><br><span class="line">    int isD;</span><br><span class="line">    int isCold;</span><br><span class="line">&#125;Node ,*pNode;</span><br></pre></td></tr></table></figure></p>
+<p>实现块级的缓冲区算法,则需要用到双链表的部分操作也封装在BlkList的文件中,其操作的节点类型结构:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//定义节点,节点是块的节点</span><br><span class="line">typedef struct BlkNode</span><br><span class="line">&#123;</span><br><span class="line">    int BlkNum;</span><br><span class="line">    struct BlkNode *Pre;</span><br><span class="line">    struct BlkNode *Next;</span><br><span class="line">    int BlkSize;</span><br><span class="line">    int list[PAGE_NUM_PER_BLK];</span><br><span class="line">&#125;BlkNode ,*pBlkNode;</span><br></pre></td></tr></table></figure></p>
+<p>相应可使用的函数操作:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/创建块索引的双向链表</span><br><span class="line">pBlkNode CreateBlkList();</span><br><span class="line">//删除整个链表，释放内存</span><br><span class="line">void FreeBlkList(pBlkNode pHead);</span><br><span class="line">//判断链表是否为空</span><br><span class="line">int IsEmptyBlkList(pBlkNode pHead);</span><br><span class="line">//计算链表长度</span><br><span class="line">int GetBlkListLength(pBlkNode pHead);</span><br><span class="line">//遍历链表，寻找链表中对应的数据，若存在则返回该节点的指针</span><br><span class="line">pBlkNode  SearchBlkList(pBlkNode pHead,int BlkNum);</span><br><span class="line">//返回以块节点组织的cache大小--&gt;当前的缓冲区的大小</span><br><span class="line">int BlkGetCacheSize(pBlkNode pHead);</span><br><span class="line">//将新的节点加到MRU位置</span><br><span class="line">int BlkAddNewToMRU(pBlkNode pHead,pBlkNode p_new);</span><br><span class="line">//将命中的数据块移动队列的头部</span><br><span class="line">int BlkMoveToMRU(pBlkNode pHead,pBlkNode pHit);</span><br><span class="line">//LRU补偿机制,将判断为连续请求的块移动到LRU</span><br><span class="line">int BlkMoveToLRU(pBlkNode pHead,pBlkNode pHit);</span><br><span class="line">//根据请求的LPNz找到对应的块节点的指针</span><br><span class="line">//函数也可以通过Hit查看对应的LPN是否存在缓冲区中</span><br><span class="line">pBlkNode FindHitBlkNode(pBlkNode pHead,int LPN,int *Hit);</span><br><span class="line">//删除块链表中指定的节点,放回删除节点的包含的页的个数</span><br><span class="line">int BlkDeleteNode(pBlkNode pHead,pBlkNode Victim);</span><br></pre></td></tr></table></figure></p>
+<p>最后需要注意的是,代码实现的过程中的参数命名规范,一般以对应的算法命名其全局变量或外部变量:<br> _”XXX_CACHE_SIZE”_ 以LRU为例看其变量命名:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">struct LRU_Cache_entry *LRUPage;</span><br><span class="line">unsigned int LRUPage_Num;//只表示总的数据页</span><br><span class="line">//定义当前的cache的age最小的索引</span><br><span class="line">int LRU_min_age_index;</span><br><span class="line">int LRU_max_age_index;</span><br><span class="line"></span><br><span class="line">//缓冲区最大的大小设置</span><br><span class="line">int LRU_Cache_Max_Entry;</span><br><span class="line">//当前缓冲区的个数</span><br><span class="line">int LRU_Cache_Num_Entry;</span><br><span class="line">//下面表示存储LPN的数组</span><br><span class="line">int *lru_cache_arr;</span><br></pre></td></tr></table></figure></p>
+<p>针对额外的外部函数需要实现公用的直接创建issue讨论,在代码实现前,先提交一份iusse伪代码方便代码交流,变量命名需要规范.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SSDsim-自写仿真器-cache算法/" rel="tag"># SSDsim 自写仿真器 cache算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/24/DFTL算法代码实现追加/" rel="next" title="DFTL算法代码实现追加">
+                <i class="fa fa-chevron-left"></i> DFTL算法代码实现追加
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/24/disksim负载合成/" rel="prev" title="disksim负载合成">
+                disksim负载合成 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

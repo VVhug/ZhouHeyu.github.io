@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SSD Flashsim FAST," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言Disksim3.0上安装的Flashsim，能够进行SSD模拟仿真，Flashsim上的FTL层算法可供选择的有DFTL算法，FTL(纯页级映射)，和FAST(fully associative sector Translation)混合FTL映射算法。因为最近的缓冲区仿真需要知道底层的FTL全合并的开销，对FAST的源码进行了阅读和理解，进行以下的总结。 FAST的算法基础在理解代码前。首">
+<meta name="keywords" content="SSD Flashsim FAST">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flashsim中关于FAST算法实现的代码解析">
+<meta property="og:url" content="http://yoursite.com/2018/02/24/Flashsim中关于FAST算法实现的代码解析/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="前言Disksim3.0上安装的Flashsim，能够进行SSD模拟仿真，Flashsim上的FTL层算法可供选择的有DFTL算法，FTL(纯页级映射)，和FAST(fully associative sector Translation)混合FTL映射算法。因为最近的缓冲区仿真需要知道底层的FTL全合并的开销，对FAST的源码进行了阅读和理解，进行以下的总结。 FAST的算法基础在理解代码前。首">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20171212203827685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171212201055617?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171212202803339?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171212200744202?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2018-02-24T08:42:24.223Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flashsim中关于FAST算法实现的代码解析">
+<meta name="twitter:description" content="前言Disksim3.0上安装的Flashsim，能够进行SSD模拟仿真，Flashsim上的FTL层算法可供选择的有DFTL算法，FTL(纯页级映射)，和FAST(fully associative sector Translation)混合FTL映射算法。因为最近的缓冲区仿真需要知道底层的FTL全合并的开销，对FAST的源码进行了阅读和理解，进行以下的总结。 FAST的算法基础在理解代码前。首">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20171212203827685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/24/Flashsim中关于FAST算法实现的代码解析/"/>
+
+
+
+
+
+  <title>Flashsim中关于FAST算法实现的代码解析 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry，Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/24/Flashsim中关于FAST算法实现的代码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flashsim中关于FAST算法实现的代码解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T16:35:35+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/24/Flashsim中关于FAST算法实现的代码解析/" class="leancloud_visitors" data-flag-title="Flashsim中关于FAST算法实现的代码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Disksim3.0上安装的Flashsim，能够进行SSD模拟仿真，Flashsim上的FTL层算法可供选择的有DFTL算法，FTL(纯页级映射)，和FAST(fully associative sector Translation)混合FTL映射算法。因为最近的缓冲区仿真需要知道底层的FTL全合并的开销，对FAST的源码进行了阅读和理解，进行以下的总结。</p>
+<h2 id="FAST的算法基础"><a href="#FAST的算法基础" class="headerlink" title="FAST的算法基础"></a>FAST的算法基础</h2><p>在理解代码前。首先需要理解FAST算法的机理和流程。FAST算法是源自这篇ACM会议的论文</p>
+<a id="more"></a>
+<blockquote>
+<p>《A Log Buffer-Based Flash Translation Layer Using Fully-Associative Sector Translation》</p>
+</blockquote>
+<p>。这篇论文对BAST的混合FTL映射算法进行了分析和改进，指出针对随机写请求的时候，BAST算法性能表现不佳，因为日志块的空间利用率不高会出现块抖动的现象。提出将日志块划分为RW（随机写）日志块和SW（顺序写）日志块。所谓的SW日志块秉承了BAST算法数据块和日志块一对一的关系，映射实现也与BAST算法一致。而RW（随机写）日志块，采用了全关联映射的关系，即任何数据块的更新数据页都可以写在该日志块上（但这在垃圾回收无效块的时候，会产生巨大的全合并开销）。<br>FAST算法将日志块划分为SW块和RW块，SW块是存储顺序写请求更新，FAST对写入SW块有以下两个规则：</p>
+<ul>
+<li><p>逻辑页地址LPN（or 逻辑扇区地址LSN）模掉一个块包含的页数（扇区数）为0，这样的写请求地址为其分配新的SW块，并将该请求的数据项写在该SW块第一个空白页上。</p>
+</li>
+<li><p>如果上一个LPN请求更新写入到对应的SW上，当前请求的LPN为上一个请求LPN地址相邻的位置（即LPN’=LPN+1）,才将该请求写入到对应的SW位置的后一位上。</p>
+</li>
+</ul>
+<p>下面是截取上述论文针对FAST算法的举例说明：<br> <img src="http://img.blog.csdn.net/20171212203827685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br> 这里假设一个块包含4个页，SW日志块的数量为1，RW日志块的数量为2。FAST会依次选择不同的日志块来处理，下面分五种情况来讨论，与上文类似，数字表示逻辑页号。（1）当请求4到来时，由于其满足写入SW日志块的条件（逻辑页号在块中的偏移量为0），但SW日志块非空，故需要垃圾回收操作，以产生空白的SW日志块。（2）当请求4、5依次到来时，请求4已由上述分析可知，满足写入SW日志块的条件，并构建了新的SW日志块。当请求5到来时，其满足写入SW日志块的第二个条件，故可以直接写入SW日志块的相应位置。（3）当请求4、6依次到来时，同样，请求4写入SW日志块，但请求6不满足写入SW日志块的两个条件，故通过SW日志块的全合并，将请求6直接写入新的数据块，并产生空的SW日志块。（4）当请求4、5、5依次到来时，请求4和第一个请求5依次写入SW日志块，但第二个请求5已不满足写入SW日志块的条件，故通过全合并，将第二个请求5直接写入新的数据块，并产生空的SW日志块。（5）当请求6到来时，由于不满足写入SW日志块的条件，故按顺序写入RW日志块的第一个空白页中。</p>
+<p>FAST算法的垃圾回收算法较为复杂，在此之前需要先理解SSD中的垃圾回收数据块中存在的3种回收方式：全合并，部分合并，交换合并的概念。因为SSD不支持同步更新，数据需要异地更新，多次异地更新以后，会产生带有很多标记为无效的数据页的数据块，为了产生可用的数据块，SSD的底层垃圾回收算法会回收这些数据块，进行有效数据页备份和整块擦除，产生新的空白数据块供上层使用。所谓的全合并，部分合并，交换合并是因为采用混合FTL算法，导致有效数据页在不同回收的块中分布，采用不同的有效数据页备份和块擦除操作。具体操作如下图所示：<br> 因为数据块和日志块中的数据页分布分散难以整理成有序的数据块存储，因此另外寻找一个新的数据块，依次读入日志块和数据块中的有效数据成为新的数据块，并回收擦除旧的数据块和空闲块，这种回收方式的开销是最大的。<br><img src="http://img.blog.csdn.net/20171212201055617?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""><br>第二种是最理想的回收方式，如果存在大量的顺序写更新，日志块中的数据页被顺序写入，且原来的数据块被标记为无效，因此只需要将日志块标记为数据块，擦除旧的数据块回收即可。块擦除次数仅为一次。<br><img src="http://img.blog.csdn.net/20171212202803339?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>第三种回收方式是从数据块中顺序读出有效数据页写入日志块中，并将日志块标记为新的数据块，擦除旧的数据块为空白块。<br><img src="http://img.blog.csdn.net/20171212200744202?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>理解了上述的三种垃圾回收方式，结合FAST算法的SW和RW块的写入操作，我们可以分析SW块可以实现理想的交换合并和部分合并，而RW块只能用全合并进行垃圾回收。继续以上述第一幅图针对FAST写入机制的举例说明进行垃圾回收的理解：<br>第（1）种情况对应SW日志块的部分合并，将日志块作为新的数据块，并将旧数据块中的页14、15复制到新数据块中，再擦除旧数据块，并分配一个空白块作为新的SW日志块；（3）（4）对应SW日志块的全合并，将日志块和数据块中的数据复制到新的数据块中，然后擦除两个“脏”（dirty）数据块，并为SW日志块分配一个新的空白块。RW日志块的垃圾回收情况由于FAST的全关联策略，而相对复杂。当日志块用尽时，FAST会启动垃圾回收机制，选择一个合适的日志块作为受害块，由于每个日志块可能与多个数据块关联，因此需要擦除N+1个（N为与该日志块关联的数据块个数）块，并分配N个空白块来存储各块的数据，以及一个新的日志块。这过程需要大量的读取、写入数据和擦除操作，产生了巨大的开销，而且只产生一个日志块。同时，若上述各数据块中的更新数据不在在同一个日志块中，还需从其他日志块复制有效数据到新的数据块中，并标记该日志块中相应的更新数据为无效。在最坏情况下，FAST会频繁的进行日志块的回收操作而无法顾及新的写入操作。<br>上述就是FAST算法的基础。下面就对仿真器的源码进行讲解。</p>
+<h2 id="FAST源码理解"><a href="#FAST源码理解" class="headerlink" title="FAST源码理解"></a>FAST源码理解</h2><p>在Flashsim上关于实现fast算法的在fast.c中实现，部分定义关键变量在fast.h中，其中会调用底层nand的oob读取和nand的读写操作，这些相关函数在flash.c有定义。<br>Flashsim中针对不同FTL算法的实现都需要做到四个函数操作，初始化，结束函数，读取FTL操作函数，写入FTL操作函数。在fast.c中依次是<code>lm_init()</code> <code>lm_end()</code>  <code>lm_read()</code> <code>lm_write</code> 函数<br><code>lm_init()</code>函数主要初始化算法需要用到的内存分配和初始化，主要是完成日志块结构体数组logblk和块级映射数据表BMT，日志块中的页级映射表数组PMT的内存分配和初始化。源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">int lm_init(blk_t blk_num, blk_t extra_num)   </span><br><span class="line">&#123;</span><br><span class="line">  int i;</span><br><span class="line"></span><br><span class="line">  total_blk_num = blk_num;</span><br><span class="line">  BMT = (int *)malloc(sizeof(int) * blk_num);</span><br><span class="line">  PMT = (struct LogMap*)malloc(sizeof(struct LogMap)*extra_num);</span><br><span class="line">  total_log_blk_num = extra_num;</span><br><span class="line"></span><br><span class="line">  if ((BMT== NULL) || (PMT == NULL)) &#123; return -1; &#125;</span><br><span class="line"></span><br><span class="line">  memset(BMT, -1, sizeof(int) * blk_num);</span><br><span class="line">  for(i = 0; i &lt; total_log_blk_num; i++)&#123;</span><br><span class="line">    PMT[i].pbn = -1;</span><br><span class="line">    PMT[i].fpc = PAGE_NUM_PER_BLK;</span><br><span class="line">    memset(PMT[i].lpn, 0xFF, sizeof(int)*PAGE_NUM_PER_BLK);</span><br><span class="line">    memset(PMT[i].lpn_status, 0x00, sizeof(int)*PAGE_NUM_PER_BLK);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  free_SW_blk_num = 1;</span><br><span class="line">  free_RW_blk_num = (total_log_blk_num - free_SW_blk_num);</span><br><span class="line"></span><br><span class="line">  global_SW_blk.logblk.pbn = -1;</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于输入函数blk_num是数据块的个数，extra_num是日志块的个数。其中SW的个数为1。BMT是个表示块级映射的数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BMT[lbn]=pbn //其中下标lbn是逻辑块地址，pbn是实际底层nand数组的标识序号也是我们理解的物理块地址</span><br></pre></td></tr></table></figure>
+<p>针对日志块的页级映射关系如何实现，需要对结构体LogMap进行解读</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/* Log blocks are composed of ONE sequential log block </span><br><span class="line">  and random log blocks for the rest */</span><br><span class="line">struct LogMap&#123;</span><br><span class="line">    int fpc; // free page count within a block </span><br><span class="line">    int pbn; // physical blk no of the log block </span><br><span class="line">    int lpn[PAGE_NUM_PER_BLK];</span><br><span class="line">    int lpn_status[PAGE_NUM_PER_BLK]; // -1: invalid, 0: free, 1: valid</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>该结构体中包含了该日志块中当前可用的空白页数fpc，该日志块对应的底层nand数组的标识（也就是我们理解的物理块，即哪个（pbn）物理块是当日志块在使用），<code>lpn[PAGE_NUM_PER_BLK]</code> 是当前的日志块中每个数据页位置上存放的对应的lpn（不存放数据，则初始化为-1），这个lpn存放的并不是有效的，只有结合下面的标识符<code>lpn_status[PAGE_NUM_PER_BLK]</code> 才能判断该lpn是否有效（-1无效，0空闲，1有效）。<br>简单的RW块可以用上述的结构体LogMap进行表述了，但是SW需要实现日志块和数据块一对一的关系表示，因此在此结构进行扩展为seq_log_blk：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// This is only for ONE sequential log block </span><br><span class="line">struct seq_log_blk&#123;</span><br><span class="line">    struct LogMap logblk;</span><br><span class="line">    int data_blk;           // sequential log block owner</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中data_blk表示对应的数据块（即数据块的物理地址，底层nand数组的下标）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">一些其他相关的全局变量在文件的头部定义如下：</span><br><span class="line">struct LogMap *PMT;     // page mapping table for log blocks</span><br><span class="line">int *BMT;               // block mapping table for data blocks</span><br><span class="line"></span><br><span class="line">struct seq_log_blk global_SW_blk;       // pbn which is being used as SW_blk</span><br><span class="line"></span><br><span class="line">int total_log_blk_num;</span><br><span class="line">int total_blk_num;</span><br><span class="line">int global_currRWblk = 1;</span><br><span class="line">int global_firstRWblk = 0;</span><br><span class="line">int free_SW_blk_num;</span><br><span class="line">int free_RW_blk_num;</span><br></pre></td></tr></table></figure>
+<p>其中PMT这个日志块数组中PMT[0]永远是SW块，其他是RW块。<br>针对FAST的释放函数，就是完成对应初始化函数内存释放，源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void lm_end()</span><br><span class="line">&#123;</span><br><span class="line">  printf(&quot;switch_merge  : %d\n&quot;, merge_switch_num);</span><br><span class="line">  printf(&quot;partial_merge : %d\n&quot;, merge_partial_num);</span><br><span class="line">  printf(&quot;full_merge    : %d\n&quot;, merge_full_num);</span><br><span class="line"></span><br><span class="line">  if ((BMT != NULL) || (PMT != NULL)) &#123;</span><br><span class="line">    free(BMT);</span><br><span class="line">    free(PMT);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>FAST的读操作实现进行源码实现比较简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">size_t lm_read(sect_t lsn, sect_t size, int mapdir_flag)</span><br><span class="line">&#123;</span><br><span class="line">      int i, k, m, h;</span><br><span class="line">      int read_flag;</span><br><span class="line">      int lpn = lsn/SECT_NUM_PER_PAGE;	                </span><br><span class="line">      int lbn = lsn/SECT_NUM_PER_BLK;                             </span><br><span class="line">      int ppn;</span><br><span class="line">      int pbn;</span><br><span class="line">      int size_page = size/SECT_NUM_PER_PAGE;   		</span><br><span class="line">      int offset = lpn%PAGE_NUM_PER_BLK;</span><br><span class="line">      int valid_flag;</span><br><span class="line">      int sect_num;</span><br><span class="line"></span><br><span class="line">      sect_t s_lsn;	</span><br><span class="line">      sect_t s_psn; </span><br><span class="line"></span><br><span class="line">      sect_t copy[SECT_NUM_PER_PAGE];</span><br><span class="line">      memset (copy, 0xFF, sizeof (copy));</span><br><span class="line"></span><br><span class="line">      if(BMT[lbn] == -1)&#123;</span><br><span class="line">        ASSERT(0);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      sect_num = 4;</span><br><span class="line"></span><br><span class="line">      s_psn = ((BMT[lbn] * PAGE_NUM_PER_BLK + offset) * SECT_NUM_PER_PAGE);</span><br><span class="line">      s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">      for (h = 0; h &lt; SECT_NUM_PER_PAGE; h++) &#123;</span><br><span class="line">          copy[h] = s_lsn + h;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      valid_flag = nand_oob_read(s_psn);</span><br><span class="line"></span><br><span class="line">      if(valid_flag == 1)&#123;        </span><br><span class="line">              size = nand_page_read(s_psn, copy, 0);</span><br><span class="line">      &#125;</span><br><span class="line">      else if(valid_flag == -1)&#123;    </span><br><span class="line"></span><br><span class="line">        read_flag = 0;</span><br><span class="line"></span><br><span class="line">        for( k = 0; (k &lt; total_log_blk_num) &amp;&amp; (read_flag != 1); k++)&#123;</span><br><span class="line">          for( m = 0; m &lt; PAGE_NUM_PER_BLK; m++)&#123;</span><br><span class="line">              if((PMT[k].lpn[m] == lpn) &amp;&amp; (PMT[k].lpn_status[m] == 1)) &#123;</span><br><span class="line">                  s_psn = ((PMT[k].pbn * PAGE_NUM_PER_BLK + m) * SECT_NUM_PER_PAGE);</span><br><span class="line">                  s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">                  for (i = 0; i &lt; SECT_NUM_PER_PAGE; i++) &#123;</span><br><span class="line">                      copy[i] = s_lsn + i;</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">                  size = nand_page_read(s_psn, copy, 0);</span><br><span class="line"></span><br><span class="line">                  read_flag = 1;</span><br><span class="line">                  break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      else&#123; </span><br><span class="line">        stat_read_num++;</span><br><span class="line">        flash_read_num++;</span><br><span class="line"></span><br><span class="line">        return 4;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      ASSERT(size == SECT_NUM_PER_PAGE);</span><br><span class="line"></span><br><span class="line">      return sect_num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">上述函数完成的可以理解为：</span><br><span class="line">将lsn转化为对应的lpn和lbn</span><br><span class="line">利用BMT[lbn]----&gt;找到对应的pbn</span><br><span class="line">如果对应的数据项存在数据块pbn中，那么其相对的偏移量应该是一样的，即可以得到对应的物理页地址s_psn</span><br><span class="line"></span><br><span class="line">int offset = lpn%PAGE_NUM_PER_BLK;</span><br><span class="line">s_psn = ((BMT[lbn] * PAGE_NUM_PER_BLK + offset) * SECT_NUM_PER_PAGE);</span><br><span class="line"></span><br><span class="line">但对应的s_lsn并不是输入的lsn（因为经过了上述的模运行）</span><br><span class="line"></span><br><span class="line">s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">因为底层的nand的读写是按一个个页大小操作，且输入的参数需要逻辑扇区地址，因此又设了copy这个int数组里面存的是一个页的起始逻辑页地址到结束</span><br><span class="line">  for (h = 0; h &lt; SECT_NUM_PER_PAGE; h++) &#123;</span><br><span class="line">      copy[h] = s_lsn + h;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">因为日志块的数据更新，有效的数据页并不一定存在数据块（对应的偏移量位置上），还可能存在日志块上（lpn[x]=lpn上，且lpn_status[x]=1）。</span><br><span class="line">首先查询对应的数据块上的数据页项oob标识是否为有效</span><br><span class="line">valid_flag = nand_oob_read(s_psn);</span><br><span class="line">如果无效，则在对应的日志块中寻找最新的有效数据项，但是可能出现的情况是valid_flag==0（不存在该数据页？？）代码里面的操作是记一次读操作。</span><br></pre></td></tr></table></figure>
+<p>FAST的写操作就较为复杂了，写入有一个写入冲突，即如果写入更新的数据，要将数据块中的数据项标记为无效，将新的数据项写入到对应的RW、SW中。但是同时需要注意的是更新的数据可能还会存在上一次日志块中，因此需要将其置为无效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">size_t lm_write(sect_t lsn, sect_t size, int mapdir_flag)  </span><br><span class="line">&#123;</span><br><span class="line">  int lbn; int lpn; int offset;  //  logical page number</span><br><span class="line">  int pbn; int sect_num = SECT_NUM_PER_PAGE;</span><br><span class="line">  int s_psn, s_lsn; int i;</span><br><span class="line">  sect_t lsns[SECT_NUM_PER_PAGE];</span><br><span class="line"></span><br><span class="line">  lbn = lsn / SECT_NUM_PER_BLK;                             </span><br><span class="line">  lpn = lsn/SECT_NUM_PER_PAGE;					</span><br><span class="line">  offset = (lsn % SECT_NUM_PER_BLK);    </span><br><span class="line"></span><br><span class="line">  pbn = getPbnFromBMT(lbn);     </span><br><span class="line"></span><br><span class="line">  memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line"></span><br><span class="line">  s_psn = SECTOR(pbn, offset);   </span><br><span class="line">  s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">  for (i = 0; i &lt; SECT_NUM_PER_PAGE; i++) &#123;</span><br><span class="line">      lsns[i] = s_lsn + i;</span><br><span class="line">  &#125;</span><br><span class="line">  size = nand_oob_read(s_psn);</span><br><span class="line"></span><br><span class="line">  /* valid_flag = 1 -&gt; valid sect num = 4 valid_flag = -1 -&gt; valid sect num = 0;</span><br><span class="line">     valid_flag = 0 -&gt; all are free (nothing written) */  </span><br><span class="line">  if( size  != 0 ) &#123;</span><br><span class="line">     // Call writeToLogBlock </span><br><span class="line">      memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">      writeToLogBlock(lsn,lbn,lpn);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">      nand_page_write(s_psn, lsns, 0, 1);</span><br><span class="line">  &#125;</span><br><span class="line">  return sect_num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于写入日志块操作函数<code>writeToLogBlock(lsn,lbn,lpn)</code> 源码就相当的冗余。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">其函数的代码流程可以简述为：</span><br><span class="line">首先查看是否分配了SW块，即SW块对应的实际物理块</span><br><span class="line"> if(global_SW_blk.logblk.pbn == -1 ) &#123;</span><br><span class="line"> //如果未分配实际的物理块，则寻找对应的空闲块进行绑定</span><br><span class="line">      global_SW_blk.logblk.pbn = nand_get_free_blk(1);</span><br><span class="line">    //以下是lopMap的结构体初始化</span><br><span class="line">      global_SW_blk.logblk.fpc = PAGE_NUM_PER_BLK; </span><br><span class="line">      global_SW_blk.data_blk   = -1; </span><br><span class="line">      for( i = 0; i &lt; PAGE_NUM_PER_BLK; i++) &#123;</span><br><span class="line">          global_SW_blk.logblk.lpn[i] = -1;        // -1: no data written</span><br><span class="line">          global_SW_blk.logblk.lpn_status[i] = 0;  // 0: free</span><br><span class="line">      &#125;</span><br><span class="line"> &#125;</span><br><span class="line">//再绑定PMT日志块数组标定</span><br><span class="line"> PMT[0] = global_SW_blk.logblk;</span><br><span class="line"> 之后所有重新分配新的SW块都是进行上述同样的操作。</span><br><span class="line"></span><br><span class="line">下面遵循FAST写入SW块的原则，首先判断偏移量offset是否为0，如果是，则直接将其写入SW块的第一个数据页位置，这里又得考虑当前的SW块是否为空，如果不为空，则需要将这个SW块进行部分（交换）合并操作（根据当前的SW的块大小进行合并操作），并未新的lsn分配新的SW块。代码片段如下：</span><br><span class="line">if ( global_SW_blk.logblk.fpc == PAGE_NUM_PER_BLK) &#123;    // SW logblock is empty </span><br><span class="line"></span><br><span class="line">            //directly do write on SW block because data block has been written already ! </span><br><span class="line">            ASSERT(global_SW_blk.data_blk == -1);</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line">          else &#123;</span><br><span class="line"></span><br><span class="line">              // completely sequentially written -&gt; switch merge</span><br><span class="line">              if(global_SW_blk.logblk.fpc == 0)  &#123;  // no free pages in SW_BLk</span><br><span class="line">                  merge_switch(global_SW_blk.logblk.pbn, global_SW_blk.data_blk);</span><br><span class="line">                  merge_switch_num++;</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              // partially sequentially written -&gt; partial merge</span><br><span class="line">              else &#123;</span><br><span class="line"></span><br><span class="line">                  merge_partial(global_SW_blk.logblk.pbn, global_SW_blk.data_blk, global_SW_blk.logblk.fpc,lpn*SECT_NUM_PER_PAGE);</span><br><span class="line">                  merge_partial_num++;</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              //allocate new SW_blk and initialize it</span><br><span class="line">              global_SW_blk.logblk.pbn = nand_get_free_blk(1);</span><br><span class="line">              global_SW_blk.logblk.fpc = PAGE_NUM_PER_BLK; </span><br><span class="line">              global_SW_blk.data_blk   = -1; </span><br><span class="line">              for( i = 0; i &lt; PAGE_NUM_PER_BLK; i++) &#123;</span><br><span class="line">                  global_SW_blk.logblk.lpn[i] = -1;        // -1: no data written</span><br><span class="line">                  global_SW_blk.logblk.lpn_status[i] = 0;  // 0: free</span><br><span class="line">              &#125;</span><br><span class="line">              PMT[0] = global_SW_blk.logblk;         // insert new SW_blk info into PMT</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          ASSERT(BMT[lbn] != -1);</span><br><span class="line">		//更新数据前，先将原数据块中的数据页置为无效（底层nand都是以扇区为操作单位，但是FTL是页操作单位，这个转化在整段代码中都需要注意的）</span><br><span class="line">          // invalidate page in data block</span><br><span class="line">          s_psn = ((BMT[lbn] * PAGE_NUM_PER_BLK) * SECT_NUM_PER_PAGE);</span><br><span class="line">          s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">          for(i = 0; i&lt;SECT_NUM_PER_PAGE; i++)&#123;</span><br><span class="line">              nand_invalidate(s_psn + i, s_lsn + i);</span><br><span class="line">          &#125; </span><br><span class="line">          nand_stat(OOB_WRITE);</span><br><span class="line">      </span><br><span class="line">          // write page in SW_blk</span><br><span class="line">          //global_SW_blk.logblk.pbn是这个SW对应真实的物理块号pbn</span><br><span class="line">          pbn = global_SW_blk.logblk.pbn;</span><br><span class="line">          //global_SW_blk.data_blk是这个SW对应的数据块的物理块号，和逻辑块号lbn存在对应的关系</span><br><span class="line">          global_SW_blk.data_blk = BMT[lbn]; </span><br><span class="line">          global_SW_blk.logblk.fpc--;</span><br><span class="line">          global_SW_blk.logblk.lpn[page_offset] = lpn; //store lpn of the request </span><br><span class="line">          global_SW_blk.logblk.lpn_status[page_offset] = 1; // 1: valid</span><br><span class="line">          PMT[0] = global_SW_blk.logblk;</span><br><span class="line">		</span><br><span class="line">		//重新更新s_psn的地址（因为新的地址位置更新在新的SW块上了）</span><br><span class="line">          s_psn = SECTOR(pbn, 0);    </span><br><span class="line">          s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">          </span><br><span class="line">          memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">    </span><br><span class="line">          for (i = 0; i &lt; SECT_NUM_PER_PAGE; i++) </span><br><span class="line">          &#123;</span><br><span class="line">            lsns[i] = s_lsn + i;</span><br><span class="line">          &#125;</span><br><span class="line">       //nand_page_write 需要写入的物理扇区地址，逻辑扇区号（一组地址）</span><br><span class="line">          nand_page_write(s_psn, lsns, 0, 1);</span><br></pre></td></tr></table></figure></p>
+<p>但是如果偏移量offset不为0，则需要判断这个偏移量是否紧接着SW块上的下一个空闲位置。这里首先需要判断当前唯一的SW块是否是更新数据块对应的SW块，如果不是，则直接可以判断不是连续的，将该请求更新到RW块即可，如果是对应的SW块，查看该LPN是否紧挨着上一个请求的地址，如果是，那好极了直接插入SW块，如果不是，则需要判断这个请求地址是在之前的还是在更新数据后面的（会采用不同的合并策略）。先看对应的SW块是否为当前数据块的对应SW部分代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">// when lbn is the &quot;owner&quot; of SW log block  </span><br><span class="line">     if( BMT[lbn] == global_SW_blk.data_blk) &#123;</span><br><span class="line">     //last_lpn表示上一次写访问的lpn</span><br><span class="line">         last_lpn = getLastlpnfromPMT();</span><br><span class="line"></span><br><span class="line">         //sequential writing</span><br><span class="line">         if(lpn == (last_lpn+1) ) &#123;</span><br><span class="line">         </span><br><span class="line">             // write page</span><br><span class="line">             pbn = global_SW_blk.logblk.pbn;</span><br><span class="line">             //分配的新的物理扇区地址是SW块对应的物理块当前空闲扇区的地址</span><br><span class="line">             s_psn = SECTOR(pbn,(PAGE_NUM_PER_BLK - global_SW_blk.logblk.fpc)* SECT_NUM_PER_PAGE );    </span><br><span class="line">             s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">           </span><br><span class="line">             memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">           </span><br><span class="line">             for (i = 0; i &lt; SECT_NUM_PER_PAGE; i++) </span><br><span class="line">             &#123;</span><br><span class="line">                 lsns[i] = s_lsn + i;</span><br><span class="line">             &#125;</span><br><span class="line">       </span><br><span class="line">             nand_page_write(s_psn, lsns, 0, 1);</span><br><span class="line">		//更新SW相关的索引</span><br><span class="line">             global_SW_blk.logblk.fpc--;</span><br><span class="line">             global_SW_blk.logblk.lpn[page_offset] = lpn; //store lpn of the request </span><br><span class="line">             global_SW_blk.logblk.lpn_status[page_offset] = 1; // 1: valid</span><br><span class="line">             PMT[0] = global_SW_blk.logblk;</span><br><span class="line">             </span><br><span class="line">             //将原来的旧数据页标记为无效，找到就数据页的物理地址，和索引，注意这个旧数据可能存在RW块上，所以检索对应的RW是否有过更新，有则直接标记为无效</span><br><span class="line">             // invalidate page in data block</span><br><span class="line"> </span><br><span class="line">             // invalidate page in log block if some data written in some log block</span><br><span class="line">             invalid_flag = 0;</span><br><span class="line">		//检索RW块上是否有过对应lpn的数据更新</span><br><span class="line">             for( i = 1; (i &lt; total_log_blk_num) &amp;&amp; (invalid_flag != 1); i++)&#123;</span><br><span class="line">               for( j = 0; j &lt; PAGE_NUM_PER_BLK; j++)&#123;</span><br><span class="line">                  if((PMT[i].lpn[j] == lpn) &amp;&amp; (PMT[i].lpn_status[j] == 1)) &#123;</span><br><span class="line">                   // invalidate</span><br><span class="line">                     PMT[i].lpn_status[j] = -1;    // -1: invalid</span><br><span class="line">                   </span><br><span class="line">                     s_psn = ((PMT[i].pbn * PAGE_NUM_PER_BLK + j) * SECT_NUM_PER_PAGE);</span><br><span class="line">                     s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">                     for(k = 0; k&lt;SECT_NUM_PER_PAGE; k++)&#123;</span><br><span class="line">                       nand_invalidate(s_psn + k, s_lsn + k);</span><br><span class="line">                     &#125;</span><br><span class="line">                     nand_stat(OOB_WRITE);</span><br><span class="line">                     invalid_flag = 1;</span><br><span class="line">                     break;</span><br><span class="line">                 &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">         </span><br><span class="line">           if(invalid_flag == 0 ) &#123;</span><br><span class="line">   </span><br><span class="line">	    //如果对应的RW块没有更新过，那么数据块中的数据是最新的，则将其置为无效</span><br><span class="line">           // invalidate page in data block</span><br><span class="line"></span><br><span class="line">             s_psn = ((BMT[lbn] * PAGE_NUM_PER_BLK + page_offset) * SECT_NUM_PER_PAGE);</span><br><span class="line">             s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">             for(i = 0; i&lt;SECT_NUM_PER_PAGE; i++)&#123;</span><br><span class="line">               nand_invalidate(s_psn + i, s_lsn + i);</span><br><span class="line">             &#125; </span><br><span class="line">             nand_stat(OOB_WRITE);</span><br><span class="line">           &#125;</span><br><span class="line">         &#125;</span><br><span class="line">//上面是满足连续地址请求，但是可能出现例如lpn为1，2，3，2或1，2，3，5这两种情况中断，有不同的回收操作</span><br><span class="line">         //random writing</span><br><span class="line">         else &#123;</span><br><span class="line">		//1,2,3,2这种情况就比较糟糕了，需要将原来的日志块中1，3和旧数据块中4，和新的2一起写到新的块，形成新的数据块</span><br><span class="line">             if( lpn &lt;= (last_lpn)) &#123;</span><br><span class="line">	          //SW全合并和下面的RW不一样，这个全合并只对应一个数据块</span><br><span class="line">                 merge_full_SW(lpn * SECT_NUM_PER_PAGE);</span><br><span class="line">                 missing_cnt++;</span><br><span class="line">             &#125;    </span><br><span class="line">             else &#123;</span><br><span class="line">              //1，2，3，5这里就执行部分合并，将数据块中的有效数据移动到日志块中，将数据块标记为新的数据块</span><br><span class="line">                 // Note that during partial merge, new write will be taken care of </span><br><span class="line">                 merge_partial(global_SW_blk.logblk.pbn, global_SW_blk.data_blk, global_SW_blk.logblk.fpc,lpn*SECT_NUM_PER_PAGE);</span><br><span class="line">                 merge_partial_num++;</span><br><span class="line">             &#125; </span><br><span class="line">         //因为旧的SW连续中断，所以需要分配新的SW空块</span><br><span class="line">             global_SW_blk.logblk.pbn = nand_get_free_blk(1);</span><br><span class="line">             global_SW_blk.logblk.fpc = PAGE_NUM_PER_BLK; </span><br><span class="line">            //不绑定新的数据块</span><br><span class="line">             global_SW_blk.data_blk   = -1; </span><br><span class="line">             for( i = 0; i &lt; PAGE_NUM_PER_BLK; i++) &#123;</span><br><span class="line">                  global_SW_blk.logblk.lpn[i] = -1;        // -1: no data written</span><br><span class="line">                  global_SW_blk.logblk.lpn_status[i] = 0;  // 0: free</span><br><span class="line">             &#125;</span><br><span class="line">             PMT[0] = global_SW_blk.logblk;         // insert new SW_blk info into PMT</span><br><span class="line"></span><br><span class="line">         &#125;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">    .........不是对应SW块，则随机写</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果SW不是对应当前的数据块，且offset又不是0，肯定可以判读就是随机写了，这就找RW块上空闲的位置写入,首先判读原来的数据是否存在旧的数据块还是RW上，先判断是否在RW块，在则置该数据为无效，不在则找对应旧数据块上的数据为无效。之后利用getRWblk()找到当前可用的RW日志块，写到对应的空闲位置上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">if(BMT[lbn] == global_SW_blk.data_blk)&#123;</span><br><span class="line">	..........</span><br><span class="line">&#125;else&#123;</span><br><span class="line">   // invalidate page in log block if some data written in some log block</span><br><span class="line">          invalid_flag = 0;</span><br><span class="line"></span><br><span class="line">          for( i = 1; (i &lt; total_log_blk_num) &amp;&amp; (invalid_flag != 1); i++)&#123;</span><br><span class="line">              for( j = 0; j &lt; PAGE_NUM_PER_BLK; j++)&#123;</span><br><span class="line">                 if((PMT[i].lpn[j] == lpn) &amp;&amp; (PMT[i].lpn_status[j] == 1)) &#123;</span><br><span class="line">                    // invalidate</span><br><span class="line">                    PMT[i].lpn_status[j] = -1;    // -1: invalid</span><br><span class="line">                    </span><br><span class="line">                    s_psn = ((PMT[i].pbn * PAGE_NUM_PER_BLK + j) * SECT_NUM_PER_PAGE);</span><br><span class="line">                    s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">                    for(k = 0; k&lt;SECT_NUM_PER_PAGE; k++)&#123;</span><br><span class="line">                      nand_invalidate(s_psn + k, s_lsn + k);</span><br><span class="line">                    &#125;</span><br><span class="line">                    nand_stat(OOB_WRITE);</span><br><span class="line">                    invalid_flag = 1;</span><br><span class="line">                    break;</span><br><span class="line">                 &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          </span><br><span class="line">          if(invalid_flag == 0 ) &#123;</span><br><span class="line">    </span><br><span class="line">            // invalidate page in data block</span><br><span class="line">            s_psn = ((BMT[lbn] * PAGE_NUM_PER_BLK + page_offset) * SECT_NUM_PER_PAGE);</span><br><span class="line">            s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">            for(i = 0; i&lt;SECT_NUM_PER_PAGE; i++)&#123;</span><br><span class="line">                nand_invalidate(s_psn + i, s_lsn + i);</span><br><span class="line">            &#125; </span><br><span class="line">            nand_stat(OOB_WRITE);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          currRWblk = getRWblk();</span><br><span class="line"></span><br><span class="line">		//这里的RW块的回收是被动的，当RW不够用的时候，回收FirstRWblk（这里就涉及到了全合并操作）</span><br><span class="line">          // no available RW log block</span><br><span class="line">          if(currRWblk == -1)&#123;</span><br><span class="line">          //这里的firstRWblk是1-total_log_num-1的取值，就是PMT[]的下标</span><br><span class="line">            firstRWblk = getFirstRWblk();</span><br><span class="line">          //这个merge_full是专门回收RW日志块的，找到PMT[x]----&gt;logMap就有了</span><br><span class="line">            merge_full(firstRWblk);</span><br><span class="line">			//全合并完，重新为该下标PMT[x]分配绑定新的物理块和初始化</span><br><span class="line">            //initialize</span><br><span class="line">            PMT[firstRWblk].pbn = nand_get_free_blk(1);</span><br><span class="line">            PMT[firstRWblk].fpc = PAGE_NUM_PER_BLK;</span><br><span class="line">            memset(PMT[firstRWblk].lpn, 0xFF, sizeof(int)*PAGE_NUM_PER_BLK);</span><br><span class="line">            memset(PMT[firstRWblk].lpn_status, 0x00, sizeof(int)*PAGE_NUM_PER_BLK);</span><br><span class="line">		//初始化后就当新的块来使用</span><br><span class="line">            global_currRWblk = firstRWblk; </span><br><span class="line">            currRWblk = firstRWblk;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">		//如果当前的currRW有空的位置，则写入空闲位置上</span><br><span class="line">          currRWpageoffset = PAGE_NUM_PER_BLK - PMT[currRWblk].fpc; </span><br><span class="line"></span><br><span class="line">          // write page</span><br><span class="line">          pbn = PMT[currRWblk].pbn;</span><br><span class="line">          s_psn = SECTOR(pbn, currRWpageoffset * SECT_NUM_PER_PAGE );    </span><br><span class="line">          s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">            </span><br><span class="line">          PMT[currRWblk].lpn[currRWpageoffset] = lpn;</span><br><span class="line">          PMT[currRWblk].lpn_status[currRWpageoffset] = 1;  // 1: valid</span><br><span class="line"></span><br><span class="line">          memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">            </span><br><span class="line">          for (i = 0; i &lt; SECT_NUM_PER_PAGE; i++) </span><br><span class="line">          &#123;</span><br><span class="line">            lsns[i] = s_lsn + i;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          nand_page_write(s_psn, lsns, 0, 1);</span><br><span class="line">          PMT[currRWblk].fpc--;</span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">｝</span><br></pre></td></tr></table></figure></p>
+<h2 id="合并操作代码"><a href="#合并操作代码" class="headerlink" title="合并操作代码"></a>合并操作代码</h2><ul>
+<li>SW的交换合并（<code>void merge_partial(int log_pbn, int data_pbn, int fpc, int req_lsn)</code>）</li>
+<li>SW的部分合并（<code>void merge_partial(int log_pbn, int data_pbn, int fpc, int req_lsn)</code>）</li>
+<li>SW的全合并（<code>void merge_full_SW(int req_lsn)</code>）</li>
+<li>RW的全合并（<code>void merge_full(int pmt_index)</code>）<br>需要注意的是SW块的全合并只是对应一个绑定的数据块，只涉及2次块擦除和寻找一个新的空闲块备份数据，和RW的全合并是完全不同的。RW因为全关联，所以是不存在交换和部分合并的操作的！！！。先从简单的交换合并代码开始理解：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// for sequential</span><br><span class="line">void merge_switch(int log_pbn, int data_pbn)</span><br><span class="line">&#123;</span><br><span class="line">    //1. search &amp; update pointers</span><br><span class="line">    //2. update BMT</span><br><span class="line">    int i;</span><br><span class="line">    for(i = 0; i&lt; total_blk_num; i++)&#123;</span><br><span class="line">      if( BMT[i] == data_pbn )&#123;</span><br><span class="line">        BMT[i] = log_pbn;</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ASSERT(i != total_blk_num);</span><br><span class="line"></span><br><span class="line">    //3. erase (data_pbn)</span><br><span class="line">    nand_erase(data_pbn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SW交换合并只需要将SW标记为新的数据块就行，但是这里注意要更新对应的块映射（BMT[?]!!!）,同时擦除旧的数据块。<br>SW的部分合并，就需要从旧的数据块中读出有效的数据，依次添入SW后面的空闲位置，同时将SW标记为新的数据块，更新对应的块映射（BMT[?]!!!），擦除旧的数据块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">void merge_partial(int log_pbn, int data_pbn, int fpc, int req_lsn)</span><br><span class="line">&#123;</span><br><span class="line">    //1. copy valid pages from data_pbn to log_pbn  </span><br><span class="line">    int i,j,k,h,m;</span><br><span class="line">    int lpn;</span><br><span class="line">    int s_psn, s_lsn;</span><br><span class="line">    int sect_index = 0;</span><br><span class="line">    int valid_sect_num;</span><br><span class="line">    //找到RW缺的有效数据页的起始地址</span><br><span class="line">    int start = PAGE_NUM_PER_BLK - fpc;</span><br><span class="line"></span><br><span class="line">    int invalid_flag,valid_flag;</span><br><span class="line"></span><br><span class="line">    int copy[SECT_NUM_PER_PAGE];</span><br><span class="line">    memset(copy, 0xFF, sizeof copy);</span><br><span class="line">//根据数据块的物理地址，倒推找到对应的逻辑块地址lpn(j),就可以计算起始的lpn到结束的lpn</span><br><span class="line">    for(j=0; j &lt; total_blk_num; j++) &#123;</span><br><span class="line">        if(BMT[j] == data_pbn) &#123;</span><br><span class="line">          break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ASSERT(j != total_blk_num);</span><br><span class="line"></span><br><span class="line">    lpn = j*PAGE_NUM_PER_BLK;  </span><br><span class="line">//因为SW块是严格得依次写入的，所以偏移量和lpn的偏移量是一致的，所以就可以确定缺的lpn有哪些，依次将这些lpn从原来的旧数据块中读出来，并置位原来的数据块的页无效</span><br><span class="line">//但还有一种情况，就是lpn不存在原来的数据块中，则从RW块中找到最新有效的数据</span><br><span class="line">    for (i = start; i &lt; PAGE_NUM_PER_BLK; i++) </span><br><span class="line">    &#123;</span><br><span class="line">        s_lsn = (lpn+i) * SECT_NUM_PER_PAGE;  </span><br><span class="line">        for (m = 0; m &lt; SECT_NUM_PER_PAGE; m++) &#123;</span><br><span class="line">            copy[m] = s_lsn + m;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">          valid_flag = nand_oob_read( SECTOR(data_pbn, i * SECT_NUM_PER_PAGE));</span><br><span class="line">          if(valid_flag == 1)</span><br><span class="line">          &#123;</span><br><span class="line">			//如果原旧数据块数据为有效，还需要判断该数据是否当前的请求是否冲突，如果冲突，则以当前的请求为最新（不需要读操作了）</span><br><span class="line">            if(s_lsn != req_lsn)&#123;</span><br><span class="line"></span><br><span class="line">            valid_sect_num = nand_page_read( SECTOR(data_pbn, i * SECT_NUM_PER_PAGE), copy, 1);</span><br><span class="line">            nand_page_write(SECTOR(log_pbn, i*SECT_NUM_PER_PAGE), copy, 1, 1);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">              nand_page_write(SECTOR(log_pbn, i*SECT_NUM_PER_PAGE), copy, 0, 1);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line">          else if( valid_flag == -1) </span><br><span class="line">          &#123;</span><br><span class="line">          //如果当前的旧数据块该数据页为无效，则从RW块中找最新的数据，也要判读是否和当前的请求冲突，如果冲突，则以当前的请求为最新（不需要读操作了）</span><br><span class="line">              invalid_flag = 0;</span><br><span class="line">              for( j = 0; j &lt; total_log_blk_num &amp;&amp; invalid_flag != 1; j++) &#123;  </span><br><span class="line">                for( k = 0; k &lt; PAGE_NUM_PER_BLK;k++)  &#123;</span><br><span class="line">                    if(PMT[j].lpn[k] == (lpn+i)) &#123;</span><br><span class="line">                      //invalidate in log block</span><br><span class="line"></span><br><span class="line">                      PMT[j].lpn_status[k] = -1;    // -1: invalid</span><br><span class="line">                      </span><br><span class="line">                      s_psn = ((PMT[j].pbn * PAGE_NUM_PER_BLK + k) * SECT_NUM_PER_PAGE);</span><br><span class="line">                      s_lsn = (lpn+i) * SECT_NUM_PER_PAGE;</span><br><span class="line">                      </span><br><span class="line">                      // copy the page in log block into new data block  </span><br><span class="line">                      valid_sect_num = nand_page_read(s_psn, copy, 1);</span><br><span class="line">					</span><br><span class="line">					//不同的nand_page_write操作</span><br><span class="line">                      if(s_lsn != req_lsn)&#123;</span><br><span class="line">                        nand_page_write(SECTOR(log_pbn, i*SECT_NUM_PER_PAGE), copy, 1, 1);</span><br><span class="line">                      &#125;</span><br><span class="line">                      else&#123;</span><br><span class="line">                        nand_page_write(SECTOR(log_pbn, i*SECT_NUM_PER_PAGE), copy, 0, 1);</span><br><span class="line">                      &#125;</span><br><span class="line"></span><br><span class="line">                      // invalidate the page in log block</span><br><span class="line">                      for(h = 0; h&lt;SECT_NUM_PER_PAGE; h++)&#123;</span><br><span class="line">                        nand_invalidate(s_psn + h, s_lsn + h);</span><br><span class="line">                      &#125;</span><br><span class="line">                      nand_stat(OOB_WRITE);</span><br><span class="line"></span><br><span class="line">                      invalid_flag = 1;</span><br><span class="line">                      break;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          else </span><br><span class="line">          &#123;</span><br><span class="line">              if(s_lsn == req_lsn)&#123;</span><br><span class="line">                nand_page_write(SECTOR(log_pbn, i*SECT_NUM_PER_PAGE), copy, 0, 1);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;</span><br><span class="line">//更新对应的数据块索引</span><br><span class="line">    //2. update BMT</span><br><span class="line">    for(i = 0; i&lt;total_blk_num; i++)&#123;</span><br><span class="line">      if( BMT[i] == data_pbn )&#123;</span><br><span class="line">        BMT[i] = log_pbn;</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">//擦除旧的数据块</span><br><span class="line">    ASSERT(i != total_blk_num);</span><br><span class="line">    //3. erase (data_pbn)</span><br><span class="line">    nand_erase(data_pbn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SW块全合并，其实和SW的交换合并很像，但是需要找到一个全新空块的数据块，将SW中有效的数据页和旧数据块（也可能在其他RW块上）中的数据页读出来<br>如1，2，3，2这样引发的全合并(如果块大小为4)，则SW的1，3为有效，req_lpn=2为最新的，从其他地方（旧数据块中或RW）找到4，一起写到新的块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">void merge_full_SW(int req_lsn)</span><br><span class="line">&#123;</span><br><span class="line">    int i,h;</span><br><span class="line">    int s_lsn, s_psn, s_psn1, lpn, valid_flag = 0;</span><br><span class="line">    int new_pbn,pbn,lbn = -1;</span><br><span class="line">    sect_t lsns[SECT_NUM_PER_PAGE];</span><br><span class="line">    </span><br><span class="line">    merge_full_num++;</span><br><span class="line">    </span><br><span class="line">    PMT[0] = global_SW_blk.logblk;</span><br><span class="line">    //pbn是对应的旧数据块</span><br><span class="line">    pbn = global_SW_blk.data_blk;</span><br><span class="line">	//分配新的数据块，为数据迁移做准备</span><br><span class="line">    new_pbn = nand_get_free_blk(1);</span><br><span class="line"></span><br><span class="line">//同样利用原来的BMT的映射关系找到对应的lbn，利用lbn反过来查找最新的数据在哪里</span><br><span class="line">    for(i = 0; i&lt;total_blk_num; i++)&#123;</span><br><span class="line">      if( BMT[i] ==  pbn)&#123;</span><br><span class="line">        lbn = i;</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">//更新BMT的映射关系为新分配的物理块&lt;----&gt;lbn</span><br><span class="line">    BMT[lbn] = new_pbn;</span><br><span class="line">    ASSERT( lbn != -1);</span><br><span class="line">     </span><br><span class="line">  //先依次读出RW块中的有效数据（这个都是按次序的，除了发生冲突的req_lsn），直到出现空白页（status==0）            </span><br><span class="line">    for( i =0 ; i &lt; PAGE_NUM_PER_BLK; i++) &#123;</span><br><span class="line">      </span><br><span class="line">      if(PMT[0].lpn_status[i] == -1)&#123;   // -1: invalid, 0: free, 1: valid</span><br><span class="line">          ASSERT(0);</span><br><span class="line">          continue;</span><br><span class="line">      &#125;</span><br><span class="line">      else if(PMT[0].lpn_status[i] == 1) &#123; </span><br><span class="line">	        lpn = (lbn * PAGE_NUM_PER_BLK) + i;</span><br><span class="line">	        s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">	        s_psn = SECTOR(new_pbn,i* SECT_NUM_PER_PAGE);    </span><br><span class="line">	        memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">	</span><br><span class="line">	        for (h = 0; h &lt; SECT_NUM_PER_PAGE; h++) &#123;</span><br><span class="line">	           lsns[h] = s_lsn + h;</span><br><span class="line">	        &#125;</span><br><span class="line">	              </span><br><span class="line">	        if(req_lsn == s_lsn) &#123;</span><br><span class="line">	            nand_page_write(s_psn, lsns, 0, 1);</span><br><span class="line">	        &#125;</span><br><span class="line">	        else&#123;</span><br><span class="line">	            s_psn1 = (global_SW_blk.logblk.pbn * PAGE_NUM_PER_BLK + i) * SECT_NUM_PER_PAGE; </span><br><span class="line">	            nand_page_read(s_psn1, lsns, 1); // read from log block</span><br><span class="line">	            nand_page_write(s_psn, lsns, 1, 1);</span><br><span class="line">	        &#125;              </span><br><span class="line">     &#125;</span><br><span class="line">      else &#123;</span><br><span class="line">        lpn = (lbn * PAGE_NUM_PER_BLK) + i;</span><br><span class="line">        s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">        //s_psn是要写入的新的物理地址</span><br><span class="line">        s_psn = SECTOR(new_pbn,i* SECT_NUM_PER_PAGE);    </span><br><span class="line">        //s_psn1是旧的数据块物理地址</span><br><span class="line">        s_psn1 = (pbn * PAGE_NUM_PER_BLK + i) * SECT_NUM_PER_PAGE; </span><br><span class="line">        for (h = 0; h &lt; SECT_NUM_PER_PAGE; h++) &#123;</span><br><span class="line">           lsns[h] = s_lsn + h;</span><br><span class="line">        &#125;</span><br><span class="line">        valid_flag = nand_oob_read(s_psn1);</span><br><span class="line">        if( valid_flag == 1)&#123; // read from data block</span><br><span class="line">          nand_page_read(s_psn1,lsns,1);</span><br><span class="line">          nand_page_write(s_psn,lsns,1,1);</span><br><span class="line">        &#125;</span><br><span class="line">		//万一vaild_flag!=1就有bug了！！，这是问题啊？不知道源码作者怎么处理的</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">//擦除旧的数据块和RW块（2次块擦除）</span><br><span class="line">    nand_erase(pbn);</span><br><span class="line">    nand_erase(global_SW_blk.logblk.pbn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>RW块的全合并操作就相当复杂了。就是要找这个RW到底对应了多少个数据块。</p>
+<ul>
+<li>找到对应的数据块data_pbn<br>logMap.lpn[x]项存的lpn满足logMap.lpn[x].status=1时，则可以将用该lpn计算—–&gt;lbn—BMT[lbn]–&gt;data_pbn<br>统计不同的数据data_pbn就可以知道关联多少不同的数据块</li>
+<li>针对不同的<code>data_pbn</code>分配新的物理块地址 <code>new_pbn</code></li>
+<li>从data_pbn<---->lbn—&gt;lpn,依次找到最新的数据页写入到新的<code>new_pbn</code> 上<br>瞎话讲那么多还是，先看代码讲下来：<br>关于输入的pmt_index是PMT[?]的下标<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br></pre></td><td class="code"><pre><span class="line">void merge_full(int pmt_index)  </span><br><span class="line">&#123;</span><br><span class="line">    int i,j,k,m,h;</span><br><span class="line">    int size;</span><br><span class="line">    int old_pbn;</span><br><span class="line"></span><br><span class="line">    int lbn,lpn,new_pbn,pbn,offset, invalid_flag;</span><br><span class="line">    int s_lsn, s_psn;</span><br><span class="line">    sect_t lsns[SECT_NUM_PER_PAGE];</span><br><span class="line"></span><br><span class="line">//这个错误判断，首先回收的RW块必须是耗净的，且不能回收PMT[0]（专门映射SW块的）</span><br><span class="line">    if(PMT[pmt_index].fpc != 0 &amp;&amp; pmt_index == 0) &#123;</span><br><span class="line">        printf(&quot;something sucks&quot;);</span><br><span class="line">        ASSERT(0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // Check with all page in a log block </span><br><span class="line">    //依次查找当前要回收的RW中的有效页`PMT[pmt_index].lpn_status[i] == 1`</span><br><span class="line">    for(i = 0; i&lt;PAGE_NUM_PER_BLK; i++)</span><br><span class="line">    &#123;</span><br><span class="line">      if(PMT[pmt_index].lpn_status[i] != 1)&#123;   // -1: invalid, 0: free, 1: valid</span><br><span class="line">        continue;</span><br><span class="line">      &#125;</span><br><span class="line">      else&#123;</span><br><span class="line">          offset  = PMT[pmt_index].lpn[i] % PAGE_NUM_PER_BLK;</span><br><span class="line">          //依据lpn---&gt;lbn--BMT--&gt;old_pbn（但是这个数据块可能同时还关联了一个SW块这需要处理）</span><br><span class="line">          lbn     = PMT[pmt_index].lpn[i] / PAGE_NUM_PER_BLK;</span><br><span class="line">          old_pbn = BMT[lbn];</span><br><span class="line">			</span><br><span class="line">		//如果还关联一个SW块，则先对该old_pbn块进行一次SW的部分合并</span><br><span class="line">          if(old_pbn == global_SW_blk.data_blk) &#123;</span><br><span class="line">                  merge_partial(global_SW_blk.logblk.pbn, global_SW_blk.data_blk, global_SW_blk.logblk.fpc,-1);</span><br><span class="line">                  merge_partial_num++;</span><br><span class="line">              </span><br><span class="line">                  global_SW_blk.logblk.pbn = nand_get_free_blk(1);</span><br><span class="line">                  global_SW_blk.logblk.fpc = PAGE_NUM_PER_BLK; </span><br><span class="line">                  global_SW_blk.data_blk   = -1; </span><br><span class="line">                  for( h = 0; h &lt; PAGE_NUM_PER_BLK; h++) &#123;</span><br><span class="line">                    global_SW_blk.logblk.lpn[h] = -1;        // -1: no data written</span><br><span class="line">                    global_SW_blk.logblk.lpn_status[h] = 0;  // 0: free</span><br><span class="line">                  &#125;</span><br><span class="line">                  PMT[0] = global_SW_blk.logblk;         // insert new SW_blk info into PMT</span><br><span class="line">                  continue;</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line">          //OK,经过上述处理以后，关联的旧数据块不可能出现最新数据在SW上，可以开始分配新的数据块，开始数据整合</span><br><span class="line">          new_pbn = nand_get_free_blk(1);</span><br><span class="line">          BMT[lbn] = new_pbn;</span><br><span class="line">          merge_full_num++;</span><br><span class="line">		//对该lbn所属于的lpn全部遍历重写入新的块</span><br><span class="line">          for(j =0 ; j &lt; PAGE_NUM_PER_BLK ; j++) &#123;</span><br><span class="line">  </span><br><span class="line">                lpn = (lbn * PAGE_NUM_PER_BLK) + j;</span><br><span class="line">                /* for nand_oob_read */</span><br><span class="line">				//s_psn是旧数据块相同偏移位置位置上，物理扇区地址,下面读取该页数据是否要使用</span><br><span class="line">                s_psn = SECTOR(old_pbn, j*SECT_NUM_PER_PAGE);   // chk if correct</span><br><span class="line">                s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">                memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">  </span><br><span class="line">                for (h = 0; h &lt; SECT_NUM_PER_PAGE; h++) &#123;</span><br><span class="line">                  lsns[h] = s_lsn + h;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                size = nand_oob_read(s_psn);</span><br><span class="line">			//旧的数据块中的psn为有效，读取写入到新的块地址，将其旧地址置为无效</span><br><span class="line">                if(size == 1) // valid -&gt; invalidate page in the data block </span><br><span class="line">                &#123;</span><br><span class="line">                    // invalidate page in data block</span><br><span class="line">                    s_psn = SECTOR(old_pbn, j*SECT_NUM_PER_PAGE);   // chk if correct</span><br><span class="line">                    s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                    // read from data block - youkim</span><br><span class="line">                    memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">                    for (h = 0; h&lt; SECT_NUM_PER_PAGE; h++) </span><br><span class="line">                    &#123;</span><br><span class="line">                       lsns[h] = s_lsn + h;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    nand_page_read(s_psn, lsns, 1);</span><br><span class="line"></span><br><span class="line">                    // invalidate page in data block</span><br><span class="line">                    for(h = 0; h&lt;SECT_NUM_PER_PAGE; h++)&#123;</span><br><span class="line">                        nand_invalidate(s_psn + h, s_lsn + h);</span><br><span class="line">                    &#125; </span><br><span class="line">                    nand_stat(OOB_WRITE);</span><br><span class="line"></span><br><span class="line">                    // write into new pbn </span><br><span class="line">                    //此时s_psn为新块的写入物理扇区地址</span><br><span class="line">                    s_psn = SECTOR(new_pbn,j* SECT_NUM_PER_PAGE);    </span><br><span class="line">                    s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">          </span><br><span class="line">                    memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">    </span><br><span class="line">                    for (h = 0; h&lt; SECT_NUM_PER_PAGE; h++) </span><br><span class="line">                    &#123;</span><br><span class="line">                      lsns[h] = s_lsn + h;</span><br><span class="line">                    &#125;</span><br><span class="line">                    nand_page_write(s_psn, lsns, 1, 1);</span><br><span class="line">                &#125;</span><br><span class="line">                else if(size == -1)</span><br><span class="line">                &#123;</span><br><span class="line">              //如果旧的数据块中数据页为无效，则遍历RW日志块找到其中最新数据</span><br><span class="line">                  invalid_flag = 0;</span><br><span class="line"></span><br><span class="line">                  for( k = 1; (k &lt; total_log_blk_num) &amp;&amp; (invalid_flag != 1); k++)&#123;</span><br><span class="line">                    for( m = 0; m &lt; PAGE_NUM_PER_BLK; m++)&#123;</span><br><span class="line">                       if((PMT[k].lpn[m] == lpn) &amp;&amp; (PMT[k].lpn_status[m] == 1)) &#123;</span><br><span class="line">                          // invalidate page in log block </span><br><span class="line">                          PMT[k].lpn_status[m] = -1;    // -1: invalid</span><br><span class="line">                      </span><br><span class="line">                          s_psn = ((PMT[k].pbn * PAGE_NUM_PER_BLK + m) * SECT_NUM_PER_PAGE);</span><br><span class="line">                          s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line"></span><br><span class="line">                          // read from data block - youkim</span><br><span class="line">                          memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">                          for (h = 0; h&lt; SECT_NUM_PER_PAGE; h++) </span><br><span class="line">                          &#123;</span><br><span class="line">                              lsns[h] = s_lsn + h;</span><br><span class="line">                          &#125;</span><br><span class="line">                          nand_page_read(s_psn, lsns, 1);</span><br><span class="line"></span><br><span class="line">                          // invalidate</span><br><span class="line">                          for(h = 0; h&lt;SECT_NUM_PER_PAGE; h++)&#123;</span><br><span class="line">                            nand_invalidate(s_psn + h, s_lsn + h);</span><br><span class="line">                          &#125;</span><br><span class="line">                          nand_stat(OOB_WRITE);</span><br><span class="line">                          invalid_flag = 1;</span><br><span class="line">                          break;</span><br><span class="line">                      &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">              </span><br><span class="line">                  // write into new pbn </span><br><span class="line">                  s_psn = SECTOR(new_pbn,j* SECT_NUM_PER_PAGE);    </span><br><span class="line">                  s_lsn = lpn * SECT_NUM_PER_PAGE;</span><br><span class="line">          </span><br><span class="line">                  memset (lsns, 0xFF, sizeof (lsns));</span><br><span class="line">    </span><br><span class="line">                  for (h = 0; h&lt; SECT_NUM_PER_PAGE; h++) </span><br><span class="line">                  &#123;</span><br><span class="line">                    lsns[h] = s_lsn + h;</span><br><span class="line">                  &#125;</span><br><span class="line">                  nand_page_write(s_psn, lsns, 1, 1);</span><br><span class="line">                &#125;</span><br><span class="line">                else&#123;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // erase the data block 错误判断</span><br><span class="line">        if(old_pbn == PMT[0].pbn)&#123;</span><br><span class="line">            printf(&quot;1. something sucks&quot;);</span><br><span class="line">            ASSERT(0);</span><br><span class="line">        &#125;</span><br><span class="line">        nand_erase(old_pbn);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // erase the log block</span><br><span class="line">    nand_erase(PMT[pmt_index].pbn);</span><br><span class="line">      </span><br><span class="line">    free_RW_blk_num++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</----></li>
+</ul>
+<p>关于从全合并操作其实可以找到关联的对应的数据块个数，fast.c源码的关键部分就这么些了</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SSD-Flashsim-FAST/" rel="tag"># SSD Flashsim FAST</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/21/DFTL源码阅读1/" rel="next" title="DFTL源码阅读1">
+                <i class="fa fa-chevron-left"></i> DFTL源码阅读1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/24/DFTL算法代码实现追加/" rel="prev" title="DFTL算法代码实现追加">
+                DFTL算法代码实现追加 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FAST的算法基础"><span class="nav-number">2.</span> <span class="nav-text">FAST的算法基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FAST源码理解"><span class="nav-number">3.</span> <span class="nav-text">FAST源码理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合并操作代码"><span class="nav-number">4.</span> <span class="nav-text">合并操作代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

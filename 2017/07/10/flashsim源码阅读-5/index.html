@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="flashsim 源码阅读," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="#参考论文阅读  参考论文：Flashsim:A Simulator for NAND Flash-based Solid-State Drives。  为了更好的理解该仿真器，去阅读了该仿真器设计者写的一篇学术论文，以下内容是我个人阅读原文理解和翻译的。 ##摘要部分：该文献在摘要部分就说明Flashsim仿真器是event驱动类型的仿真器。Flashsim是与公认的硬盘仿真器Disksim良好">
+<meta name="keywords" content="flashsim 源码阅读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flashsim源码阅读-5">
+<meta property="og:url" content="http://yoursite.com/2017/07/10/flashsim源码阅读-5/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="#参考论文阅读  参考论文：Flashsim:A Simulator for NAND Flash-based Solid-State Drives。  为了更好的理解该仿真器，去阅读了该仿真器设计者写的一篇学术论文，以下内容是我个人阅读原文理解和翻译的。 ##摘要部分：该文献在摘要部分就说明Flashsim仿真器是event驱动类型的仿真器。Flashsim是与公认的硬盘仿真器Disksim良好">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20170708171430829?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170708171546214?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170708172140133?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2018-02-24T08:55:38.459Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flashsim源码阅读-5">
+<meta name="twitter:description" content="#参考论文阅读  参考论文：Flashsim:A Simulator for NAND Flash-based Solid-State Drives。  为了更好的理解该仿真器，去阅读了该仿真器设计者写的一篇学术论文，以下内容是我个人阅读原文理解和翻译的。 ##摘要部分：该文献在摘要部分就说明Flashsim仿真器是event驱动类型的仿真器。Flashsim是与公认的硬盘仿真器Disksim良好">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170708171430829?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/10/flashsim源码阅读-5/"/>
+
+
+
+
+
+  <title>flashsim源码阅读-5 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry，Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/flashsim源码阅读-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">flashsim源码阅读-5</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T16:54:38+08:00">
+                2017-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/10/flashsim源码阅读-5/" class="leancloud_visitors" data-flag-title="flashsim源码阅读-5">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#参考论文阅读</p>
+<blockquote>
+<p>参考论文：Flashsim:A Simulator for NAND Flash-based Solid-State Drives。</p>
+</blockquote>
+<p>为了更好的理解该仿真器，去阅读了该仿真器设计者写的一篇学术论文，以下内容是我个人阅读原文理解和翻译的。</p>
+<p>##摘要部分：<br>该文献在摘要部分就说明Flashsim仿真器是event驱动类型的仿真器。Flashsim是与公认的硬盘仿真器Disksim良好兼容，能相互操作。因此可以在该仿真器上实现SSD和HDD的混合存储模型仿真，或者是SSD替换HDD的模型仿真。该仿真器是面向对象设计的仿真器，便于理解和拓展。<br><a id="more"></a></p>
+<p>##正文：<br>关于NAND flash的读写最小操作粒度是页(page)，擦除粒度是块(block)，页不仅存数据还有一个OOB(out-of-band area)带外区，里面包含数据纠错ECC，存放该数据对应的逻辑页地址(LPN)，数据页的当前状态（有效，无效，空闲），下表是不同类型flash的访问响应时间和最小单位：<br><img src="http://img.blog.csdn.net/20170708171430829?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>设计flashsim的FTL层也考虑了FTL应该包含三个部分：地址映射，垃圾回收，磨损均衡。</p>
+<p>###仿真器的设计<br>该仿真器的设计是依据下图的硬件结构体系：<br>第一版的仿真器注重软件实现部分（FTL机制，垃圾回收，磨损均衡）。考虑用的是简化的模型：单个plane配一个简化的channel。但是第一版受限于过于简化的硬件模型和与DiskSim的高度耦合难以拓展，所以才用面向对象的设计方法重新设计了仿真器。该仿真器用C++编写，是完全靠event驱动。<br><img src="http://img.blog.csdn.net/20170708171546214?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>####硬件模块设计<br><strong>SSD：</strong>SSD类提供了对DiskSim操作的接口，通过例化该类能够创建一个SSD仿真模型。重点来了！！！这个SSD类创建的event对象包含了Disksim的ioreq_event结构体，并能反馈给Disksim该event的时间。</p>
+<p><strong>Package（闪存颗粒封装）：</strong>package类是共用一个bus channel的一组flash dies。Package在其构造函数里分配其所包含的dies且将dies连接到bus channel上。这个Package也便于寻址。</p>
+<p><strong>Die(闪存颗粒)：</strong>Die就是一个flash闪存片，包含多个面（plane）。Dies是直接连接在bus channel上的。但是每一个plane都包含一个die bus发送缓存，这是为了以后flash闪存发展可能在die这个更高的层面上进行合并操作，那么相应的event对象也会更新合并时延。</p>
+<p><strong>Plane：</strong>plane由多个块构成，且提供一个页大小的寄存器用来缓存发给bus发送缓存的页数据。当然这个寄存器也可作为plane内部合并操作的缓存。相应的event对象依据合并操作和寄存器时延更新合并时延。</p>
+<p><strong>Block：</strong>块包含若干的页，是最小的擦除单位。当块被擦除时，块里的页中所有数据都被擦除，之后可以重新被写入数据。对应的event对象会更新相应的擦除操作。</p>
+<p><strong>Page：</strong>每一个页都维持其页状态（有效，无效，空闲），在这个层面更新event对象的读写时延，这个时延依据具体的flash类型设置。</p>
+<p><strong>Controller（控制器）：</strong>控制器类的例化对象从SSD类实例化对象中接受event对象，查询FTL决定如何处理每一个event对象。控制器先将有关event的虚拟数据发送给RAM缓冲，再将event对象发送给bus总线。</p>
+<p><strong>RAM：</strong> RAM类用来计算从中读取数据或向其写数据的时间（这就是缓冲区啊！！！！），RAM缓存控制器发送给bus的event的有关虚拟数据。</p>
+<p><strong>Bus：</strong> bus类包含若干channel，每个channel被同属一个package的所有dies共享。Bus核实event类中的address地址，根据这个地址将event发送到合适的channel上。</p>
+<p><strong>Channel：</strong> channel调度处理event和更新event的时间。每一个channel都维系了一个调度表，该调度表记录该channel当前的使用状态。新的event在满足一定相关条件下在下一个空闲时隙被调用处理。调度表的大小等同于队列的大小。</p>
+<p>####软件模块设计<br><strong>Event：</strong> event类对应的是Disksim中的ioreq_event结构体。Event保持其方式和属性去记录反应SSD仿真器的状态，包括SSD的地址。仿真器对象处理event对象和更新event对象的统计信息。</p>
+<p><strong>Address：</strong> address由一个单独的字段组成，这个字段的地址包含从package到page层级（一个字段不同位置表示不同层次地址）。用字段表示地址而不是结构体，是因为字段能够提供分配和验证地址的清晰接口。</p>
+<p><strong>FTL：</strong>主要完成LPN到PPN地址的转化（其实仿真器内部是按扇区操作的）。FTL将包含多个页的event对象转化成单一页级的列表，再用controller按列表顺序处理页级event。FTL负责充分利用硬件的并行性能。FTL也包含垃圾回收和磨损均衡。</p>
+<p><strong>Wear Leveler:</strong> wear leveler 类将块擦除的操作分布在全部的SSD的块上，实现SSD上大量的块能够尽可能工作很久。</p>
+<p><strong>Garbage Collector：</strong>当请求不能被响应（所选的块不能写或者没有足够的空闲块选取写入时）出发垃圾回收。垃圾回收器搜寻合并部分已使用的数据块，将其擦除转化为新的空闲块。其他的GC算法也可以进行仿真。</p>
+<p>###<strong>总线交叉（Bus Channel Interleaving）</strong><br><img src="http://img.blog.csdn.net/20170708172140133?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjAyNjUwNzM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>图中展示的是一个bus channel连接同属一个package的多个dies的情况。提一点，每个bus channel的工作是独立的，也就是多个bus channel可以同时并行操作。图a展示了bus channel上的读请求交叉。Crtl表示控制信号，Rd表示从dies的指定位置读取数据，Data表示将该数据经由bus channel 发送出（给control？）。</p>
+<p>####<strong>读请求交叉：</strong><br>首先，控制时间(图中的Ctrl部分)表示，当控制信号到来时，总线通道会被锁住，请求 die 从给定的页中准备数据。<br>然后，die 处理读取数据的请求。这里面读出的数据就是放到刚刚上面所说的die buffer bus transfers。<br>这个时候总线是空闲的，可以处理其他请求。<br>最后，控制信号又会锁住总线通道，请求 die 从指定的页发送数据，并把这个数据发送出去。一个有趣的现象是，在 R2 的第一次 ctrl time 的结束到 R1 的第二次 ctrl time 的开始之间的这段总线空闲时间并不能被 R3 所利用，所以第三个请求(R3)必须要等到第二个请求(R2)结束后才能开始。</p>
+<p>####<strong>写请求交叉：</strong><br>首先，控制信号会独占总线通道，总线通道被锁住，控制信号会通知相应的 die 它将要接收数据。<br>然后，总线通道仍然处于锁住状态，这个时候总线通道上会进行数据传输。这时候相应的die的buffer bus transfer 接受写入的数据。之后从buffer数据写入到对应的die的位置。<br>最后，相应的 die 写入数据，这个时候总线通道是空闲的，可以处理其他请求。<br>因为写请求只需要占用连续的总线通道时间，所以写请求总是先来先服务(FIFO)。</p>
+<p>###<strong>Event flow（时间流）</strong><br>SSD类实例化的SSD对象接受来自Disksim的ioreq_event。其处理函数由算法1给出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Input: Disksim’s I/O Request Structure (ioreq_event)</span><br><span class="line">Output: Device Service Time</span><br><span class="line">for	each ioreq event do</span><br><span class="line">	begin SSD process ioreq event</span><br><span class="line">		wrap in event object;</span><br><span class="line">		begin controller, FTL process event</span><br><span class="line">			consult wearleveler and garbagecollector;</span><br><span class="line">			create page-sized list of event objects;</span><br><span class="line">			for each e in event list do</span><br><span class="line">				begin SSD, bus, channel process e</span><br><span class="line">					lock for next available transfer time;</span><br><span class="line">					etime ← etime + channel delay;</span><br><span class="line">				end</span><br><span class="line">				Package(e);</span><br><span class="line">			end</span><br><span class="line">			if etype = erase then</span><br><span class="line">				update SSD wear stats;</span><br><span class="line">			end</span><br><span class="line">			begin inform bus, channel: e finished</span><br><span class="line">				channel update scheduling table for event dependencies;</span><br><span class="line">			end</span><br><span class="line">		end</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line">	Algorithm 1: SSD simulator functionality</span><br></pre></td></tr></table></figure>
+<p>SSD的控制器处理用FTL软件模型针对多个页请求产生一个events列表。控制器通过处理数据对应的bus channel处理列表中的每一个event。Bus channel为控制器完成events的调度和交叉访问。<br>算法1里面一开始的event是包含多个页操作的，经过处理以后变成了一串以页为大小的event对象，之后control调用该页所属的channel bus处理。返回的是器件响应时间。</p>
+<p>算法2中event持续的经过package后，在die层面上开始被处理。Events的合并操作可以是在flash的die层面也可以是plane内部。擦除操作在block层面，读写操作在page层面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">Input: Event object (e)</span><br><span class="line">Output: NULL</span><br><span class="line">begin package, die process e</span><br><span class="line">		/* Merge event e in die */</span><br><span class="line">		if etype = mergeandeaddr.plane &quot;= eaddr merge.plane then</span><br><span class="line">			foreach valid page v in eaddr.block x do</span><br><span class="line">				foreach empty page t in eaddr merge.block y do</span><br><span class="line">					t ← v;</span><br><span class="line">					vstate ← invalid;</span><br><span class="line">					tstate ← valid;</span><br><span class="line">				end</span><br><span class="line">				etime ← etime + die merge delay;</span><br><span class="line">			end</span><br><span class="line">	end</span><br><span class="line">	/* Merge event e in plane */</span><br><span class="line">	else plane process e</span><br><span class="line">		planeregister ← edata;</span><br><span class="line">		if etype = merge then</span><br><span class="line">			foreach valid page v in eaddr.block x do</span><br><span class="line">				foreach empty page t in eaddr merge.block y do</span><br><span class="line">					t ← v;</span><br><span class="line">					vstate ← invalid;</span><br><span class="line">					tstate ← valid;</span><br><span class="line">				end</span><br><span class="line">				etime ← etime + die merge delay;</span><br><span class="line">			end</span><br><span class="line">	end</span><br><span class="line">	/* etype = read or write or erase */</span><br><span class="line">	else</span><br><span class="line">		begin block process e</span><br><span class="line">			if etype = erase then</span><br><span class="line">				for each page in block x do</span><br><span class="line">					pagestate ← empty;</span><br><span class="line">				end</span><br><span class="line">				etime ← etime + erase delay;</span><br><span class="line">				update wear stats;</span><br><span class="line">			end</span><br><span class="line">			/* etype = read or write */</span><br><span class="line">			else page process e</span><br><span class="line">				if etype = read then</span><br><span class="line">					etime ← etime + read delay;</span><br><span class="line">				end</span><br><span class="line">				else if etype = write then</span><br><span class="line">					etime ← etime + write delay;</span><br><span class="line">				end</span><br><span class="line">		end</span><br><span class="line">	end</span><br><span class="line">if etype = erase then</span><br><span class="line">	update plane, die, package wear stats;</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line">Algorithm 2: Package (event object) - SSD hardware functionality inside a package. This function is being called in</span><br><span class="line">Algorithm 1.</span><br></pre></td></tr></table></figure>
+<p>文末展望写到：<br>Since the simulator has only been validated with a simple behavioral model for a single plane and simplified channel implementation, we will continue with more thorough validation methods that include bus channel interleaving effects. Caching and I/O scheduling effects will be added and examined.<br>这个仿真器目前是单一plane单总线的仿真？缓冲区的内容没有添加？</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/flashsim-源码阅读/" rel="tag"># flashsim 源码阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/09/flashsim源码阅读-4/" rel="next" title="flashsim源码阅读-4">
+                <i class="fa fa-chevron-left"></i> flashsim源码阅读-4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/21/DFTL源码阅读1/" rel="prev" title="DFTL源码阅读1">
+                DFTL源码阅读1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

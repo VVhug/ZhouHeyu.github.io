@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="diskism 负载合成 源码阅读," />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="针对这几天使用disksim-3.0合成负载的摸索做个总结:Disksim-3.0是可以支持负载合成的。因为根据manual使用手册： 当synthgen取０的时候是关闭disksim的内置负载合成的。当取为非０的时候（一般取１）开启负载功能，但是输出到XXX.outv的文件中是看不到我们想要的负载文件信息。可以在源码中修改输出，其实可以输出合成负载的，下面将详细描述。先讲一下配置文件中如何设置我">
+<meta name="keywords" content="diskism 负载合成 源码阅读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="disksim负载合成-2">
+<meta property="og:url" content="http://yoursite.com/2018/02/24/disksim负载合成-2/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="针对这几天使用disksim-3.0合成负载的摸索做个总结:Disksim-3.0是可以支持负载合成的。因为根据manual使用手册： 当synthgen取０的时候是关闭disksim的内置负载合成的。当取为非０的时候（一般取１）开启负载功能，但是输出到XXX.outv的文件中是看不到我们想要的负载文件信息。可以在源码中修改输出，其实可以输出合成负载的，下面将详细描述。先讲一下配置文件中如何设置我">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/02/24/disksim负载合成-2/runvail截图.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/24/disksim负载合成-2/syntharrays配置文件截图.png">
+<meta property="og:updated_time" content="2018-02-24T09:26:53.191Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="disksim负载合成-2">
+<meta name="twitter:description" content="针对这几天使用disksim-3.0合成负载的摸索做个总结:Disksim-3.0是可以支持负载合成的。因为根据manual使用手册： 当synthgen取０的时候是关闭disksim的内置负载合成的。当取为非０的时候（一般取１）开启负载功能，但是输出到XXX.outv的文件中是看不到我们想要的负载文件信息。可以在源码中修改输出，其实可以输出合成负载的，下面将详细描述。先讲一下配置文件中如何设置我">
+<meta name="twitter:image" content="http://yoursite.com/2018/02/24/disksim负载合成-2/runvail截图.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/24/disksim负载合成-2/"/>
+
+
+
+
+
+  <title>disksim负载合成-2 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry，Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/24/disksim负载合成-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">disksim负载合成-2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T17:08:58+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/24/disksim负载合成-2/" class="leancloud_visitors" data-flag-title="disksim负载合成-2">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="针对这几天使用disksim-3-0合成负载的摸索做个总结"><a href="#针对这几天使用disksim-3-0合成负载的摸索做个总结" class="headerlink" title="针对这几天使用disksim-3.0合成负载的摸索做个总结:"></a>针对这几天使用disksim-3.0合成负载的摸索做个总结:</h1><h2 id="Disksim-3-0是可以支持负载合成的。因为根据manual使用手册："><a href="#Disksim-3-0是可以支持负载合成的。因为根据manual使用手册：" class="headerlink" title="Disksim-3.0是可以支持负载合成的。因为根据manual使用手册："></a>Disksim-3.0是可以支持负载合成的。因为根据manual使用手册：</h2>
+<p>当synthgen取０的时候是关闭disksim的内置负载合成的。当取为非０的时候（一般取１）开启负载功能，但是输出到XXX.outv的文件中是看不到我们想要的负载文件信息。可以在源码中修改输出，其实可以输出合成负载的，下面将详细描述。先讲一下配置文件中如何设置我们所需的负载合成。<br><a id="more"></a></p>
+<h2 id="关于XXX-parv配置文件："><a href="#关于XXX-parv配置文件：" class="headerlink" title="关于ＸＸＸ.parv配置文件："></a>关于ＸＸＸ.parv配置文件：</h2><p>在安装成功的disksim的vaild文件下有很多类型的配置文件，关于使用哪些配置文件可以产生合成负载，其实可以查看该目录下的runvaild（这是个shell脚本）。<br>下面截取其中的关键语句：<br><img src="/2018/02/24/disksim负载合成-2/runvail截图.png" title="runvail截图"></p>
+<p>可以看到以上的配置文件都是可以支持合成负载的。选取其中syntharrays.parv文件中的配置文件做相关介绍。<br><img src="/2018/02/24/disksim负载合成-2/syntharrays配置文件截图.png" title="syntharrays配置文件截图"></p>
+<h2 id="这里简要的提一下关于配置文件相关结构："><a href="#这里简要的提一下关于配置文件相关结构：" class="headerlink" title="这里简要的提一下关于配置文件相关结构："></a>这里简要的提一下关于配置文件相关结构：</h2><ol>
+<li>设置整个工程的系统背景参数：disksim_global Global｛｝里面的东西</li>
+<li>整个模拟工程局部参数，显示信息收集等：disksim_stats Stats｛｝里面的东西(iodriver,bus,ctrl,device,process,flow)</li>
+<li>Disksim_iosim IS{}主要是定义系统衡量的时间</li>
+<li>定义一系列的设备：这里面涉及到设备性能参数的配置，其中会引用.diskspec文件，.diskspec会引用.model文件。这些东西又很复杂了，所以单纯的负载合成最好选择直接能跑得以上配置文件，修改后面的相关配置文件。</li>
+<li>实例化上述定义的设备:component instantiaton……..</li>
+<li>实例化的设备的拓扑关系需要链接，因此有system topology…..</li>
+<li>之后还有一个syncsets这个好像是和磁盘转速同步有关，有些配置文件是不做定义的</li>
+<li>磁盘阵列,数据逻辑组织形成,disksim_logorg …..(这部分东西涉及到RAID还是striping)</li>
+<li>负载合成配置开始</li>
+</ol>
+<h2 id="负载合成配置有两个地方："><a href="#负载合成配置有两个地方：" class="headerlink" title="负载合成配置有两个地方："></a>负载合成配置有两个地方：</h2><ol>
+<li>disksim_pf 的配置，主要是配置和下面有关的disksim_synthio里面用多少个generator(标号从０开始)，处理的时间尺度衡量标准,这里没有特别需要修改的。下面是使用手册里面描述的：</li>
+<li>disksim_synthio这才是修改的关键点，里面包含两个部分总体参数配置和每个generator的相关配置(一般多个generator配置是一样的)。先看下使用手册里面描述的关键信息：
+上面描述的是disksim_synthio里面的相关配置</li>
+<li>Number of  I/O requests to generate:也就是我们想要产生多少的请求数</li>
+<li>Maximum time of trace generated：这些请求产生的时间范围，和之后合成的负载中第一个参数，请求到达时间有关。</li>
+<li>System call/return with each request ：没有多大问题就默认吧</li>
+<li>Think time from call to request ：没有多大问题就默认</li>
+<li>Think time from request to return ：没有多大问题就默认<br>下面需要提一点，请求到来的时间，还有请求本地特性的都可能服从一定的概率分布，disksim这里就很吊，他能指定合成的概率,看下使用手册定义:
+常用的正态分布，指数分布，泊松分布，均匀分布都是有的。配合generator的一个配置讲下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Time-limited think times  = [ normal, 30.0, 100.0  ],</span><br><span class="line">General inter-arrival times  = [ exponential, 0.0, 0.0  ],</span><br><span class="line">Sequential inter-arrival times  = [ normal, 0.0, 0.0  ],</span><br><span class="line">Local inter-arrival times  = [ exponential, 0.0, 0.0  ],</span><br><span class="line">Local distances  = [ normal, 0.0, 40000.0  ],</span><br><span class="line">Sizes  = [ exponential, 0.0, 8.0  ]</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>等式右边并不是某个特定的值，而是用 [ ]括起来的一些量，这些是表示该参数的值不是固定的，对于每次请求该值都不一样。[ ] 里的英文表示分布的类型，具体解释参考上面手册中的解释。<br>下面关于一个generate的详细配置讲解(参考了一篇博客：)</p>
+<h2 id="Generators-生成器的详细配置："><a href="#Generators-生成器的详细配置：" class="headerlink" title="Generators 生成器的详细配置："></a>Generators 生成器的详细配置：</h2><p>Storage capacity per device ：模拟设备的容量，其实就是扇区（页面）的总数目(需要注意这个容量大小是不能随便改的这和上面的磁盘阵列配置，设备参数设置都是有关的，可能和.diskspec和model都是有关的)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Blocking factor 设置的是一个请求的单元大小，如果设为8，则一次请求的(扇区)数目就是8的倍数。</span><br><span class="line">Probability of sequential access =  0.0,</span><br><span class="line">Probability of local access =  0.0,   </span><br><span class="line">Probability of read access =  0.66,</span><br></pre></td></tr></table></figure></p>
+<p>以上三个概率的设置就是控制随机请求的比例，局部性还有读写比例<br>上面的值表示生成的trace全随机，并且读请求占66%；关于local access，manual里面说的是如果一个请求离上一个请求的地址距离在一个较短的距离里面，则这个请求就是local 请求，下面一个  Local distances就设置了这个较短的距离的值。Probability of local access就是local请求的概率(这就是我们负载分析常说的空间局部特性)。<br>最后要提的是sizes参数，表示每次请求访问的扇区（页面）个数。</p>
+<p>上面配置文件的设置大概都讲完了，OK运行命令:<br>路径/disksim　XXX.parv  自己定义的输出文件 ascii 0 1可以开始运行了。但是当你点开输出文件的时候，并有想要的trace记录。这里就需要gdb+源码理解找到输出Trace。<br>中间的经历反复揣摩和GDB单步调试：<br>从一开始的disksim_synthio.c文件中的相关函数入手:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">static void synthio_appendio (process *procp, ioreq_event *tmp)函数尾部输出</span><br><span class="line">//fprintf (stderr, &quot;New request %d, time %f, devno %d, blkno %d, bcount %d, flags %x\n&quot;, synthio_iocnt, new-&gt;time, new-&gt;devno, new-&gt;blkno, new-&gt;bcount, new-&gt;flags);</span><br></pre></td></tr></table></figure></p>
+<p>发现这个输出并不是合成的I/O负载,利用GBD的bt反向推断，我们可以得知负载合成函数在整个系统模拟运行的函数调用关系：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Disksim_run_simulation函数-&gt;Disksim_simulate_event函数-&gt;pf_internal_event函数-&gt;pf_handle_cpu_event函数-&gt;pf_handle_event函数-&gt;pf_handle_synthio_event函数-&gt;synthio_generate_io_activity函数-&gt;同时调用synthio_appendio和synthio_geneartenextio函数。</span><br></pre></td></tr></table></figure></p>
+<p>Disksim_run_simulation其实就是写了while循环反复调用Disksim_simulate_even函数，所以在这个函数上查看入手：</p>
+<p>void disksim_simulate_event (int num)函数里面调用了以下函数:<br>    。。。。。。。。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">最后合成的:trace 每条请求如下：</span><br><span class="line">4.911651    0    16350    1    20000003</span><br><span class="line">有5个值，分别是</span><br><span class="line">请求发起的时间 4.911651</span><br><span class="line">访问的设备号  0</span><br><span class="line">访问的块号 16350</span><br><span class="line">该请求读取的块数目  1</span><br><span class="line">标志位 20000003</span><br><span class="line">标志位里保存了trace的相关信息 ，包括读/写 以及是否local request 等</span><br></pre></td></tr></table></figure></p>
+<p>标志信息的定义在disksim_reqflags.h里，如下所示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#define DISKSIM_WRITE        0x00000000</span><br><span class="line">#define DISKSIM_READ        0x00000001</span><br><span class="line">#define DISKSIM_TIME_CRITICAL    0x00000002</span><br><span class="line">#define DISKSIM_TIME_LIMITED    0x00000004</span><br><span class="line">#define DISKSIM_TIMED_OUT    0x00000008</span><br><span class="line">#define DISKSIM_HALF_OUT    0x00000010</span><br><span class="line">#define DISKSIM_MAPPED        0x00000020</span><br><span class="line">#define DISKSIM_READ_AFTR_WRITE 0x00000040</span><br><span class="line">#define DISKSIM_SYNC            0x00000080</span><br><span class="line">#define DISKSIM_ASYNC            0x00000100</span><br><span class="line">#define DISKSIM_IO_FLAG_PAGEIO    0x00000200</span><br><span class="line">#define DISKSIM_SEQ        0x40000000</span><br><span class="line">#define DISKSIM_LOCAL        0x20000000</span><br><span class="line">#define DISKSIM_BATCH_COMPLETE  0x80000000</span><br></pre></td></tr></table></figure></p>
+<p>所以上面那条请求的标志位表示了该请求是读请求，time_critical ,Local的请求<br>通过编写一个小的统计程序来收集生成的trace的信息，证明了生成的trace是满足我们要求的。<br>但是我们用disksim+flashsim的负载用的是ascii格式，这个标志位在之后需要进行修改:0表示写请求，１表示为读请求。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/diskism-负载合成-源码阅读/" rel="tag"># diskism 负载合成 源码阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/24/disksim负载合成/" rel="next" title="disksim负载合成">
+                <i class="fa fa-chevron-left"></i> disksim负载合成
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#针对这几天使用disksim-3-0合成负载的摸索做个总结"><span class="nav-number">1.</span> <span class="nav-text">针对这几天使用disksim-3.0合成负载的摸索做个总结:</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Disksim-3-0是可以支持负载合成的。因为根据manual使用手册："><span class="nav-number">1.1.</span> <span class="nav-text">Disksim-3.0是可以支持负载合成的。因为根据manual使用手册：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于XXX-parv配置文件："><span class="nav-number">1.2.</span> <span class="nav-text">关于ＸＸＸ.parv配置文件：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#这里简要的提一下关于配置文件相关结构："><span class="nav-number">1.3.</span> <span class="nav-text">这里简要的提一下关于配置文件相关结构：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#负载合成配置有两个地方："><span class="nav-number">1.4.</span> <span class="nav-text">负载合成配置有两个地方：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Generators-生成器的详细配置："><span class="nav-number">1.5.</span> <span class="nav-text">Generators 生成器的详细配置：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

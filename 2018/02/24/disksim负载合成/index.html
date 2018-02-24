@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SSD diksim 源码阅读," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="源码理解从一开始的disksim_synthio.c文件中的相关函数入手（这是根据之前的源码理解这部分的代码和负载合成有关）:首先根据函数名字猜测1synthio_generate_io_activity 函数是不是和负载合成的有关，查看该函数的定义如下:">
+<meta name="keywords" content="SSD diksim 源码阅读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="disksim负载合成">
+<meta property="og:url" content="http://yoursite.com/2018/02/24/disksim负载合成/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="源码理解从一开始的disksim_synthio.c文件中的相关函数入手（这是根据之前的源码理解这部分的代码和负载合成有关）:首先根据函数名字猜测1synthio_generate_io_activity 函数是不是和负载合成的有关，查看该函数的定义如下:">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-24T09:08:30.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="disksim负载合成">
+<meta name="twitter:description" content="源码理解从一开始的disksim_synthio.c文件中的相关函数入手（这是根据之前的源码理解这部分的代码和负载合成有关）:首先根据函数名字猜测1synthio_generate_io_activity 函数是不是和负载合成的有关，查看该函数的定义如下:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/24/disksim负载合成/"/>
+
+
+
+
+
+  <title>disksim负载合成 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry，Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/24/disksim负载合成/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">disksim负载合成</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T17:05:34+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/24/disksim负载合成/" class="leancloud_visitors" data-flag-title="disksim负载合成">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="源码理解"><a href="#源码理解" class="headerlink" title="源码理解"></a>源码理解</h1><p>从一开始的disksim_synthio.c文件中的相关函数入手（这是根据之前的源码理解这部分的代码和负载合成有关）:<br>首先根据函数名字猜测<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synthio_generate_io_activity</span><br></pre></td></tr></table></figure></p>
+<p>函数是不是和负载合成的有关，查看该函数的定义如下:<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void synthio_generate_io_activity (process *procp)</span><br><span class="line">&#123;</span><br><span class="line">   synthio_generator *gen;</span><br><span class="line"></span><br><span class="line">   gen = (synthio_generator *) procp-&gt;space;</span><br><span class="line"></span><br><span class="line">   //   fprintf (stderr, &quot;simtime %f, endtime %f, iocnt %d, endiocnt %d\n&quot;, simtime, synthio_endtime, synthio_iocnt, synthio_endiocnt);</span><br><span class="line">   </span><br><span class="line">   synthio_iocnt++;</span><br><span class="line">   if (synthio_generatenextio(gen)) &#123;</span><br><span class="line">      synthio_appendio(procp, gen-&gt;pendio);</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      disksim_simstop();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到该函数调用了其他两个相关的函数synthio_generatenextio和synthio_appendio前一个是生成一个IO请求，后一个是将生成的IO请求挂到对应的队列上去之后处理。<br>查看synthio_generatenextio（也在disksim_synthio.c文件）的定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">static int synthio_generatenextio (synthio_generator *gen)</span><br><span class="line">&#123;</span><br><span class="line">   double type;</span><br><span class="line">   double reqclass;</span><br><span class="line">   int blkno;</span><br><span class="line">   ioreq_event *tmp;</span><br><span class="line"></span><br><span class="line">   if ((simtime &gt;= synthio_endtime) || (synthio_iocnt &gt;= synthio_endiocnt))</span><br><span class="line">      return 0;</span><br><span class="line"></span><br><span class="line">   tmp = gen-&gt;pendio;</span><br><span class="line">   if (gen-&gt;tracefile) &#123;</span><br><span class="line">      gen-&gt;pendio = </span><br><span class="line">	(ioreq_event *)iotrace_get_ioreq_event(gen-&gt;tracefile, disksim-&gt;traceformat, tmp);</span><br><span class="line">	</span><br><span class="line">      if (gen-&gt;pendio) &#123;</span><br><span class="line">	 tmp-&gt;cause = gen-&gt;number;</span><br><span class="line">	 /* tmp-&gt;time = 0; */</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">	 fprintf(stderr, &quot;Returning NULL event in synthio_generatenextio\n&quot;);</span><br><span class="line">	 return 0;</span><br><span class="line">      &#125;</span><br><span class="line">      return 1;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>可以该函数果然是调用iotrace_get_ioreq_event产生下一个io请求<br>查看synthio_appendio函数（也在disksim_synthio.c文件）定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">static void synthio_appendio (process *procp, ioreq_event *tmp)</span><br><span class="line">&#123;</span><br><span class="line">   synthio_generator *gen = (synthio_generator *) procp-&gt;space;</span><br><span class="line">   sleep_event *limittmp = NULL;</span><br><span class="line">   event *prev = NULL;</span><br><span class="line">   sleep_event *newsleep = NULL;</span><br><span class="line">   sleep_event *callsleep = NULL;</span><br><span class="line">   sleep_event *retsleep = NULL;</span><br><span class="line">   ioreq_event *new;</span><br><span class="line">   int blocksize;</span><br><span class="line">   int gennum;</span><br><span class="line"></span><br><span class="line">   blocksize = gen-&gt;blocksize;</span><br><span class="line">   gennum = gen-&gt;number;</span><br><span class="line">   new = (ioreq_event *) getfromextraq();</span><br><span class="line">   new-&gt;type = IOREQ_EVENT;</span><br><span class="line">   new-&gt;time = tmp-&gt;time;</span><br><span class="line">   new-&gt;devno = tmp-&gt;devno;</span><br><span class="line">   new-&gt;blkno = tmp-&gt;blkno * blocksize;</span><br><span class="line">   new-&gt;bcount = tmp-&gt;bcount * blocksize;</span><br><span class="line">   new-&gt;flags = tmp-&gt;flags;</span><br><span class="line">   new-&gt;cause = tmp-&gt;cause;</span><br><span class="line">   new-&gt;opid = (synthio_endiocnt * gennum) + synthio_iocnt;</span><br><span class="line">    .......根据不同的类型将new加入到队列中去</span><br><span class="line"></span><br><span class="line">	////output this entry-zhoujie,print new-&gt;time!=0</span><br><span class="line">	//if(new-&gt;time!=0.000000)&#123;</span><br><span class="line">	//fprintf(outputfile,&quot;New request %d, time %f, devno %d, blkno %d, bcount %d, flags %x\n&quot;, synthio_iocnt, new-&gt;time, new-&gt;devno, new-&gt;blkno, new-&gt;bcount, new-&gt;flags);</span><br><span class="line">	//fflush(outputfile);</span><br><span class="line">	//&#125;</span><br><span class="line">   //fprintf (stderr, &quot;New request %d, time %f, devno %d, blkno %d, bcount %d, flags %x\n&quot;, synthio_iocnt, new-&gt;time, new-&gt;devno, new-&gt;blkno, new-&gt;bcount, new-&gt;flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该函数的定义过于长，因此删除一部分的代码，可以看到这个代码中源码作者在这里有尝试输出部分的合成请求信息用于调试，但是这部分的New request不是我们想要的合成负载，这里面的负载还包含了一部分的模拟CPU中断的请求，CPU调度的，不可作为外部负载提取。因此利用GDB的bt命令重新查看函数的调用关系：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">disksim_run_simulation--&gt;disksim_simulate_event</span><br><span class="line">disksim_simulate_event--&gt;pf_internal_event</span><br><span class="line">pf_internal_event--&gt;pf_handle_cpu_event</span><br><span class="line">pf_handle_cpu_event--&gt;pf_handle_event</span><br><span class="line">pf_handle_event--&gt;pf_handle_synthio_event</span><br><span class="line">pf_handle_synthio_event--&gt;synthio_generate_io_activity</span><br><span class="line">synthio_generate_io_activity--&gt;|one|synthio_generatenextio</span><br><span class="line">synthio_generate_io_activity--&gt;|two|synthio_appendio</span><br></pre></td></tr></table></figure>
+<p>为了方便理解先从disksim_run_simulation函数开始理解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void disksim_run_simulation ()</span><br><span class="line">&#123;</span><br><span class="line">  int event_count = 0;</span><br><span class="line">  // DISKSIM_srand48(1000003);</span><br><span class="line">  while (disksim-&gt;stop_sim == FALSE) &#123;</span><br><span class="line">    disksim_simulate_event(event_count);</span><br><span class="line">    //    printf(&quot;disksim_run_simulation: event %d\n&quot;, event_count);</span><br><span class="line">    event_count++;</span><br><span class="line">  &#125;</span><br><span class="line">  printf(&quot;disksim_run_simulation(): simulated %d events\n&quot;, event_count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开始看到该函数是反复调用disksim_simulate_event函数，查看disksim_simulate_event的定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">void disksim_simulate_event (int num)</span><br><span class="line">&#123;</span><br><span class="line">  event *curr;</span><br><span class="line">  </span><br><span class="line">  if ((curr = getnextevent()) == NULL) &#123;</span><br><span class="line">    disksim_simstop ();</span><br><span class="line">  &#125; </span><br><span class="line">  else &#123;</span><br><span class="line">   </span><br><span class="line">    switch(disksim-&gt;trace_mode) &#123;</span><br><span class="line">    case DISKSIM_NONE:</span><br><span class="line">    case DISKSIM_MASTER:</span><br><span class="line">    ////test point-zhoujie</span><br><span class="line">    //fprintf(stdout, &quot;*** DEBUG TRACE\t%f\t%d\t%d\n&quot;,   	      simtime, curr-&gt;type, num); </span><br><span class="line">    //fflush(stdout);</span><br><span class="line">      //fprintf(outputfile, &quot;*** DEBUG TRACE\t%f\t%d\t%d\n&quot;,   	      simtime, curr-&gt;type, num);   </span><br><span class="line">      //fflush(outputfile);    </span><br><span class="line">      break;</span><br><span class="line"></span><br><span class="line">    case DISKSIM_SLAVE:</span><br><span class="line">      break;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    simtime = curr-&gt;time;</span><br><span class="line">    </span><br><span class="line">    if (curr-&gt;type == INTR_EVENT) &#123;</span><br><span class="line">      intr_acknowledge (curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= IO_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= IO_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= PF_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= PF_MAX_EVENT)) &#123;</span><br><span class="line">      pf_internal_event(curr);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (curr-&gt;type == TIMER_EXPIRED) &#123;</span><br><span class="line">      timer_event *timeout = (timer_event *) curr;</span><br><span class="line">      (*timeout-&gt;func) (timeout);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= MEMS_MIN_EVENT) </span><br><span class="line">	     &amp;&amp; (curr-&gt;type &lt;= MEMS_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == CHECKPOINT) &#123;</span><br><span class="line">      if (disksim-&gt;checkpoint_interval) &#123;</span><br><span class="line">	disksim_register_checkpoint(simtime + disksim-&gt;checkpoint_interval);</span><br><span class="line">      &#125;</span><br><span class="line">      disksim_checkpoint (disksim-&gt;checkpointfilename);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == STOP_SIM) &#123;</span><br><span class="line">      disksim_simstop ();</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == EXIT_DISKSIM) &#123;</span><br><span class="line">      exit (0);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">      fprintf(stderr, &quot;Unrecognized event in simulate: %d\n&quot;, curr-&gt;type);</span><br><span class="line">      exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">#ifdef FDEBUG</span><br><span class="line">    fprintf (outputfile, &quot;Event handled, going for next\n&quot;);</span><br><span class="line">    fflush (outputfile);</span><br><span class="line">#endif</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数最主要的是根据当前的curr-&gt;type的类型调用不同函数的处理，curr结构体中包含了一部分和IO请求相关的信息，注意其中的代码片段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">if (curr-&gt;type == INTR_EVENT) &#123;</span><br><span class="line">      intr_acknowledge (curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= IO_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= IO_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= PF_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= PF_MAX_EVENT)) &#123;</span><br><span class="line">      pf_internal_event(curr);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (curr-&gt;type == TIMER_EXPIRED) &#123;</span><br><span class="line">      timer_event *timeout = (timer_event *) curr;</span><br><span class="line">      (*timeout-&gt;func) (timeout);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= MEMS_MIN_EVENT) </span><br><span class="line">	     &amp;&amp; (curr-&gt;type &lt;= MEMS_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == CHECKPOINT) &#123;</span><br><span class="line">      if (disksim-&gt;checkpoint_interval) &#123;</span><br><span class="line">	disksim_register_checkpoint(simtime + disksim-&gt;checkpoint_interval);</span><br><span class="line">      &#125;</span><br><span class="line">      disksim_checkpoint (disksim-&gt;checkpointfilename);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == STOP_SIM) &#123;</span><br><span class="line">      disksim_simstop ();</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == EXIT_DISKSIM) &#123;</span><br><span class="line">      exit (0);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">      fprintf(stderr, &quot;Unrecognized event in simulate: %d\n&quot;, curr-&gt;type);</span><br><span class="line">      exit(1);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>负载合成是在第2个判断成立下执行的，调用了 pf_internal_event，同时注意到上一个条件貌似就是在执行IO请求。反过来考虑如果当前的负载合成关闭，输入外部负载也会调用这个条件处理IO请求，输入的参数就是外部负载，同理合成的负载也会进入该函数，输入的参数就是我们想要的合成负载数据。<br>因此进入io_internal_event ((ioreq_event *)curr)该函数查看相关的定义:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">void io_internal_event(ioreq_event *curr)</span><br><span class="line">&#123;</span><br><span class="line">   ASSERT(curr != NULL);</span><br><span class="line">/*</span><br><span class="line">fprintf (outputfile, &quot;%f: io_internal_event entered with event type %d, %f\n&quot;, curr-&gt;time, curr-&gt;type, simtime);</span><br><span class="line">*/</span><br><span class="line">   switch (curr-&gt;type) &#123;</span><br><span class="line">   case IO_REQUEST_ARRIVE:</span><br><span class="line">     iodriver_request(0, curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_ACCESS_ARRIVE:</span><br><span class="line">     iodriver_schedule(0, curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_INTERRUPT_ARRIVE:</span><br><span class="line">     iodriver_interrupt_arrive(0, (intr_event *) curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   case IO_RESPOND_TO_DEVICE:</span><br><span class="line">     iodriver_respond_to_device(0, (intr_event *) curr-&gt;tempptr1);</span><br><span class="line">     addtoextraq((event *) curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_ACCESS_COMPLETE:</span><br><span class="line">     iodriver_access_complete(0, (intr_event *) curr-&gt;tempptr1);</span><br><span class="line">     addtoextraq((event *) curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_INTERRUPT_COMPLETE:</span><br><span class="line">     iodriver_interrupt_complete(0, (intr_event *) curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   case DEVICE_OVERHEAD_COMPLETE:</span><br><span class="line">   case DEVICE_ACCESS_COMPLETE:</span><br><span class="line">   case DEVICE_DATA_TRANSFER_COMPLETE:</span><br><span class="line">   case DEVICE_PREPARE_FOR_DATA_TRANSFER:</span><br><span class="line">   case DEVICE_BUFFER_SEEKDONE:</span><br><span class="line">   case DEVICE_BUFFER_TRACKACC_DONE:</span><br><span class="line">   case DEVICE_BUFFER_SECTOR_DONE:</span><br><span class="line">   case DEVICE_GOT_REMAPPED_SECTOR:</span><br><span class="line">   case DEVICE_GOTO_REMAPPED_SECTOR:</span><br><span class="line">   case MEMS_SLED_SCHEDULE:</span><br><span class="line">   case MEMS_SLED_SEEK:</span><br><span class="line">   case MEMS_SLED_SERVO:</span><br><span class="line">   case MEMS_SLED_DATA:</span><br><span class="line">   case MEMS_SLED_UPDATE:</span><br><span class="line">   case MEMS_BUS_INITIATE:</span><br><span class="line">   case MEMS_BUS_TRANSFER:</span><br><span class="line">   case MEMS_BUS_UPDATE:</span><br><span class="line">     device_event_arrive(curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   case BUS_OWNERSHIP_GRANTED:</span><br><span class="line">   case BUS_DELAY_COMPLETE:</span><br><span class="line">     bus_event_arrive(curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   case CONTROLLER_DATA_TRANSFER_COMPLETE:</span><br><span class="line">     controller_event_arrive(curr-&gt;tempint2, curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   case TIMESTAMP_LOGORG:</span><br><span class="line">     logorg_timestamp(curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   case IO_TRACE_REQUEST_START:</span><br><span class="line">     iodriver_trace_request_start(0, curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   default:</span><br><span class="line">     fprintf(stderr, &quot;Unknown event type passed to io_internal_events\n&quot;);</span><br><span class="line">     exit(1);</span><br><span class="line">   &#125;</span><br><span class="line">   /*</span><br><span class="line">     fprintf (outputfile, &quot;Leaving io_internal_event\n&quot;);</span><br><span class="line">   */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数是根据不同的类型模拟控制器处理请求，可以看到代码段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">case IO_REQUEST_ARRIVE:</span><br><span class="line">     iodriver_request(0, curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_ACCESS_ARRIVE:</span><br><span class="line">     iodriver_schedule(0, curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_INTERRUPT_ARRIVE:</span><br><span class="line">     iodriver_interrupt_arrive(0, (intr_event *) curr);</span><br><span class="line">     break;</span><br><span class="line"></span><br><span class="line">   case IO_RESPOND_TO_DEVICE:</span><br><span class="line">     iodriver_respond_to_device(0, (intr_event *) curr-&gt;tempptr1);</span><br><span class="line">     addtoextraq((event *) curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_ACCESS_COMPLETE:</span><br><span class="line">     iodriver_access_complete(0, (intr_event *) curr-&gt;tempptr1);</span><br><span class="line">     addtoextraq((event *) curr);</span><br><span class="line">     break;</span><br><span class="line">     </span><br><span class="line">   case IO_INTERRUPT_COMPLETE:</span><br><span class="line">     iodriver_interrupt_complete(0, (intr_event *) curr);</span><br><span class="line">     break;</span><br></pre></td></tr></table></figure>
+<p>其中IO_REQUEST_ARRIVE就是我们想要的外部负载处理的部分，这里调用了 iodriver_request(0, curr)函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">event * iodriver_request (int iodriverno, ioreq_event *curr)</span><br><span class="line">&#123;</span><br><span class="line">   ioreq_event *temp = NULL;</span><br><span class="line">   ioreq_event *ret = NULL;</span><br><span class="line">   ioreq_event *retlist = NULL;</span><br><span class="line">   int numreqs;</span><br><span class="line">/*</span><br><span class="line">   printf (&quot;Entered iodriver_request - simtime %f, devno %d, blkno %d, cause %d\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;cause);</span><br><span class="line">   fprintf (outputfile, &quot;Entered iodriver_request - simtime %f, devno %d, blkno %d, cause %d\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;cause);</span><br><span class="line">   fprintf (stderr, &quot;Entered iodriver_request - simtime %f, devno %d, blkno %d, cause %d\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;cause);</span><br><span class="line">*/</span><br><span class="line">   if (outios) &#123;</span><br><span class="line">      fprintf(outios, &quot;%.6f\t%d\t%d\t%d\t%x\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;bcount, curr-&gt;flags);</span><br><span class="line">   &#125;</span><br><span class="line">	//test for output</span><br><span class="line">	fprintf(outputfile, &quot;TheTest %.6f\t%d\t%d\t%d\t%x\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;bcount, curr-&gt;flags);</span><br><span class="line">	fflush(outputfile);</span><br><span class="line"></span><br><span class="line">#if 0</span><br><span class="line">   fprintf (stderr, &quot;Entered iodriver_request - simtime %f, devno %d, blkno %d, cause %d\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;cause);</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">   /* add to the overall queue to start tracking */</span><br><span class="line">   ret = ioreq_copy (curr);</span><br><span class="line">   ioqueue_add_new_request (overallqueue, ret);</span><br><span class="line">   ret = NULL;</span><br><span class="line"> </span><br><span class="line">   disksim-&gt;totalreqs++;</span><br><span class="line">   if ((disksim-&gt;checkpoint_iocnt &gt; 0) &amp;&amp; ((disksim-&gt;totalreqs % disksim-&gt;checkpoint_iocnt) == 0)) &#123;</span><br><span class="line">      disksim_register_checkpoint (simtime);</span><br><span class="line">   &#125;</span><br><span class="line">   if (disksim-&gt;totalreqs == disksim-&gt;warmup_iocnt) &#123;</span><br><span class="line">      warmuptime = simtime;</span><br><span class="line">      resetstats();</span><br><span class="line">   &#125;</span><br><span class="line">   numreqs = logorg_maprequest(sysorgs, numsysorgs, curr);</span><br><span class="line">   temp = curr-&gt;next;</span><br><span class="line">   for (; numreqs&gt;0; numreqs--) &#123;</span><br><span class="line">          /* Request list size must match numreqs */</span><br><span class="line">      ASSERT(curr != NULL);</span><br><span class="line">      curr-&gt;next = NULL;</span><br><span class="line">      if ((iodrivers[iodriverno]-&gt;consttime == IODRIVER_TRACED_QUEUE_TIMES) || (iodrivers[iodriverno]-&gt;consttime == IODRIVER_TRACED_BOTH_TIMES)) &#123;</span><br><span class="line">         ret = ioreq_copy(curr);</span><br><span class="line">         ret-&gt;time = simtime + (double) ret-&gt;tempint1 / (double) 1000;</span><br><span class="line">         ret-&gt;type = IO_TRACE_REQUEST_START;</span><br><span class="line">         addtointq((event *) ret);</span><br><span class="line">         ret = NULL;</span><br><span class="line">         if ((curr-&gt;slotno == 1) &amp;&amp; (ioqueue_get_number_in_queue(iodrivers[iodriverno]-&gt;devices[(curr-&gt;devno)].queue) == 0)) &#123;</span><br><span class="line">            iodrivers[(iodriverno)]-&gt;devices[(curr-&gt;devno)].flag = 2;</span><br><span class="line">            iodrivers[(iodriverno)]-&gt;devices[(curr-&gt;devno)].lastevent = simtime;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      ret = handle_new_request(iodrivers[iodriverno], curr);</span><br><span class="line"></span><br><span class="line">      if ((ret) &amp;&amp; (iodrivers[iodriverno]-&gt;type == STANDALONE) &amp;&amp; (ret-&gt;time == 0.0)) &#123;</span><br><span class="line">         ret-&gt;type = IO_ACCESS_ARRIVE;</span><br><span class="line">         ret-&gt;time = simtime;</span><br><span class="line">         iodriver_schedule(iodriverno, ret);</span><br><span class="line">      &#125; else if (ret) &#123;</span><br><span class="line">         ret-&gt;type = IO_ACCESS_ARRIVE;</span><br><span class="line">         ret-&gt;next = retlist;</span><br><span class="line">         ret-&gt;prev = NULL;</span><br><span class="line">         retlist = ret;</span><br><span class="line">      &#125;</span><br><span class="line">      curr = temp;</span><br><span class="line">      temp = (temp) ? temp-&gt;next : NULL;</span><br><span class="line">   &#125;</span><br><span class="line">   if (iodrivers[iodriverno]-&gt;type == STANDALONE) &#123;</span><br><span class="line">      while (retlist) &#123;</span><br><span class="line">         ret = retlist;</span><br><span class="line">         retlist = ret-&gt;next;</span><br><span class="line">         ret-&gt;next = NULL;</span><br><span class="line">         ret-&gt;time += simtime;</span><br><span class="line">         addtointq((event *) ret);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">/*</span><br><span class="line">fprintf (outputfile, &quot;leaving iodriver_request: retlist %p\n&quot;, retlist);</span><br><span class="line">*/</span><br><span class="line">   return((event *) retlist);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这个函数的注释部分有尝试输出负载：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (outios) &#123;</span><br><span class="line">   fprintf(outios, &quot;%.6f\t%d\t%d\t%d\t%x\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;bcount, curr-&gt;flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是这个输出是文件指针outios是打开的，简单起见我们将负载直接输出到输出文件XXX.outv中，添加自己的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//test for output</span><br><span class="line">fprintf(outputfile, &quot;TheTest %.6f\t%d\t%d\t%d\t%x\n&quot;, simtime, curr-&gt;devno, curr-&gt;blkno, curr-&gt;bcount, curr-&gt;flags);</span><br><span class="line">fflush(outputfile);</span><br></pre></td></tr></table></figure>
+<p>这里TheTest是为了后面的文本提取做的标记。<br>之后再编译运行相关配置文件得到XXX.outv中出现了我们想要的Trace:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Initialization complete</span><br><span class="line">TheTest 0.000000	0	228392	8	3</span><br><span class="line">TheTest 0.000000	0	1420312	16	2</span><br><span class="line">TheTest 0.000000	0	1582736	8	2</span><br><span class="line">TheTest 0.000000	0	899784	8	2</span><br><span class="line">TheTest 0.000000	0	1745352	8	2</span><br><span class="line">TheTest 13.520967	0	261752	8	20000002</span><br><span class="line">TheTest 28.927205	0	929536	24	20000003</span><br><span class="line">TheTest 43.287041	0	1395616	8	20000002</span><br><span class="line">TheTest 53.535361	0	1561888	8	20000002</span><br><span class="line">TheTest 73.333340	0	1710912	8	20000002</span><br><span class="line">TheTest 102.314824	0	1691648	8	2</span><br><span class="line">TheTest 118.037274	0	960856	40	20000003</span><br></pre></td></tr></table></figure>
+<p>关于后面的标志位这里需要再提一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">最后合成的:trace 每条请求如下：</span><br><span class="line">4.911651    0    16350    1    20000003</span><br><span class="line">有5个值，分别是</span><br><span class="line">请求发起的时间 4.911651</span><br><span class="line">访问的设备号  0</span><br><span class="line">访问的块号 16350</span><br><span class="line">该请求读取的块数目  1</span><br><span class="line">标志位 20000003</span><br></pre></td></tr></table></figure>
+<p>标志位里保存了trace的相关信息 ，包括读/写 以及是否local request 等<br>标志信息的定义在disksim_reqflags.h里，如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#define DISKSIM_WRITE        0x00000000</span><br><span class="line">#define DISKSIM_READ        0x00000001</span><br><span class="line">#define DISKSIM_TIME_CRITICAL    0x00000002</span><br><span class="line">#define DISKSIM_TIME_LIMITED    0x00000004</span><br><span class="line">#define DISKSIM_TIMED_OUT    0x00000008</span><br><span class="line">#define DISKSIM_HALF_OUT    0x00000010</span><br><span class="line">#define DISKSIM_MAPPED        0x00000020</span><br><span class="line">#define DISKSIM_READ_AFTR_WRITE 0x00000040</span><br><span class="line">#define DISKSIM_SYNC            0x00000080</span><br><span class="line">#define DISKSIM_ASYNC            0x00000100</span><br><span class="line">#define DISKSIM_IO_FLAG_PAGEIO    0x00000200</span><br><span class="line">#define DISKSIM_SEQ        0x40000000</span><br><span class="line">#define DISKSIM_LOCAL        0x20000000</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define DISKSIM_BATCH_COMPLETE  0x80000000</span><br><span class="line">所以上面那条请求的标志位表示了该请求是读请求，time_critical ,Local的请求</span><br></pre></td></tr></table></figure>
+<p>通过编写一个小的统计程序来收集生成的trace的信息，证明了生成的trace是满足我们要求的。<br>但是我们用disksim+flashsim的负载用的是ascii格式，这个标志位在之后需要进行修改:0表示写请求，１表示为读请求。</p>
+<p>针对合成的负载提取有用的信息，写了一个shell脚本可以快速提取文件中信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">########################</span><br><span class="line">#	filename:extrac-trace.sh</span><br><span class="line">#	Usage:./extrac-trace.sh</span><br><span class="line">#	author:Zhoujie</span><br><span class="line">#	date:2017-10-31</span><br><span class="line">#######################</span><br><span class="line">read -p &quot;Enter the disksim generate XXXX.outv:&quot; inputfile</span><br><span class="line">read -p &quot;Enter the result filename what you want to call:&quot; savefile</span><br><span class="line">echo -e &quot;Touch tempfile to save vaild-data from $inputfile...&quot;</span><br><span class="line">touch tempfile</span><br><span class="line">echo &quot;read vaild-information from $inputfile to tempfile...&quot;</span><br><span class="line">grep &quot;TheTest&quot;  $inputfile &gt; tempfile</span><br><span class="line">echo &quot;remove &apos;TheTest&apos; from data and save result in $savefile...&quot;</span><br><span class="line">awk -vOFS=&quot;\t&quot; &apos;&#123;print $2,$3,$4,$5,$6&#125;&apos; tempfile &gt;$savefile</span><br><span class="line">rm tempfile</span><br><span class="line">echo &quot;finish the result extrac!&quot;</span><br></pre></td></tr></table></figure>
+<p>但是提取到的Trace的标位还没有修改完成，因此借助matlab快速的数据处理整合为符合条件的ascii类型的负载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">clc</span><br><span class="line">clear all;</span><br><span class="line">trace_filename=&apos;C5&apos;;%配置输入的trace文件</span><br><span class="line">result_filename=&apos;C5.txt&apos;;</span><br><span class="line">[req_arrive,device_num,req_sec_start,req_sec_size,req_type]=textread(trace_filename,&apos;%f%d%d%d%d&apos;);</span><br><span class="line">% %读取trace文件中的五个参数（请求到达时间，设备号，请求扇区号起始位置，请求扇区大小，请求操作类型）</span><br><span class="line"></span><br><span class="line">L=length(req_type);</span><br><span class="line">t=zeros(L,1);</span><br><span class="line">% 写入数据</span><br><span class="line">fp=fopen(result_filename,&apos;a&apos;);</span><br><span class="line">for index=1:L</span><br><span class="line">    if mod(req_type(index),10)==0</span><br><span class="line">%         req_type(index)=0;</span><br><span class="line">            t(index)=0;</span><br><span class="line">    else</span><br><span class="line">%         req_type(index)=1;</span><br><span class="line">            t(index)=1;</span><br><span class="line">    end</span><br><span class="line">    fprintf(fp,&apos;%f %d %d %d %d\n&apos;,req_arrive(index),device_num(index),req_sec_start(index),req_sec_size(index),t(index));</span><br><span class="line">end</span><br><span class="line">fclose(fp);</span><br><span class="line">% 清除中间变量</span><br><span class="line">clear all</span><br></pre></td></tr></table></figure>
+<p>到此为止，将XXX.txt放入到Disksim+flashsim的仿真器上就能跑了。读写比例自己改配置文件即可。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SSD-diksim-源码阅读/" rel="tag"># SSD diksim 源码阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/24/自写仿真器的cache算法的实现规范/" rel="next" title="自写仿真器的cache算法的实现规范">
+                <i class="fa fa-chevron-left"></i> 自写仿真器的cache算法的实现规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/24/disksim负载合成-2/" rel="prev" title="disksim负载合成-2">
+                disksim负载合成-2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#源码理解"><span class="nav-number">1.</span> <span class="nav-text">源码理解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
