@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python 高阶函数 廖雪峰," />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="#python进阶学习笔记1(廖雪峰课程) ##高阶函数python和Js很像,支持将函数作为变量输入到参数的参数里面去,此时将函数作为参数的函数称之为高阶函数变量也是可以指向函数的,例如:123fun=abs()fun(-10) #输出的结果就是 abs(-10)=10的结果 一般存在一下几个常用的高阶函数,将list和function作为参数输入处理:">
+<meta name="keywords" content="python 高阶函数 廖雪峰">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python高阶函数学习笔记-廖雪峰课程笔记">
+<meta property="og:url" content="http://yoursite.com/2018/03/03/python高阶函数学习笔记-廖雪峰课程笔记/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="#python进阶学习笔记1(廖雪峰课程) ##高阶函数python和Js很像,支持将函数作为变量输入到参数的参数里面去,此时将函数作为参数的函数称之为高阶函数变量也是可以指向函数的,例如:123fun=abs()fun(-10) #输出的结果就是 abs(-10)=10的结果 一般存在一下几个常用的高阶函数,将list和function作为参数输入处理:">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-03T08:37:34.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python高阶函数学习笔记-廖雪峰课程笔记">
+<meta name="twitter:description" content="#python进阶学习笔记1(廖雪峰课程) ##高阶函数python和Js很像,支持将函数作为变量输入到参数的参数里面去,此时将函数作为参数的函数称之为高阶函数变量也是可以指向函数的,例如:123fun=abs()fun(-10) #输出的结果就是 abs(-10)=10的结果 一般存在一下几个常用的高阶函数,将list和function作为参数输入处理:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/03/python高阶函数学习笔记-廖雪峰课程笔记/"/>
+
+
+
+
+
+  <title>python高阶函数学习笔记-廖雪峰课程笔记 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫把无知当做无畏</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/03/python高阶函数学习笔记-廖雪峰课程笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python高阶函数学习笔记-廖雪峰课程笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T16:31:09+08:00">
+                2018-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/03/python高阶函数学习笔记-廖雪峰课程笔记/" class="leancloud_visitors" data-flag-title="python高阶函数学习笔记-廖雪峰课程笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#python进阶学习笔记1(廖雪峰课程)</p>
+<p>##高阶函数<br>python和Js很像,支持将函数作为变量输入到参数的参数里面去,此时将函数作为参数的函数称之为高阶函数<br>变量也是可以指向函数的,例如:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fun=abs()</span><br><span class="line">fun(<span class="number">-10</span>) </span><br><span class="line"><span class="comment">#输出的结果就是 abs(-10)=10的结果</span></span><br></pre></td></tr></table></figure></p>
+<p>一般存在一下几个常用的高阶函数,将list和function作为参数输入处理:<br><a id="more"></a><br><code>map</code>函数的例子<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x*x</span><br><span class="line">    </span><br><span class="line"><span class="keyword">print</span> map(f,[range(<span class="number">1</span>,<span class="number">10</span>)])</span><br><span class="line"><span class="comment">#输出的结果是[x for x in range(1,82) if math.sqrt(x) in range(1,10)]</span></span><br></pre></td></tr></table></figure></p>
+<p><code>reduce</code>函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x,y)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x+y</span><br><span class="line"></span><br><span class="line">reduce(f,range(<span class="number">1</span>,<span class="number">10</span>)[::<span class="number">2</span>])</span><br></pre></td></tr></table></figure></p>
+<p>该函数输出的结果是:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">先计算头两个元素：f(1, 3)，结果为4；</span><br><span class="line">再把结果和第3个元素计算：f(4, 5)，结果为9；</span><br><span class="line">再把结果和第4个元素计算：f(9, 7)，结果为16；</span><br><span class="line">再把结果和第5个元素计算：f(16, 9)，结果为25；</span><br><span class="line">由于没有更多的元素了，计算结束，返回结果25。</span><br></pre></td></tr></table></figure></p>
+<p>reduce函数还可以指定计算的初始值:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reduce(f,range(1,10)[::2],100)</span><br><span class="line">   #输出的结果:125</span><br></pre></td></tr></table></figure></p>
+<p><code>filter()</code>函数:filter()根据判断结果自动过滤掉不符合条件的元素，返回由符合条件元素组成的新list。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_odd</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x %<span class="number">2</span> ==<span class="number">1</span></span><br><span class="line">    </span><br><span class="line">filter(is_odd,[<span class="number">1</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">17</span>])</span><br><span class="line"><span class="comment">#输出结果 [1,7,9,17]</span></span><br></pre></td></tr></table></figure></p>
+<p>利用filter()，可以完成很多有用的功能，例如，删除 None 或者空字符串：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_not_empty</span><span class="params">(s)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> s <span class="keyword">and</span> len(s.strip())&gt;<span class="number">0</span></span><br><span class="line"></span><br><span class="line">filter(is_not_empty, [<span class="string">'test'</span>, <span class="keyword">None</span>, <span class="string">''</span>, <span class="string">'str'</span>, <span class="string">'  '</span>, <span class="string">'END'</span>])</span><br><span class="line"><span class="comment">#输出结果 ：['test', 'str', 'END']</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#注意: s.strip(rm) 删除 s 字符串中开头、结尾处的 rm 序列的字符。</span></span><br><span class="line"><span class="comment">#当rm为空时，默认删除空白符（包括'\n', '\r', '\t', ' ')，如下：</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">'     123'</span></span><br><span class="line">a.strip()</span><br><span class="line"><span class="comment">#结果是 '123'</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="自定义排序函数"><a href="#自定义排序函数" class="headerlink" title="自定义排序函数"></a>自定义排序函数</h2><p>sorted()也是一个高阶函数，它可以接收一个比较函数来实现自定义排序，比较函数的定义是，传入两个待比较的元素 x, y，如果 x 应该排在 y 的前面，返回 -1，如果 x 应该排在 y 的后面，返回 1。如果 x 和 y 相等，返回 0。</p>
+<p>因此，如果我们要实现倒序排序，只需要编写一个reversed_cmp函数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reversed_cmp</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> x &gt; y:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> x &lt; y:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 实现倒序排序</span></span><br><span class="line">sorted([<span class="number">36</span>, <span class="number">5</span>, <span class="number">12</span>, <span class="number">9</span>, <span class="number">21</span>], reversed_cmp)</span><br><span class="line"><span class="comment">#输出结果:[36, 21, 12, 9, 5]</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="python中的函数作为变量看待"><a href="#python中的函数作为变量看待" class="headerlink" title="python中的函数作为变量看待"></a>python中的函数作为变量看待</h2><p>python最骚的就是和JS一样将函数作为变量看待,一个函数的返回值是可以返回一个函数!!!,因为python将函数作为变量看待<br>Python的函数不但可以返回int、str、list、dict等数据类型，还可以返回函数！<br>例如，定义一个函数 f()，我们让它返回一个函数 g，可以这样写：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> <span class="string">'call f()'</span></span><br><span class="line">    <span class="comment">#定义一个g函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">    	<span class="keyword">print</span> <span class="string">'call g()'</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment">#函数g作为返回,注意返回的是函数名!!!</span></span><br><span class="line">    <span class="keyword">return</span> g</span><br></pre></td></tr></table></figure></p>
+<p>执行的结果:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x = f()   # 调用f()</span><br><span class="line">call f()...</span><br><span class="line">&gt;&gt;&gt; x   # 变量x是f()返回的函数：</span><br><span class="line">&lt;function g at 0x1037bf320&gt;</span><br><span class="line">&gt;&gt;&gt; x()   # x指向函数，因此可以调用</span><br><span class="line">call g()...   # 调用x()就是执行g()函数定义的代码</span><br></pre></td></tr></table></figure></p>
+<p>注意返回函数的时候是返回函数名,不是调用函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myabs</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> abs</span><br><span class="line">    <span class="comment">#返回的是函数名</span></span><br><span class="line">     </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myabs1</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> abs(x)</span><br><span class="line">    <span class="comment">#返回的是值!!!</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="python中的闭包操作"><a href="#python中的闭包操作" class="headerlink" title="python中的闭包操作"></a>python中的闭包操作</h2><p>和Js一模一样,在一个函数里面定义另一个函数,在这个函数里面存在定义函数的外部变量封装起来<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">	a=<span class="string">'local'</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">    	<span class="keyword">print</span> a</span><br><span class="line">    <span class="keyword">return</span> g</span><br></pre></td></tr></table></figure></p>
+<p>这里看起来函数g中的变量a是外界看不到的变量,廖雪峰老师的进阶课程中对闭包的解释:<br>例子:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_sum</span><span class="params">(lst)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">lazy_sum</span><span class="params">()</span>:</span></span><br><span class="line">   	<span class="keyword">return</span> sum(lst)</span><br><span class="line">   <span class="keyword">return</span> lazy_sum</span><br></pre></td></tr></table></figure></p>
+<p>注意: 发现没法把 lazy_sum 移到 calc_sum 的外部，因为它引用了 calc_sum 的参数 lst。</p>
+<p>像这种内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况，称为闭包（Closure）。</p>
+<p>闭包的特点是返回的函数还引用了外层函数的局部变量，所以，要正确使用闭包，就要确保引用的局部变量在函数返回后不能变。<br>一个闭包错误的例子:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment"># 希望一次返回3个函数，分别计算1x1,2x2,3x3:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">()</span>:</span></span><br><span class="line">    fs = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">             <span class="keyword">return</span> i*i</span><br><span class="line">        fs.append(f)</span><br><span class="line">    <span class="keyword">return</span> fs</span><br><span class="line"></span><br><span class="line">f1, f2, f3 = count()</span><br></pre></td></tr></table></figure></p>
+<p>你可能认为调用f1()，f2()和f3()结果应该是1，4，9，但实际结果全部都是 9（请自己动手验证）。</p>
+<p>原因就是当count()函数返回了3个函数时，这3个函数所引用的变量 i 的值已经变成了3。由于f1、f2、f3并没有被调用，所以，此时他们并未计算 i*i，当 f1 被调用时：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; f1()</span><br><span class="line">9     # 因为f1现在才计算i*i，但现在i的值已经变为3</span><br></pre></td></tr></table></figure></p>
+<p><strong>因此，返回函数不要引用任何循环变量，或者后续会发生变化的变量。</strong><br><strong><code>我的理解</code></strong><br>python在执行对应的程序的时候才去读取对应的i值,此时的for已经结束,因此i一直都是3,修改代码:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">()</span>:</span></span><br><span class="line">	fs=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">4</span>):</span><br><span class="line">    	<span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x=i)</span>:</span></span><br><span class="line">        	<span class="keyword">return</span> x*x</span><br><span class="line">        fs.append(f)</span><br><span class="line">    <span class="keyword">return</span> fs</span><br><span class="line">    </span><br><span class="line">f1,f2,f3=count()</span><br><span class="line"><span class="keyword">print</span> f1(),f2(),f3()</span><br><span class="line"><span class="comment">#输出理想的结果 1,4,9</span></span><br></pre></td></tr></table></figure></p>
+<p>Python中的闭包其实还有一个问题,外层函数的变量和里层函数的变量重名,但是这个变量不是总的函数的外部变量,这就会出bug:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun1</span><span class="params">()</span>:</span></span><br><span class="line">	count=<span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    	count+=<span class="number">1</span></span><br><span class="line">    	<span class="keyword">print</span> <span class="string">'Now count is'</span>,count</span><br><span class="line">    <span class="keyword">return</span> func</span><br><span class="line"></span><br><span class="line">test=fun1()</span><br><span class="line">test()</span><br><span class="line"><span class="comment">#直接会报错哦</span></span><br></pre></td></tr></table></figure></p>
+<p>解决方案加入关键词 nonlocal(python 3支持)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun1</span><span class="params">()</span>:</span></span><br><span class="line">	count=<span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    	<span class="keyword">nonlocal</span> count+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'Now count is'</span>,count</span><br><span class="line">    <span class="keyword">return</span> func</span><br><span class="line"></span><br><span class="line">test=fun1()</span><br><span class="line">test()</span><br><span class="line">test()</span><br><span class="line">test()</span><br></pre></td></tr></table></figure></p>
+<h2 id="python中的匿名函数"><a href="#python中的匿名函数" class="headerlink" title="python中的匿名函数"></a>python中的匿名函数</h2><p>套路和JS很像直接在参数传入的过程中定义一个简单的函数<br>但是JS是有关键字function的,而python中的关键词是lambda!!!<br>简单示例函数:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">map(<span class="keyword">lambda</span> x:x*x,range(<span class="number">1</span>,<span class="number">10</span>))</span><br><span class="line"><span class="comment">#输出结果[1,4,9,16,25,36,49,64,84]</span></span><br></pre></td></tr></table></figure></p>
+<p>匿名函数的实体定义类似:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></span><br><span class="line">   	<span class="keyword">return</span> x*x</span><br></pre></td></tr></table></figure></p>
+<p>关键字lambda 表示匿名函数，冒号前面的 x 表示函数参数。</p>
+<p>匿名函数有个限制，就是只能有一个表达式，不写return，返回值就是该表达式的结果。<br>这也是python比JS的不足,JS的匿名函数没有那么多限制就是直接定义,但是python的灵活就在于函数对象的使用,例如:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sorted([<span class="number">1</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">0</span>], <span class="keyword">lambda</span> x,y: -cmp(x,y))</span><br><span class="line"><span class="comment">#结果:[9, 5, 3, 1, 0]</span></span><br></pre></td></tr></table></figure></p>
+<p>返回函数的时候，也可以返回匿名函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; myabs = lambda x: -x if x &lt; 0 else x </span><br><span class="line">&gt;&gt;&gt; myabs(-1)</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; myabs(1)</span><br><span class="line">1</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python-高阶函数-廖雪峰/" rel="tag"># python 高阶函数 廖雪峰</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/24/disksim负载合成-2/" rel="next" title="disksim负载合成-2">
+                <i class="fa fa-chevron-left"></i> disksim负载合成-2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义排序函数"><span class="nav-number">1.</span> <span class="nav-text">自定义排序函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中的函数作为变量看待"><span class="nav-number">2.</span> <span class="nav-text">python中的函数作为变量看待</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中的闭包操作"><span class="nav-number">3.</span> <span class="nav-text">python中的闭包操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中的匿名函数"><span class="nav-number">4.</span> <span class="nav-text">python中的匿名函数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
