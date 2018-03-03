@@ -99,10 +99,12 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
 
 
-  <meta name="keywords" content="flashsim 源码解析," />
+  <meta name="keywords" content="python 模块与包 学习笔记 廖旭峰," />
 
 
 
+
+  
 
 
   <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
@@ -112,18 +114,22 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
 
 
-<meta name="description" content="今天主要看的是上层的代码逻辑，不深究具体的变量赋值。initFlash()函数：主函数main里面的initFlash()函数里面根据全局变量ftl_type的类型选择了FTL类型操作读写函数flt_op指针。Ftl_type是在一开始的ssd_interface.h头文件定义，但是在ssd_interface.c中直接可以修改值，选择要仿真的FTL算法。initFlash()函数里面调用的nan">
-<meta name="keywords" content="flashsim 源码解析">
+<meta name="description" content="廖雪峰老师的课件中的内容课件视频python引入模块的概念就是将代码拆分,易于维护,同一个名字的变量在不同的文件中(模块中)互不以影响:比如图中所示:引用其他模块的实例:1import 模块名">
+<meta name="keywords" content="python 模块与包 学习笔记 廖旭峰">
 <meta property="og:type" content="article">
-<meta property="og:title" content="flashsim源码阅读-1">
-<meta property="og:url" content="http://yoursite.com/2017/07/04/flashsim源码阅读-1/index.html">
+<meta property="og:title" content="python模块和包-廖旭峰教程">
+<meta property="og:url" content="http://yoursite.com/2018/03/03/python模块和包-廖旭峰教程/index.html">
 <meta property="og:site_name" content="Zhou的个人博客">
-<meta property="og:description" content="今天主要看的是上层的代码逻辑，不深究具体的变量赋值。initFlash()函数：主函数main里面的initFlash()函数里面根据全局变量ftl_type的类型选择了FTL类型操作读写函数flt_op指针。Ftl_type是在一开始的ssd_interface.h头文件定义，但是在ssd_interface.c中直接可以修改值，选择要仿真的FTL算法。initFlash()函数里面调用的nan">
+<meta property="og:description" content="廖雪峰老师的课件中的内容课件视频python引入模块的概念就是将代码拆分,易于维护,同一个名字的变量在不同的文件中(模块中)互不以影响:比如图中所示:引用其他模块的实例:1import 模块名">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-24T08:47:42.667Z">
+<meta property="og:image" content="http://yoursite.com/2018/03/03/python模块和包-廖旭峰教程/python模块示意图.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/03/python模块和包-廖旭峰教程/python引用其他模块示意图.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/03/python模块和包-廖旭峰教程/引用完整模块名示例.png">
+<meta property="og:updated_time" content="2018-03-03T13:44:35.177Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="flashsim源码阅读-1">
-<meta name="twitter:description" content="今天主要看的是上层的代码逻辑，不深究具体的变量赋值。initFlash()函数：主函数main里面的initFlash()函数里面根据全局变量ftl_type的类型选择了FTL类型操作读写函数flt_op指针。Ftl_type是在一开始的ssd_interface.h头文件定义，但是在ssd_interface.c中直接可以修改值，选择要仿真的FTL算法。initFlash()函数里面调用的nan">
+<meta name="twitter:title" content="python模块和包-廖旭峰教程">
+<meta name="twitter:description" content="廖雪峰老师的课件中的内容课件视频python引入模块的概念就是将代码拆分,易于维护,同一个名字的变量在不同的文件中(模块中)互不以影响:比如图中所示:引用其他模块的实例:1import 模块名">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/03/python模块和包-廖旭峰教程/python模块示意图.png">
 
 
 
@@ -153,13 +159,13 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/04/flashsim源码阅读-1/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/03/python模块和包-廖旭峰教程/"/>
 
 
 
 
 
-  <title>flashsim源码阅读-1 | Zhou的个人博客</title>
+  <title>python模块和包-廖旭峰教程 | Zhou的个人博客</title>
   
 
 
@@ -276,7 +282,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/04/flashsim源码阅读-1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/03/python模块和包-廖旭峰教程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ZhouHeyu">
@@ -293,7 +299,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
         
         
-          <h1 class="post-title" itemprop="name headline">flashsim源码阅读-1</h1>
+          <h1 class="post-title" itemprop="name headline">python模块和包-廖旭峰教程</h1>
         
 
         <div class="post-meta">
@@ -305,8 +311,8 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-04T16:46:15+08:00">
-                2017-07-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T20:33:22+08:00">
+                2018-03-03
               </time>
             
 
@@ -323,7 +329,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
           
           
-             <span id="/2017/07/04/flashsim源码阅读-1/" class="leancloud_visitors" data-flag-title="flashsim源码阅读-1">
+             <span id="/2018/03/03/python模块和包-廖旭峰教程/" class="leancloud_visitors" data-flag-title="python模块和包-廖旭峰教程">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -354,18 +360,32 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
       
 
       
-        <p>今天主要看的是上层的代码逻辑，不深究具体的变量赋值。<br><code>initFlash()</code>函数：<br>主函数<code>main</code>里面的<code>initFlash()</code>函数里面根据全局变量<code>ftl_type</code>的类型选择了FTL类型操作读写函数<code>flt_op</code>指针。<code>Ftl_type</code>是在一开始的<code>ssd_interface.h</code>头文件定义，但是在<code>ssd_interface.c</code>中直接可以修改值，选择要仿真的FTL算法。<code>initFlash()</code>函数里面调用的<code>nand_init()</code>是对底层的<code>flash</code>块初始化，<code>nand_stat_reset()</code>函数只是对<code>flash</code>块操作记录的重置，并不是对<code>flash</code>块的内容作修改。若对nand的操作进一步深究，则是阅读<code>flash.c</code>和<code>flash.h</code>文件的内容。<br><a id="more"></a><br><code>warmFlash()</code>函数：<br>是一个预热函数，因为我们做实验的时候希望试验环境能模拟最真实的情况，以我们并不想每次在做实验的时候，trace 数据都是跑在一个全新的 SSD 上面。这个时候我们可以在真实实验之前给 SSD 做一次 warm up，也就是用一些 trace 先让 SSD 跑一会，然后再运行我们需要测试的 trace 文件。单纯做仿真不需要深究，只是需要知道其接口输入的参数是预热trace文件名。<br>下面开始的是<code>disksim_run_simulation()</code>函数，也就是总体仿真的函数。<br><code>Disksim_run_simulation</code>函数在<code>Disksim.c</code>函数中定义，输入参数无，返回类型<code>void</code><br>该函数判断<code>disksim</code>结构体中的<code>stop_sim</code>来反复执行调用<code>disksim_simulate_event()</code>函数，这里给出截取代码段：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void disksim_run_simulation ()</span><br><span class="line">&#123;</span><br><span class="line">  int event_count = 0;</span><br><span class="line">  while (disksim-&gt;stop_sim == FALSE) &#123;</span><br><span class="line">    disksim_simulate_event(event_count);</span><br><span class="line">    event_count++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面进入<code>disksim_simulate_event()</code>函数，这个函数输入参数是int类型的event_count,该函数，该函数也在<code>disksim.c</code>中定义。对这个函数咱一步步阅读，先给出这个函数的完整代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">void disksim_simulate_event (int num)</span><br><span class="line">&#123;</span><br><span class="line">  event *curr;</span><br><span class="line">  </span><br><span class="line">  if ((curr = getnextevent()) == NULL) &#123;</span><br><span class="line">    disksim_simstop ();</span><br><span class="line">  &#125; </span><br><span class="line">  else &#123;</span><br><span class="line">   </span><br><span class="line">    switch(disksim-&gt;trace_mode) &#123;</span><br><span class="line">    case DISKSIM_NONE:</span><br><span class="line">    case DISKSIM_MASTER:</span><br><span class="line">//      fprintf(outputfile, &quot;*** DEBUG TRACE\t%f\t%d\t%d\n&quot;,   </span><br><span class="line">//	      simtime, curr-&gt;type, num);   </span><br><span class="line">  //    fflush(outputfile);    </span><br><span class="line">      break;</span><br><span class="line"></span><br><span class="line">    case DISKSIM_SLAVE:</span><br><span class="line">      break;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    simtime = curr-&gt;time;</span><br><span class="line">    </span><br><span class="line">    if (curr-&gt;type == INTR_EVENT) &#123;</span><br><span class="line">      intr_acknowledge (curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= IO_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= IO_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= PF_MIN_EVENT) &amp;&amp; (curr-&gt;type &lt;= PF_MAX_EVENT)) &#123;</span><br><span class="line">      pf_internal_event(curr);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (curr-&gt;type == TIMER_EXPIRED) &#123;</span><br><span class="line">      timer_event *timeout = (timer_event *) curr;</span><br><span class="line">      (*timeout-&gt;func) (timeout);</span><br><span class="line">    &#125; </span><br><span class="line">    else if ((curr-&gt;type &gt;= MEMS_MIN_EVENT) </span><br><span class="line">	     &amp;&amp; (curr-&gt;type &lt;= MEMS_MAX_EVENT)) &#123;</span><br><span class="line">      io_internal_event ((ioreq_event *)curr);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == CHECKPOINT) &#123;</span><br><span class="line">      if (disksim-&gt;checkpoint_interval) &#123;</span><br><span class="line">	disksim_register_checkpoint(simtime + disksim-&gt;checkpoint_interval);</span><br><span class="line">      &#125;</span><br><span class="line">      disksim_checkpoint (disksim-&gt;checkpointfilename);</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == STOP_SIM) &#123;</span><br><span class="line">      disksim_simstop ();</span><br><span class="line">    &#125; </span><br><span class="line">    else if (curr-&gt;type == EXIT_DISKSIM) &#123;</span><br><span class="line">      exit (0);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">      fprintf(stderr, &quot;Unrecognized event in simulate: %d\n&quot;, curr-&gt;type);</span><br><span class="line">      exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">#ifdef FDEBUG</span><br><span class="line">    fprintf (outputfile, &quot;Event handled, going for next\n&quot;);</span><br><span class="line">    fflush (outputfile);</span><br><span class="line">#endif</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先函数先定义了一个<code>event</code>结构体指针<code>curr：</code><br><code>event</code>是个结构体类型，在<code>disksim_global.h</code>的头文件中定义如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct ev &#123;</span><br><span class="line">   double time;</span><br><span class="line">   int type;</span><br><span class="line">   struct ev *next;</span><br><span class="line">   struct ev *prev;</span><br><span class="line">   int    temp;</span><br><span class="line">   char space[DISKSIM_EVENT_SPACESIZE];</span><br><span class="line">&#125; event;</span><br></pre></td></tr></table></figure>
-<p>熟悉双链表的话，可以用这个结构体作为双链表的节点，里面有前驱和后继指针。再读下<code>disksim_simulate_event()</code>下面的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> if ((curr = getnextevent()) == NULL) &#123;</span><br><span class="line">    disksim_simstop ();</span><br><span class="line">  &#125; </span><br><span class="line">  else &#123;</span><br><span class="line">    switch(disksim-&gt;trace_mode) &#123;</span><br><span class="line">    case DISKSIM_NONE:</span><br><span class="line">    case DISKSIM_MASTER:   </span><br><span class="line">      break;</span><br><span class="line"></span><br><span class="line">    case DISKSIM_SLAVE:</span><br><span class="line">      break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>看到了<code>curr = getnextevent()</code>这个调用，<code>getnextevent()</code>这个函数也在<code>disksim.c</code>中定义了。暂不深究。看看<code>disksim_simstop ()</code>这个函数，在<code>disksim.c</code>中也定义了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void disksim_simstop ()</span><br><span class="line">&#123;</span><br><span class="line">   disksim-&gt;stop_sim = TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>其作用也就是将<code>disksim</code>这个结构体变量中的<code>stop_sim</code>置位TRUE，在上层调用函数<code>disksim_run_simulation ()</code>中的while循环就是依据这个<code>stop_sim</code>判断终止的，也就是说<code>getnextevent()</code>返回空，即当前队列没有event了，仿真停止了。如果不为空，则判断disksim结构体变量中的<code>trace_mode</code>判断trace类型，但是不做操作，该类型有：<br><code>enum { DISKSIM_MASTER, DISKSIM_SLAVE, DISKSIM_NONE } trace_mode；</code>这是在disksim结构体类型申明里面找到的。三种类型，具体的类型对应什么意思，目前不知道。<br>下面继续看<code>disksim_simulate_event()</code>下一句代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">simtime = curr-&gt;time;</span><br></pre></td></tr></table></figure>
-<p><code>simtime</code>是<code>disksim</code>结构变量中的一个double类型的值，表示当前的系统时间。反过来看event的结构定义可以看到也有double time的定义，就是将当前处理的event类型所绑定的时间赋值给系统时间。<br>再接着读下去，发现是根据当前event中的int type；来处理事件<br>Type有以下几种类型：<br>|<strong>Type类型</strong>|<strong>对应调用的函数</strong>|<br>|:-:|:-:|<br>|<strong><code>INTR_EVENT</code></strong>|<strong>intr_acknowledge()</strong>|<br>|<strong><code>IO_MIN_EVENT</code></strong>|<strong>io_internal_event()</strong>|<br>|<strong><code>IO_MAX_EVENT</code></strong>|<strong>io_internal_event()</strong>|<br>|<strong><code>PF_MIN_EVENT</code></strong>|<strong>pf_internal_event()</strong>|<br>|<strong><code>PF_MAX_EVENT</code></strong>|<strong>pf_internal_event()</strong>|<br>|<strong><code>TIMER_EXPIRED</code></strong>|<strong><code>(*timeout-&gt;func) (timeout)</code></strong>|<br>|<strong><code>MEMS_MIN_EVENT</code></strong>|<strong>io_internal_event ((ioreq_event *)curr)</strong>|<br>|<strong><code>MEMS_MAX_EVENT</code></strong>|<strong>io_internal_event ((ioreq_event *)curr);</strong>|<br>|<strong><code>CHECKPOINT</code></strong>|<strong>disksim_register_checkpoint(simtime + disksim-&gt;checkpoint_interval)</strong>|<br>|<strong><code>CHECKPOINT</code></strong>|<strong>disksim_checkpoint (disksim-&gt;checkpointfilename);</strong>|<br>|<strong><code>STOP_SIM</code></strong>|<strong>disksim_simstop ();</strong>|<br>|<strong><code>EXIT_DISKSIM</code></strong>|<strong>exit (0);</strong>|<br>关于具体类型说明，明天再分析。</p>
+        <h2 id="廖雪峰老师的课件中的内容"><a href="#廖雪峰老师的课件中的内容" class="headerlink" title="廖雪峰老师的课件中的内容"></a><strong>廖雪峰老师的课件中的内容</strong></h2><p><a href="https://www.imooc.com/video/6069" target="_blank" rel="noopener">课件视频</a><br>python引入模块的概念就是将代码拆分,易于维护,同一个名字的变量在不同的文件中(模块中)互不以影响:<br>比如图中所示:<br><img src="/2018/03/03/python模块和包-廖旭峰教程/python模块示意图.png" title="python模块示意图"><br>引用其他模块的实例:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块名</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>示例图:<br><img src="/2018/03/03/python模块和包-廖旭峰教程/python引用其他模块示意图.png" title="python引用其他模块示意图"><br>但是模块一多也会混乱重名,所以要引入包的概念:<br>将同名的模块放入到不同的包中,解决掉模块同名冲突<br>那么引用完整的模块名就需要:<br><img src="/2018/03/03/python模块和包-廖旭峰教程/引用完整模块名示例.png" title="引用完整模块名示例"><br><strong>个人理解:</strong><br>因此包就是文件夹,模块就是xxx.py文件,包和域名类似有多级包(但是包和普通目录有一个重要的区别,包的当前目录下必须有一个<strong>init</strong>.py文件)</p>
+<h2 id="python中导入模块的细节"><a href="#python中导入模块的细节" class="headerlink" title="python中导入模块的细节:"></a>python中导入模块的细节:</h2><p>可以指定导入对应的模块,指定使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line">math.pow(<span class="number">2</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure></p>
+<p>指定导入模块对应的函数,不需要指定使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> pow ,sin,log</span><br><span class="line">pow(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">sin(<span class="number">3.14</span>)</span><br></pre></td></tr></table></figure></p>
+<p>在<a href="http://www.kuqin.com/abyteofpython_cn/ch08s03.html" target="_blank" rel="noopener">简明python教程</a>中指出应该避免使用过多的使用<code>form ... import</code>语句,使程序更加易读避免歧义<br>但是如果你的操作依旧很骚,出现了导入名字冲突那么就可以通过取别名的方式避免冲突<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> log</span><br><span class="line"><span class="keyword">from</span> logging <span class="keyword">import</span> log <span class="keyword">as</span> logger   <span class="comment"># logging的log现在变成了logger</span></span><br><span class="line"><span class="keyword">print</span> log(<span class="number">10</span>)   <span class="comment"># 调用的是math的log</span></span><br><span class="line">logger(<span class="number">10</span>, <span class="string">'import from logging'</span>)   <span class="comment"># 调用的是logging的log</span></span><br></pre></td></tr></table></figure></p>
+<p>这个例子和mysql里面的起别名的操作也很像:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select 某表单的某一列 as 名字</span><br><span class="line">from 某表单</span><br></pre></td></tr></table></figure></p>
+<p>如果导入的库不存在就会报错:<code>ImportError</code><br><strong><code>Python有个地方很吊,就是能用C代码作为模块加速运算!!!</code></strong><br>在廖雪峰老师的课程中这么解释:</p>
+<blockquote>
+<p>有的时候，两个不同的模块提供了相同的功能，比如 StringIO 和 cStringIO 都提供了StringIO这个功能。<br>这是因为Python是动态语言，解释执行，因此Python代码运行速度慢。<br>如果要提高Python代码的运行速度，最简单的方法是把某些关键函数用 C 语言重写，这样就能大大提高执行速度。<br>同样的功能，StringIO 是纯Python代码编写的，而 cStringIO 部分函数是 C 写的，因此 cStringIO 运行速度更快。</p>
+</blockquote>
+<p>利用ImportError动态加载库<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	<span class="keyword">from</span>  cStringIO <span class="keyword">import</span> <span class="keyword">as</span> StringIO</span><br><span class="line">expect ImportError:</span><br><span class="line">	<span class="keyword">from</span> StringIO <span class="keyword">import</span> StringIO</span><br></pre></td></tr></table></figure></p>
+<p>上述代码先尝试从cStringIO导入，如果失败了（比如cStringIO没有被安装），再尝试从StringIO导入。这样，如果cStringIO模块存在，则我们将获得更快的运行速度，如果cStringIO不存在，则顶多代码运行速度会变慢，但不会影响代码的正常执行。<br>try 的作用是捕获错误，并在捕获到指定错误时执行 except 语句。</p>
+<h3 id="对比JS中的异常处理函数"><a href="#对比JS中的异常处理函数" class="headerlink" title="对比JS中的异常处理函数"></a>对比JS中的异常处理函数</h3><p>JS中是存在try/catch异常处理函数(真的一模一样)<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> message=<span class="built_in">document</span>.getElementById(<span class="string">"message"</span>);</span><br><span class="line">    message.innerHTML=<span class="string">"Here's the messsage"</span>;</span><br><span class="line">&#125;<span class="keyword">catch</span>(error)&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"Error!"</span>+error.message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="python之使用future-这个知识点很冷门"><a href="#python之使用future-这个知识点很冷门" class="headerlink" title="python之使用future(这个知识点很冷门)"></a>python之使用<strong>future</strong>(这个知识点很冷门)</h3><p>Python的新版本会引入新的功能，但是，实际上这些功能在上一个老版本中就已经存在了。要“试用”某一新的特性，就可以通过导入<strong>future</strong>模块的某些功能来实现。<br>例如，Python 2.7的整数除法运算结果仍是整数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 10 / 3</span><br><span class="line">3</span><br></pre></td></tr></table></figure></p>
+<p>但是，Python 3.x已经改进了整数的除法运算，“/”除将得到浮点数，“//”除才仍是整数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 10 / 3</span><br><span class="line">3.3333333333333335</span><br><span class="line">&gt;&gt;&gt; 10 // 3</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<p>要在Python 2.7中引入3.x的除法规则，导入<strong>future</strong>的division：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from __future__ import division</span><br><span class="line">&gt;&gt;&gt; print 10 / 3</span><br><span class="line">3.3333333333333335</span><br></pre></td></tr></table></figure></p>
+<p>当新版本的一个特性与旧版本不兼容时，该特性将会在旧版本中添加到<strong>future</strong>中，以便旧的代码能在旧版本中测试新特性。</p>
+<h3 id="python安装第三方的模块-管理"><a href="#python安装第三方的模块-管理" class="headerlink" title="python安装第三方的模块(管理)"></a>python安装第三方的模块(管理)</h3><p>python内置的模块不够用就需要安装第三方的模块<br>管理工具:</p>
+<ol>
+<li>easy_install</li>
+<li>pip(五星推荐)<br>这里涉及到Ubuntu如何安装pip</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apt-get update #保证source_list最新</span><br><span class="line">apt-get upgrade</span><br><span class="line">apt-get installpython-pip</span><br><span class="line"><span class="meta">#</span>查看当前的pip版本</span><br><span class="line">pip -V</span><br><span class="line"><span class="meta">#</span>常用pip管理python包的命令</span><br><span class="line"><span class="meta">#</span>查看帮助</span><br><span class="line">pip --help</span><br><span class="line"><span class="meta">#</span>删除包</span><br><span class="line">pip uninstall packagename</span><br><span class="line"><span class="meta">#</span>添加包</span><br><span class="line">pip install packagename</span><br><span class="line"><span class="meta">#</span>寻找包</span><br><span class="line">pip search packagename</span><br></pre></td></tr></table></figure>
+<p>可以在<a href="https://pypi.python.org/" target="_blank" rel="noopener">网站</a>搜索对应的包</p>
 
       
     </div>
@@ -407,7 +427,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
       
         <div class="post-tags">
           
-            <a href="/tags/flashsim-源码解析/" rel="tag"># flashsim 源码解析</a>
+            <a href="/tags/python-模块与包-学习笔记-廖旭峰/" rel="tag"># python 模块与包 学习笔记 廖旭峰</a>
           
         </div>
       
@@ -420,15 +440,15 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/03/03/python高阶函数学习笔记-廖雪峰课程笔记/" rel="next" title="python高阶函数学习笔记-廖雪峰课程笔记">
+                <i class="fa fa-chevron-left"></i> python高阶函数学习笔记-廖雪峰课程笔记
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/07/flashsim源码阅读-2/" rel="prev" title="flashsim源码阅读-2">
-                flashsim源码阅读-2 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -483,8 +503,17 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -586,6 +615,22 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#廖雪峰老师的课件中的内容"><span class="nav-number">1.</span> <span class="nav-text">廖雪峰老师的课件中的内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中导入模块的细节"><span class="nav-number">2.</span> <span class="nav-text">python中导入模块的细节:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对比JS中的异常处理函数"><span class="nav-number">2.1.</span> <span class="nav-text">对比JS中的异常处理函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python之使用future-这个知识点很冷门"><span class="nav-number">2.2.</span> <span class="nav-text">python之使用future(这个知识点很冷门)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python安装第三方的模块-管理"><span class="nav-number">2.3.</span> <span class="nav-text">python安装第三方的模块(管理)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
