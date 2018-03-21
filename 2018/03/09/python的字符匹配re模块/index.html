@@ -104,8 +104,6 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
 
 
-  
-
 
   <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
 
@@ -122,7 +120,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 <meta property="og:site_name" content="Zhou的个人博客">
 <meta property="og:description" content="re模块导入的语法小例子:1234567891011import re #导入模块名p = re.compile(&quot;^[0-9]&quot;) #生成要匹配的正则对象 ， ^代表从开头匹配，[0-9]代表匹配0至9的任意一个数字， 所以这里的意思是对传进来的字符串进行匹配，如果这个字符串的开头第一个字符是数字，就代表匹配上了m = p.match(‘14534Abc‘)   #按上面生成的正则对象 去匹配">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-09T02:59:46.531Z">
+<meta property="og:updated_time" content="2018-03-09T05:25:31.743Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python的字符匹配re模块">
 <meta name="twitter:description" content="re模块导入的语法小例子:1234567891011import re #导入模块名p = re.compile(&quot;^[0-9]&quot;) #生成要匹配的正则对象 ， ^代表从开头匹配，[0-9]代表匹配0至9的任意一个数字， 所以这里的意思是对传进来的字符串进行匹配，如果这个字符串的开头第一个字符是数字，就代表匹配上了m = p.match(‘14534Abc‘)   #按上面生成的正则对象 去匹配">
@@ -509,6 +507,67 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 <h3 id="例4"><a href="#例4" class="headerlink" title="例4"></a>例4</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S=<span class="string">"alex1rain2jack3helen rachel8"</span></span><br><span class="line">m=re.match(<span class="string">"[0-9]"</span>,S)</span><br><span class="line">print(m.group())</span><br><span class="line"><span class="comment">#结果: None</span></span><br></pre></td></tr></table></figure>
 <h3 id="例5"><a href="#例5" class="headerlink" title="例5"></a>例5</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S=<span class="string">"alex1rain2jack3helen rachel8"</span></span><br><span class="line">m=re.search(<span class="string">"[0-9]"</span>,S)</span><br><span class="line">print(m.group())</span><br><span class="line"><span class="comment">#结果 1</span></span><br></pre></td></tr></table></figure>
 <p>##具体的一个小习题<br><a href="http://www.runoob.com/python/python-exercise-example31.html" target="_blank" rel="noopener">python 100例中的31例</a><br>题目:题目：请输入星期几的第一个字母来判断一下是星期几，如果第一个字母一样，则继续判断第二个字母。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">list=[<span class="string">'Monday'</span>,<span class="string">'Tuesday'</span>,<span class="string">'Wednesday'</span>,<span class="string">'Thursday'</span>,<span class="string">'Friday'</span>,<span class="string">'Saturday'</span>,<span class="string">'Sunday'</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">judge</span><span class="params">(first,list)</span>:</span></span><br><span class="line">    choice=[]</span><br><span class="line">    first=first.upper()</span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> list:</span><br><span class="line">        <span class="keyword">if</span> re.match(first,s):</span><br><span class="line">            choice.append(s)</span><br><span class="line">    <span class="keyword">if</span> len(choice)&lt;=<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'data error,can not find match string'</span>)</span><br><span class="line">        exit(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">if</span> len(choice)==<span class="number">1</span>:</span><br><span class="line">        print(choice[<span class="number">0</span>])</span><br><span class="line">        exit(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        second=input(<span class="string">'second string:'</span>)</span><br><span class="line">        second=second.lower()</span><br><span class="line">        flag=<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> choice:</span><br><span class="line">            <span class="keyword">if</span> re.match(first+second,s):</span><br><span class="line">                print(s)</span><br><span class="line">                flag=<span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> flag==<span class="number">1</span>:</span><br><span class="line">             print(<span class="string">'data error,can not find match string'</span>)</span><br><span class="line">                </span><br><span class="line"></span><br><span class="line">first=input(<span class="string">"input first str"</span>)  </span><br><span class="line">judge(first,list)</span><br></pre></td></tr></table></figure></p>
+<h2 id="python-100例中的正则表达式的学习-对上述的详细补充"><a href="#python-100例中的正则表达式的学习-对上述的详细补充" class="headerlink" title="python 100例中的正则表达式的学习(对上述的详细补充)"></a>python 100例中的正则表达式的学习(对上述的详细补充)</h2><p><a href="http://www.runoob.com/python/python-reg-expressions.html#flags" target="_blank" rel="noopener">Python 正则表达式(个人觉得讲的不错)</a></p>
+<h3 id="match"><a href="#match" class="headerlink" title="match"></a>match</h3><p>re.match 尝试从字符串的起始位置匹配一个模式，如果不是起始位置匹配成功的话，match()就返回none。<br>函数语法:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">re.match(pattern, string, flags=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p>flag标志位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等等<br>正则表达式修饰符-可选标志</p>
+<table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>re.I</td>
+<td>使匹配对大小写不敏感</td>
+</tr>
+<tr>
+<td>re.L</td>
+<td>做本地化识别（locale-aware）匹配</td>
+</tr>
+<tr>
+<td>re.M</td>
+<td>多行匹配，影响 ^ 和 $</td>
+</tr>
+<tr>
+<td>re.S</td>
+<td>使 . 匹配包括换行在内的所有字符</td>
+</tr>
+<tr>
+<td>re.U</td>
+<td>根据Unicode字符集解析字符。这个标志影响 \w, \W, \b, \B.</td>
+</tr>
+<tr>
+<td>re.X</td>
+<td>该标志通过给予你更灵活的格式以便你将正则表达式写得更易于理解。</td>
+</tr>
+</tbody>
+</table>
+<p>这个匹配返回的东西,是真的骚,返回是一个对象!!!!!,而且返回的是匹配的对象,必须使用group获取表达式</p>
+<table>
+<thead>
+<tr>
+<th>匹配对象方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>group(num=0)</td>
+<td>匹配的整个表达式的字符串，group() 可以一次输入多个组号，在这种情况下它将返回一个包含那些组所对应值的元组。</td>
+</tr>
+<tr>
+<td>groups()</td>
+<td>返回一个包含所有小组字符串的元组，从 1 到 所含的小组号。</td>
+</tr>
+</tbody>
+</table>
+<p>一个例子:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">print(re.search(<span class="string">'www'</span>, <span class="string">'www.runoob.com'</span>).span())  <span class="comment"># 在起始位置匹配</span></span><br><span class="line">print(re.search(<span class="string">'com'</span>, <span class="string">'www.runoob.com'</span>).span())         <span class="comment"># 不在起始位置匹配</span></span><br><span class="line"><span class="comment">#结果:(0, 3)</span></span><br><span class="line"><span class="comment">#结果:(11, 14)</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m.span() 返回一个tuple表示(m.start(), m.end())</span><br></pre></td></tr></table></figure>
+<h3 id="检索和替换"><a href="#检索和替换" class="headerlink" title="检索和替换"></a>检索和替换</h3><p>Python 的 re 模块提供了re.sub用于替换字符串中的匹配项。语法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">re.sub(pattern, repl, string, count=<span class="number">0</span>, flags=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p>参数:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pattern : 正则中的模式字符串。</span><br><span class="line">repl : 替换的字符串，也可为一个函数。</span><br><span class="line">string : 要被查找替换的原始字符串。</span><br><span class="line">count : 模式匹配后替换的最大次数，默认 0 表示替换所有的匹配。</span><br></pre></td></tr></table></figure></p>
+<p>实例:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"> </span><br><span class="line">phone = <span class="string">"2004-959-559 # 这是一个国外电话号码"</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 删除字符串中的 Python注释 </span></span><br><span class="line">num = re.sub(<span class="string">r'#.*$'</span>, <span class="string">""</span>, phone)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"电话号码是: "</span>, num</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 删除非数字(-)的字符串 </span></span><br><span class="line">num = re.sub(<span class="string">r'\D'</span>, <span class="string">""</span>, phone)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"电话号码是 : "</span>, num</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -572,6 +631,10 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/21/华为编程题-1/" rel="prev" title="华为编程题-1">
+                华为编程题-1 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -655,7 +718,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -668,7 +731,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -748,7 +811,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#re模块导入的语法小例子"><span class="nav-number">1.</span> <span class="nav-text">re模块导入的语法小例子:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式的基本匹配格式"><span class="nav-number">2.</span> <span class="nav-text">正则表达式的基本匹配格式:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#re中的正则表达式匹配格式"><span class="nav-number">3.</span> <span class="nav-text">re中的正则表达式匹配格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#re中正则表达式的常用的5种操作"><span class="nav-number">4.</span> <span class="nav-text">re中正则表达式的常用的5种操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1"><span class="nav-number">4.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2"><span class="nav-number">4.2.</span> <span class="nav-text">例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3"><span class="nav-number">4.3.</span> <span class="nav-text">例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例4"><span class="nav-number">4.4.</span> <span class="nav-text">例4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例5"><span class="nav-number">4.5.</span> <span class="nav-text">例5</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#re模块导入的语法小例子"><span class="nav-number">1.</span> <span class="nav-text">re模块导入的语法小例子:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式的基本匹配格式"><span class="nav-number">2.</span> <span class="nav-text">正则表达式的基本匹配格式:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#re中的正则表达式匹配格式"><span class="nav-number">3.</span> <span class="nav-text">re中的正则表达式匹配格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#re中正则表达式的常用的5种操作"><span class="nav-number">4.</span> <span class="nav-text">re中正则表达式的常用的5种操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1"><span class="nav-number">4.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2"><span class="nav-number">4.2.</span> <span class="nav-text">例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3"><span class="nav-number">4.3.</span> <span class="nav-text">例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例4"><span class="nav-number">4.4.</span> <span class="nav-text">例4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例5"><span class="nav-number">4.5.</span> <span class="nav-text">例5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-100例中的正则表达式的学习-对上述的详细补充"><span class="nav-number">5.</span> <span class="nav-text">python 100例中的正则表达式的学习(对上述的详细补充)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#match"><span class="nav-number">5.1.</span> <span class="nav-text">match</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检索和替换"><span class="nav-number">5.2.</span> <span class="nav-text">检索和替换</span></a></li></ol></li></ol></div>
             
 
           </div>
