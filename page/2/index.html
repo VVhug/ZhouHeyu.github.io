@@ -275,6 +275,148 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/24/DFTL算法代码实现追加/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/24/DFTL算法代码实现追加/" itemprop="url">DFTL算法代码实现追加</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T16:59:03+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/24/DFTL算法代码实现追加/" class="leancloud_visitors" data-flag-title="DFTL算法代码实现追加">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="DFTL算法中callfsim函数中的操作"><a href="#DFTL算法中callfsim函数中的操作" class="headerlink" title="DFTL算法中callfsim函数中的操作"></a>DFTL算法中callfsim函数中的操作</h1><p>原仿真器中针对DFTL中的callFsim的函数实现DFTL的部分SLRU操作:<br>即在DFTL的SDRAM中的映射项关系(lpn—&gt;ppn)每一项在缓存的滞留是按LRU原则进行组织的:<br>SLRU的处理方式:</p>
+<ol>
+<li>将缓存划分未两个区域:Ghost队列和Real队列</li>
+<li>初次加载的最新的映射关系被保留在Real队列</li>
+<li>当Real队列中满时,需要进行剔除,剔除后的映射关系并不直接回写入NADN中保存,而是转移到Ghost队列中进行暂存</li>
+<li>Ghost中的映射项,再满足一定条件时也会跻身再次进入到Real队列中,将Real队列中的LRU位置的映射关系置换到Ghost队列中去.</li>
+<li>Ghost队列中的LRU位置的映射在满的时候会被直接剔除,如果发生了写更新,即SDRAM中的映射关系和底层的映射关系不一致话的,则需要旧的映射关系读出来,将新的映射关系更新到NAND中</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/24/DFTL算法代码实现追加/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/24/Flashsim中关于FAST算法实现的代码解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1268,7 +1410,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1281,7 +1423,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
