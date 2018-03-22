@@ -115,7 +115,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 <meta name="description" content="SSD学习的一些笔记">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Zhou的个人博客">
-<meta property="og:url" content="http://yoursite.com/tags/SSD-diksim-源码阅读/index.html">
+<meta property="og:url" content="http://yoursite.com/page/3/index.html">
 <meta property="og:site_name" content="Zhou的个人博客">
 <meta property="og:description" content="SSD学习的一些笔记">
 <meta property="og:locale" content="zh-Hans">
@@ -151,13 +151,13 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/SSD-diksim-源码阅读/"/>
+  <link rel="canonical" href="http://yoursite.com/page/3/"/>
 
 
 
 
 
-  <title>标签: SSD diksim 源码阅读 | Zhou的个人博客</title>
+  <title>Zhou的个人博客</title>
   
 
 
@@ -176,7 +176,8 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -259,55 +260,150 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  
-  
-  
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>SSD diksim 源码阅读<small>标签</small>
-        </h1>
-      </div>
-
+  <section id="posts" class="posts-expand">
+    
       
-        
+
+  
+
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/04/flashsim源码阅读-1/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/02/24/disksim负载合成/" itemprop="url">
-              
-                <span itemprop="name">disksim负载合成</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/04/flashsim源码阅读-1/" itemprop="url">flashsim源码阅读-1</a></h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-24T17:05:34+08:00"
-              content="2018-02-24" >
-          02-24
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-04T16:46:15+08:00">
+                2017-07-04
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/04/flashsim源码阅读-1/" class="leancloud_visitors" data-flag-title="flashsim源码阅读-1">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    </div>
+      
 
+      
+        
+          <p>今天主要看的是上层的代码逻辑，不深究具体的变量赋值。<br><code>initFlash()</code>函数：<br>主函数<code>main</code>里面的<code>initFlash()</code>函数里面根据全局变量<code>ftl_type</code>的类型选择了FTL类型操作读写函数<code>flt_op</code>指针。<code>Ftl_type</code>是在一开始的<code>ssd_interface.h</code>头文件定义，但是在<code>ssd_interface.c</code>中直接可以修改值，选择要仿真的FTL算法。<code>initFlash()</code>函数里面调用的<code>nand_init()</code>是对底层的<code>flash</code>块初始化，<code>nand_stat_reset()</code>函数只是对<code>flash</code>块操作记录的重置，并不是对<code>flash</code>块的内容作修改。若对nand的操作进一步深究，则是阅读<code>flash.c</code>和<code>flash.h</code>文件的内容。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/04/flashsim源码阅读-1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
   
   
   
+  </article>
+
+
+    
+  </section>
 
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
 
 
           </div>

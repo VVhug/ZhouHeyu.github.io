@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="华为上机题,字符串," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou的个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="字符串处理">
+<meta name="keywords" content="华为上机题,字符串">
+<meta property="og:type" content="article">
+<meta property="og:title" content="华为上机题-3">
+<meta property="og:url" content="http://yoursite.com/2018/03/22/华为上机题-3/index.html">
+<meta property="og:site_name" content="Zhou的个人博客">
+<meta property="og:description" content="字符串处理">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/03/22/华为上机题-3/华为上机题-3/进制转化函数.png">
+<meta property="og:updated_time" content="2018-03-22T14:54:59.954Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="华为上机题-3">
+<meta name="twitter:description" content="字符串处理">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/22/华为上机题-3/华为上机题-3/进制转化函数.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/22/华为上机题-3/"/>
+
+
+
+
+
+  <title>华为上机题-3 | Zhou的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫把无知当做无畏</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/22/华为上机题-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhouHeyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">华为上机题-3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T19:16:18+08:00">
+                2018-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/22/华为上机题-3/" class="leancloud_visitors" data-flag-title="华为上机题-3">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="字符串处理"><a href="#字符串处理" class="headerlink" title="字符串处理"></a>字符串处理</h1><a id="more"></a>
+<h1 id="大数运算处理"><a href="#大数运算处理" class="headerlink" title="大数运算处理"></a>大数运算处理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">题目描述</span><br><span class="line">在计算机中，由于处理器位宽限制，只能处理有限精度的十进制整数加减法，比如在32位宽处理器计算机中，</span><br><span class="line">参与运算的操作数和结果必须在-231~231-1之间。如果需要进行更大范围的十进制整数加法，需要使用特殊</span><br><span class="line">的方式实现，比如使用字符串保存操作数和结果，采取逐位运算的方式。如下：</span><br><span class="line">9876543210 + 1234567890 = ?</span><br><span class="line">让字符串 num1=&quot;9876543210&quot;，字符串 num2=&quot;1234567890&quot;，结果保存在字符串 result = &quot;11111111100&quot;。</span><br><span class="line">-9876543210 + (-1234567890) = ?</span><br><span class="line">让字符串 num1=&quot;-9876543210&quot;，字符串 num2=&quot;-1234567890&quot;，结果保存在字符串 result = &quot;-11111111100&quot;。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入描述:</span><br><span class="line">输入两个字符串</span><br><span class="line"></span><br><span class="line">输出描述:</span><br><span class="line">输出给求和后的结果</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">输入</span><br><span class="line">9876543210</span><br><span class="line">1234567890</span><br><span class="line">输出</span><br><span class="line">11111111100</span><br></pre></td></tr></table></figure>
+<p>主要实现大数相加(进位)<br>大数相减(借位)<br>python解题代码:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BigNumAdd</span><span class="params">(Num1,Num2)</span>:</span></span><br><span class="line">    A=map(int,list(Num1))</span><br><span class="line">    B=map(int,list(Num2))</span><br><span class="line">    L1=len(A)</span><br><span class="line">    L2=len(B)</span><br><span class="line">    A.reverse()</span><br><span class="line">    B.reverse()</span><br><span class="line">    <span class="keyword">if</span> L1&gt;L2:</span><br><span class="line">        Max=A</span><br><span class="line">        Min=B</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        Max=B</span><br><span class="line">        Min=A</span><br><span class="line">    jinwei=<span class="number">0</span></span><br><span class="line">    d=list()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(Min)):</span><br><span class="line">        jinwei=Min[i]+Max[i]+jinwei</span><br><span class="line">        baoliu=jinwei%<span class="number">10</span></span><br><span class="line">        jinwei=jinwei/<span class="number">10</span></span><br><span class="line">        d.insert(<span class="number">0</span>,str(baoliu))</span><br><span class="line">        <span class="keyword">if</span> i==len(Min)<span class="number">-1</span> <span class="keyword">and</span> jinwei&gt;<span class="number">0</span> <span class="keyword">and</span> L1==L2:</span><br><span class="line">            d.insert(<span class="number">0</span>,str(jinwei))</span><br><span class="line">    <span class="keyword">if</span> L1!=L2:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(Min),len(Max)):</span><br><span class="line">            baoliu=jinwei+Max[i]</span><br><span class="line">            jinwei=baoliu/<span class="number">10</span></span><br><span class="line">            baoliu=baoliu%<span class="number">10</span></span><br><span class="line">            d.insert(<span class="number">0</span>,str(baoliu))</span><br><span class="line">            <span class="keyword">if</span> i==len(Max)<span class="number">-1</span> <span class="keyword">and</span> jinwei&gt;<span class="number">0</span>:</span><br><span class="line">                d.insert(<span class="number">0</span>,str(jinwei))</span><br><span class="line">    </span><br><span class="line">    d=<span class="string">''</span>.join(d)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> d</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BigNumSub</span><span class="params">(Num1,Num2)</span>:</span></span><br><span class="line">    Max=max(Num1,Num2)</span><br><span class="line">    Min=min(Num1,Num2)</span><br><span class="line">    <span class="keyword">if</span> Max==Min:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'0'</span></span><br><span class="line">    </span><br><span class="line">    Max=map(int,list(Max))</span><br><span class="line">    Min=map(int,list(Min))</span><br><span class="line">    Max.reverse()</span><br><span class="line">    Min.reverse()</span><br><span class="line">    d=list()</span><br><span class="line">    jiewei=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(Min)):</span><br><span class="line">        baoliu=Max[i]-Min[i]-jiewei</span><br><span class="line">        <span class="keyword">if</span> baoliu&lt;<span class="number">0</span>:</span><br><span class="line">            baoliu=baoliu+<span class="number">10</span></span><br><span class="line">            jiewei=<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            jiewei=<span class="number">0</span></span><br><span class="line">        d.insert(<span class="number">0</span>,str(baoliu))</span><br><span class="line">    d=<span class="string">''</span>.join(d)</span><br><span class="line">    <span class="keyword">return</span> d</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(Num1,Num2)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> Num1[<span class="number">0</span>]==<span class="string">'-'</span> <span class="keyword">and</span> Num2[<span class="number">0</span>]==<span class="string">'-'</span>:</span><br><span class="line">        a=Num1[<span class="number">1</span>:]</span><br><span class="line">        b=Num2[<span class="number">1</span>:]</span><br><span class="line">        r=<span class="string">'-'</span>+BigNumAdd(a,b)</span><br><span class="line">    <span class="keyword">elif</span> Num1[<span class="number">0</span>]!=<span class="string">'-'</span> <span class="keyword">and</span> Num2[<span class="number">0</span>]!=<span class="string">'-'</span>:</span><br><span class="line">        r=BigNumAdd(Num1,Num2)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        M=max(Num1,Num2)</span><br><span class="line">        T=min(Num1,Num2)</span><br><span class="line">        flag=<span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> T[<span class="number">1</span>:]&gt;M:</span><br><span class="line">            flag=<span class="number">1</span></span><br><span class="line">        r=BigNumSub(T[<span class="number">1</span>:],M)</span><br><span class="line">        <span class="keyword">if</span> flag==<span class="number">1</span>:</span><br><span class="line">            r=<span class="string">'-'</span>+r</span><br><span class="line">    <span class="keyword">return</span>  r</span><br><span class="line">                </span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        num1=sys.stdin.readline().strip()</span><br><span class="line">        num2=sys.stdin.readline().strip()</span><br><span class="line">        r=func(num1,num2)</span><br><span class="line">        <span class="keyword">print</span> r</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="进制转化"><a href="#进制转化" class="headerlink" title="进制转化"></a>进制转化</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">题目描述</span><br><span class="line">写出一个程序，接受一个十六进制的数值字符串，输出该数值的十进制字符串。（多组同时输入 ）</span><br><span class="line"></span><br><span class="line">输入描述:</span><br><span class="line">输入一个十六进制的数值字符串。</span><br><span class="line"></span><br><span class="line">输出描述:</span><br><span class="line">输出该数值的十进制字符串。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">示例1</span><br><span class="line">输入</span><br><span class="line">0xA</span><br><span class="line">输出</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
+<p><img src="./华为上机题-3/进制转化函数.png" alt="进制转化函数.png"><br>需要注意的是输入的x必须是数字类型,不能是字符了;类型<br>bin()、oct()、hex()的返回值均为字符串，且分别带有0b、0o、0x前缀。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">numChange</span><span class="params">(Num)</span>:</span></span><br><span class="line">    T=list(Num[<span class="number">2</span>:])</span><br><span class="line">    T.reverse()</span><br><span class="line">    sum=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(T)):</span><br><span class="line">        <span class="keyword">if</span> T[i].isalpha():</span><br><span class="line">            t=ord(T[i])-ord(<span class="string">'A'</span>)+<span class="number">10</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            t=int(T[i])</span><br><span class="line">        sum+=t*(<span class="number">16</span>**i)</span><br><span class="line">    <span class="keyword">return</span> sum</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        st=raw_input()</span><br><span class="line">        r=numChange(st)</span><br><span class="line">        <span class="keyword">print</span> r</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">         <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<p>关于牛客网中的sys.stdin.readline().strip()和raw_input()输入函数,优先选择raw_input,会把换行符去掉,通过概率更高!!!!<br>用内置函数int<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">    	<span class="keyword">print</span> int(raw_input(),<span class="number">16</span>)</span><br><span class="line">   	<span class="keyword">except</span>:</span><br><span class="line">    	<span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="字符串加密"><a href="#字符串加密" class="headerlink" title="字符串加密"></a>字符串加密</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">题目描述</span><br><span class="line">有一种技巧可以对数据进行加密，它使用一个单词作为它的密匙。下面是它的工作原理：首先，选择一个单词作为密匙，如TRAILBLAZERS。如果单词中包含有重复的字母，只保留第1个，其余几个丢弃。现在，修改过的那个单词属于字母表的下面，如下所示：</span><br><span class="line"></span><br><span class="line">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</span><br><span class="line"></span><br><span class="line">T R A I L B Z E S C D F G H J K M N O P Q U V W X Y</span><br><span class="line"></span><br><span class="line">上面其他用字母表中剩余的字母填充完整。在对信息进行加密时，信息中的每个字母被固定于顶上那行，并用下面那行的对应字母一一取代原文的字母(字母字符的大小写状态应该保留)。因此，使用这个密匙，Attack AT DAWN(黎明时攻击)就会被加密为Tpptad TP ITVH。</span><br><span class="line"></span><br><span class="line">请实现下述接口，通过指定的密匙和明文得到密文。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">输入描述:</span><br><span class="line">先输入key和要加密的字符串</span><br><span class="line"></span><br><span class="line">输出描述:</span><br><span class="line">返回加密后的字符串</span><br><span class="line"></span><br><span class="line">示例1</span><br><span class="line">输入</span><br><span class="line">nihao</span><br><span class="line">ni</span><br><span class="line">输出</span><br><span class="line">le</span><br></pre></td></tr></table></figure>
+<p>代码实现的时候需要注意字母大小写的统一化,统一成大写就方便了<br>自己的代码:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generateKey</span><span class="params">(S1)</span>:</span></span><br><span class="line">    S=S1.upper()</span><br><span class="line">    L=list()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> S:</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> L:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            L.append(i)</span><br><span class="line">    d=&#123;&#125;</span><br><span class="line">    index=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> L:</span><br><span class="line">        t=chr(ord(<span class="string">'A'</span>)+index)</span><br><span class="line">        index+=<span class="number">1</span></span><br><span class="line">        d[t]=i</span><br><span class="line">    M=list()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">26</span>):</span><br><span class="line">        t=chr(ord(<span class="string">'A'</span>)+i)</span><br><span class="line">        <span class="keyword">if</span> t <span class="keyword">in</span> L:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            M.append(t)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> M:</span><br><span class="line">        t=chr(ord(<span class="string">'A'</span>)+index)</span><br><span class="line">        index+=<span class="number">1</span></span><br><span class="line">        d[t]=i</span><br><span class="line">    <span class="keyword">return</span> d</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encode</span><span class="params">(S1,d)</span>:</span></span><br><span class="line">    S=S1.upper()</span><br><span class="line">    r=list()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> S:</span><br><span class="line">        t=d[i]</span><br><span class="line">        r.append(t.lower())</span><br><span class="line">    r=<span class="string">''</span>.join(r)</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        k=raw_input()</span><br><span class="line">        c=raw_input()</span><br><span class="line">        d=generateKey(k)</span><br><span class="line">        r=encode(c,d)</span><br><span class="line">        <span class="keyword">print</span> r</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure></p>
+<p>别人的代码:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        lineCode , line = raw_input() , raw_input()</span><br><span class="line">        code = []</span><br><span class="line">        res = <span class="string">''</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> lineCode:</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> code:</span><br><span class="line">                code.append(i)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">97</span>,<span class="number">123</span>):</span><br><span class="line">            <span class="keyword">if</span> chr(i) <span class="keyword">not</span> <span class="keyword">in</span> code:</span><br><span class="line">                code.append(chr(i))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> line:</span><br><span class="line">            res += code[ord(i)<span class="number">-97</span>]</span><br><span class="line">        <span class="keyword">print</span> res</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="尼克切斯定理"><a href="#尼克切斯定理" class="headerlink" title="尼克切斯定理"></a>尼克切斯定理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">题目描述</span><br><span class="line">验证尼科彻斯定理，即：任何一个整数m的立方都可以写成m个连续奇数之和。</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line"></span><br><span class="line">1^3=1 </span><br><span class="line"></span><br><span class="line">2^3=3+5 </span><br><span class="line"></span><br><span class="line">3^3=7+9+11 </span><br><span class="line"></span><br><span class="line">4^3=13+15+17+19 </span><br><span class="line">------------------------------------------------</span><br><span class="line">输入描述:</span><br><span class="line">输入一个int整数</span><br><span class="line"></span><br><span class="line">输出描述:</span><br><span class="line">输出分解后的string</span><br><span class="line"></span><br><span class="line">示例1</span><br><span class="line">输入</span><br><span class="line">6</span><br><span class="line">输出</span><br><span class="line">31+33+35+37+39+41</span><br></pre></td></tr></table></figure>
+<p>这道题的解法就是求出中位数,确定前后位置遍历一遍解就出来了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Fenjie</span><span class="params">(N)</span>:</span></span><br><span class="line">    t=int(N)</span><br><span class="line">    T=t**<span class="number">3</span></span><br><span class="line">    Ave=T/t</span><br><span class="line">    d=list()</span><br><span class="line">    <span class="keyword">if</span> t%<span class="number">2</span>==<span class="number">0</span>:</span><br><span class="line">        St=Ave-t+<span class="number">1</span></span><br><span class="line">        Et=Ave+t<span class="number">-1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        St=Ave-t+<span class="number">1</span></span><br><span class="line">        Et=Ave+t<span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(St,Et+<span class="number">2</span>)[::<span class="number">2</span>]:</span><br><span class="line">        d.append(str(i))</span><br><span class="line">    </span><br><span class="line">    r=<span class="string">'+'</span>.join(d)</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        n=int(raw_input())</span><br><span class="line">        r=Fenjie(n)</span><br><span class="line">        <span class="keyword">print</span> r</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="火车进站问题"><a href="#火车进站问题" class="headerlink" title="火车进站问题"></a>火车进站问题</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">题目描述</span><br><span class="line">给定一个正整数N代表火车数量，0&lt;N&lt;10，接下来输入火车入站的序列，一共N辆火车，每辆火车以数字1-9编号。要求以字典序排序输出火车出站的序列号。 </span><br><span class="line">输入描述:</span><br><span class="line">有多组测试用例，每一组第一行输入一个正整数N（0&lt;N&lt;10），第二行包括N个正整数，范围为1到9。</span><br><span class="line"></span><br><span class="line">输出描述:</span><br><span class="line">输出以字典序从小到大排序的火车出站序列号，每个编号以空格隔开，每个输出序列换行，具体见sample。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">示例1</span><br><span class="line">输入</span><br><span class="line">3</span><br><span class="line">1 2 3</span><br><span class="line">输出</span><br><span class="line">1 2 3</span><br><span class="line">1 3 2</span><br><span class="line">2 1 3</span><br><span class="line">2 3 1</span><br><span class="line">3 2 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">这道题问题的描述进一步解释是就是A[1..9]中转到C,C再转到B</span><br><span class="line">产生的序列,其中只能从A-C,C-B,不存在类似序列</span><br><span class="line">这个问题如果用python解的话很好解,A是压满的栈,从1到9栈顶到栈底,A只能pop</span><br><span class="line">但是C能push,也能pop,B只能push,A pop的时候,C只能push,C pop的时候,B push</span><br><span class="line">只有当A,C全部pop为空的时候,序列就产生了</span><br></pre></td></tr></table></figure>
+<p>python的解法相当清晰<br>A–&gt;C<br>C–&gt;B<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"></span><br><span class="line">result=list()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(A,C,B)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(A)==<span class="number">0</span> <span class="keyword">and</span> len(C)==<span class="number">0</span>:</span><br><span class="line">        result.append(<span class="string">' '</span>.join(B))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> len(C)&gt;<span class="number">0</span>:</span><br><span class="line">            temp_A=copy.deepcopy(A)</span><br><span class="line">            temp_C=copy.deepcopy(C)</span><br><span class="line">            temp_B=copy.deepcopy(B)</span><br><span class="line">            temp_B.append(temp_C.pop())</span><br><span class="line">            func(temp_A,temp_C,temp_B)</span><br><span class="line">        <span class="keyword">if</span> len(A)&gt;<span class="number">0</span>:</span><br><span class="line">            temp_A=copy.deepcopy(A)</span><br><span class="line">            temp_C=copy.deepcopy(C)</span><br><span class="line">            temp_B=copy.deepcopy(B)</span><br><span class="line">            temp_C.append(temp_A.pop(<span class="number">0</span>))</span><br><span class="line">            func(temp_A,temp_C,temp_B)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        n=int(raw_input())</span><br><span class="line">        st=raw_input().split()</span><br><span class="line">        pre=st</span><br><span class="line">        In=[]</span><br><span class="line">        After=[]</span><br><span class="line">        func(pre,In,After)</span><br><span class="line">        result.sort()</span><br><span class="line">        <span class="keyword">for</span> rs <span class="keyword">in</span> result:</span><br><span class="line">            <span class="keyword">print</span> rs</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/微信打赏.jpg" alt="ZhouHeyu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/华为上机题-字符串/" rel="tag"># 华为上机题,字符串</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/21/LIS问题-华为上机题/" rel="next" title="LIS问题-华为上机题">
+                <i class="fa fa-chevron-left"></i> LIS问题-华为上机题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/22/华为上机题-递归/" rel="prev" title="华为上机题-递归">
+                华为上机题-递归 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhouHeyu" />
+            
+              <p class="site-author-name" itemprop="name">ZhouHeyu</p>
+              <p class="site-description motion-element" itemprop="description">SSD学习的一些笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhouHeyu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/si-shui-46" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1395529361@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/qq_20265073" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gitee.com/ZhouHeyu" title="码云(Gitee)" target="_blank">码云(Gitee)</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串处理"><span class="nav-number">1.</span> <span class="nav-text">字符串处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大数运算处理"><span class="nav-number">2.</span> <span class="nav-text">大数运算处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进制转化"><span class="nav-number">3.</span> <span class="nav-text">进制转化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串加密"><span class="nav-number">4.</span> <span class="nav-text">字符串加密</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#尼克切斯定理"><span class="nav-number">5.</span> <span class="nav-text">尼克切斯定理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#火车进站问题"><span class="nav-number">6.</span> <span class="nav-text">火车进站问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhouHeyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
